@@ -1,6 +1,7 @@
 package com.jlvlg.pentagon.models;
 
-/**Followable object class. User and Page both inherit from this class.
+/**
+ * Followable object class. User and Page both inherit from this class.
  * 
  * @author Lucas
  *
@@ -39,7 +40,7 @@ public abstract class Followable {
 		this.active = active;
 	}
 	
-   /**
+    /**
   	 * Increments followers attribute
 	 */
 	public void follow() {
