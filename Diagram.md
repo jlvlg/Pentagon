@@ -3,7 +3,6 @@
     direction TB
     class User {
         -login: Login
-        -name: String
         -following: List~Followable~
         -isAdmin: boolean
         +follow(Followable followable) void
@@ -12,7 +11,7 @@
     class Page {
         -owners: List~User~
         -name: String
-        -picture: String
+        -image: String
         -description: String
         +addOwner(User user) void
         +removeOwner(User user) void
@@ -26,7 +25,6 @@
     }
     class Followable {
         <<abstract>>
-        -id: int
         -followers: int = 0
         -active: boolean
     }
@@ -35,11 +33,11 @@
     }
     class Postable {
         <<abstract>>
-        -id: int
         -author: User
         -text: String
         -creationDate: Date
-        -score: int
+        -likes: int
+        -dislikes: int
         -active: boolean
         -edited: boolean
         +like() void
@@ -47,19 +45,20 @@
     }
     class Post {
         -page: Page
+        -image: String
+        -visibility: List<User>
         -title: String
     }
     class Comment {
         -postable: Postable
     }
     class Modification {
-        -id: int
         -post: Postable
+        -oldImage: String
         -oldText: String
         -date: Date
     }
     class Score {
-        -id: int
         -score: int
         -author: User
         -profile: Profile
