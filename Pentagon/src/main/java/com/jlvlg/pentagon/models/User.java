@@ -11,7 +11,7 @@ import java.util.Objects;
  * User Object Class: Inherits Followable Objec Abstractt Class
  */
 
-public class User {
+public class User extends Followable {
 	
 	private Long id;
 	private String name;
