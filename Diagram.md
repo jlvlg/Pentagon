@@ -1,0 +1,95 @@
+```mermaid
+    classDiagram
+    direction TB
+    class User {
+        -login: Login
+        -name: String
+        -following: List~Followable~
+        -isAdmin: boolean
+        +follow(Followable followable) void
+        +unfollow(Followable followable) void
+    }
+    class Page {
+        -owners: List~User~
+        -name: String
+        -picture: String
+        -description: String
+        +addOwner(User user) void
+        +removeOwner(User user) void
+    }
+    class Login {
+        -username: String
+        -password: String
+        +authenticate(String password) boolean
+        +updatePassword(String oldPassword, String newPassword) boolean
+        +updateUsername(String password, String username) boolean
+    }
+    class Followable {
+        <<abstract>>
+        -id: int
+        -followers: int = 0
+        -active: boolean
+    }
+    class Profile {
+        -scoreMeans: Map~String, float~
+    }
+    class Postable {
+        <<abstract>>
+        -id: int
+        -author: User
+        -text: String
+        -creationDate: Date
+        -score: int
+        -active: boolean
+        -edited: boolean
+        +like() void
+        +dislike() void
+    }
+    class Post {
+        -page: Page
+        -title: String
+    }
+    class Comment {
+        -postable: Postable
+    }
+    class Modification {
+        -id: int
+        -post: Postable
+        -oldText: String
+        -date: Date
+    }
+    class Score {
+        -id: int
+        -score: int
+        -author: User
+        -profile: Profile
+        -category: String
+    }
+    Followable <|-- User
+    Followable <|-- Page
+    User "1" *-- "1" Login
+    User "1" -- "n" Postable
+    User "n" --o "n" Page
+    User "1" -- "n" Score
+    Page "1" *-- "n" Post
+    Postable "1" *-- "n" Modification
+    Postable "1" *-- "n" Comment
+    Profile "1" *-- "n" Score
+    Page <|-- Profile
+    Postable <|-- Post
+    Postable <|-- Comment
+```
+
+<style>
+    .mermaid {
+        width:  210mm !important;
+        height: 297mm !important;
+    }
+    .markdown-preview {
+        padding: 0 !important;
+    }
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+</style>
