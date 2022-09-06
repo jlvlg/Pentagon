@@ -38,4 +38,18 @@ public abstract class Followable {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+	
+   /**
+  	 * Increments followers attribute
+	 */
+	public void follow() {
+		followers++;
+	}
+	
+	/**
+	 * Decrements followers attribute
+	 */
+	public void unfollow() {
+		followers--;
+	}
 }

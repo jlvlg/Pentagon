@@ -27,6 +27,8 @@
         <<abstract>>
         -followers: int = 0
         -active: boolean
+        +follow() void
+        +unfollow() void
     }
     class Profile {
         -scoreMeans: Map~String, float~
