@@ -9,13 +9,19 @@
         +removeFollowable(Followable followable) boolean
     }
     class Page {
-        -mdoerators: List~Moderator~
+        -moderators: List~Moderator~
         -name: String
         -image: String
         -description: String
         -creationDate: ZonedDateTime
-        +addOwner(User user) boolean
-        +removeOwner(User user) boolean
+        -archived: boolean
+        -active: boolean
+        +addModerator(Moderator moderator) boolean
+        +removeModerator(Moderator moderator) boolean
+        +getModeratorByUser(User user) Optional~Moderator~
+        +authenticateUser(User user) int
+        +archive() void
+        +delete() void
     }
     class Login {
         -username: String
@@ -28,11 +34,12 @@
         <<abstract>>
         -followers: int = 0
         -active: boolean
-        +follow() void
-        +unfollow() void
+        +followed() void
+        +unfollowed() void
+        +delete() void
     }
     class Profile {
-        -scoreMeans: Map~String, Float~
+        -scoreMeans: ScoreMean[5] 
     }
     class Postable {
         <<abstract>>
@@ -45,6 +52,7 @@
         -edited: boolean
         +like() void
         +dislike() void
+        +delete() void
     }
     class Post {
         -page: Page
@@ -61,7 +69,7 @@
         -post: Postable
         -oldImage: String
         -oldText: String
-        -date: Date
+        -date: ZonedDateTime
     }
     class Score {
         -score: int
@@ -72,6 +80,12 @@
     class Moderator {
         -user: User
         -order: int
+        +promote() void
+        +demote() void
+    }
+    class ScoreMean {
+        -category: String
+        -mean: float
     }
     Followable <|-- User
     Followable <|-- Page
@@ -85,6 +99,7 @@
     Postable "1" *-- "n" Modification
     Postable "1" *-- "n" Comment
     Profile "1" *-- "n" Score
+    Profile "1" o-- "5" ScoreMean
     Page <|-- Profile
     Postable <|-- Post
     Postable <|-- Comment

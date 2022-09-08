@@ -2,6 +2,8 @@ package com.jlvlg.pentagon.models;
 
 import java.util.Objects;
 
+import com.jlvlg.pentagon.exceptions.NegativeFollowersException;
+
 /**
  * Followable object class.
  * Stores the number of followers.
@@ -44,7 +46,7 @@ public abstract class Followable {
 		this.active = active;
 	}
 	
-	@Override
+    @Override
 	public int hashCode() {
 		return Objects.hash(active, followers, id);
 	}
@@ -60,18 +62,28 @@ public abstract class Followable {
 		Followable other = (Followable) obj;
 		return active == other.active && followers == other.followers && Objects.equals(id, other.id);
 	}
-	
+
 	/**
-	 * Increments followers attribute
+  	 * Increments followers attribute
 	 */
-	public void follow() {
+	public void followed() {
 		followers++;
 	}
 	
 	/**
 	 * Decrements followers attribute
+	 * @throws NegativeFollowersException You tried to unfollow from a page with 0 followers
 	 */
-	public void unfollow() {
+	public void unfollowed() throws NegativeFollowersException {
+		if (followers <= 0)
+			throw new NegativeFollowersException(this);
 		followers--;
+	}
+	
+	/**
+	 * Switches active flag
+	 */
+	public void delete() {
+		active = !active;
 	}
 }

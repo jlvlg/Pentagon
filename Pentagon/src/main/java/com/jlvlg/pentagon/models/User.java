@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
-
-/**@author Luann
- * 
+/** 
  * User Object Class: Inherits Followable Objec Abstractt Class
+ * @author Luann
  */
 
 public class User extends Followable {
