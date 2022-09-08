@@ -5,7 +5,9 @@ import java.util.Objects;
 import com.jlvlg.pentagon.exceptions.NegativeFollowersException;
 
 /**
- * Followable object class. User and Page both inherit from this class.
+ * Followable object class.
+ * Stores the number of followers.
+ * User and Page both inherit from this class.
  * 
  * @author Lucas
  *

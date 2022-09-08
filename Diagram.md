@@ -5,8 +5,8 @@
         -login: Login
         -following: List~Followable~
         -isAdmin: boolean
-        +follow(Followable followable) void
-        +unfollow(Followable followable) void
+        +addFollowable(Followable followable) boolean
+        +removeFollowable(Followable followable) boolean
     }
     class Page {
         -moderators: List~Moderator~
@@ -59,6 +59,8 @@
         -image: String
         -visibility: List<User>
         -title: String
+        +turnVisibleTo(User user) boolean
+        +turnInvisibleTo(User user) boolean
     }
     class Comment {
         -postable: Postable
@@ -87,6 +89,7 @@
     }
     Followable <|-- User
     Followable <|-- Page
+    Followable "n" -- "n" User
     User "1" *-- "1" Login
     User "1" -- "n" Postable
     User "1" --o "n" Moderator
