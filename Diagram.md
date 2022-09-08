@@ -9,7 +9,7 @@
         +removeFollowable(Followable followable) boolean
     }
     class Page {
-        -owners: List~User~
+        -mdoerators: List~Moderator~
         -name: String
         -image: String
         -description: String
@@ -32,7 +32,7 @@
         +unfollow() void
     }
     class Profile {
-        -scoreMeans: Map~String, float~
+        -scoreMeans: Map~String, Float~
     }
     class Postable {
         <<abstract>>
@@ -51,6 +51,8 @@
         -image: String
         -visibility: List<User>
         -title: String
+        +turnVisibleTo(User user) boolean
+        +turnInvisibleTo(User user) boolean
     }
     class Comment {
         -postable: Postable
@@ -67,13 +69,18 @@
         -profile: Profile
         -category: String
     }
+    class Moderator {
+        -user: User
+        -order: int
+    }
     Followable <|-- User
     Followable <|-- Page
     Followable "n" -- "n" User
     User "1" *-- "1" Login
     User "1" -- "n" Postable
-    User "n" --o "n" Page
+    User "1" --o "n" Moderator
     User "1" -- "n" Score
+    Moderator "n" --o "1" Page
     Page "1" *-- "n" Post
     Postable "1" *-- "n" Modification
     Postable "1" *-- "n" Comment
