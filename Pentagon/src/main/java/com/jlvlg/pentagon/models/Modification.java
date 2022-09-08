@@ -10,6 +10,7 @@ import java.util.Objects;
  */
 
 public class Modification {
+	private Long id;
 	private Postable post;
 	private String oldImage;
 	private String oldText;
@@ -28,34 +29,49 @@ public class Modification {
 		this.date = ZonedDateTime.now();
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public Postable getPost() {
 		return post;
 	}
+
 	public void setPost(Postable post) {
 		this.post = post;
 	}
+
 	public String getOldImage() {
 		return oldImage;
 	}
+
 	public void setOldImage(String oldImage) {
 		this.oldImage = oldImage;
 	}
+
 	public String getOldText() {
 		return oldText;
 	}
+
 	public void setOldText(String oldText) {
 		this.oldText = oldText;
 	}
+
 	public ZonedDateTime getDate() {
 		return date;
 	}
+
 	public void setDate(ZonedDateTime date) {
 		this.date = date;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(date, oldImage, oldText, post);
+		return Objects.hash(date, id, oldImage, oldText, post);
 	}
 
 	@Override
@@ -67,7 +83,8 @@ public class Modification {
 		if (getClass() != obj.getClass())
 			return false;
 		Modification other = (Modification) obj;
-		return Objects.equals(date, other.date) && Objects.equals(oldImage, other.oldImage)
-				&& Objects.equals(oldText, other.oldText) && Objects.equals(post, other.post);
+		return Objects.equals(date, other.date) && Objects.equals(id, other.id)
+				&& Objects.equals(oldImage, other.oldImage) && Objects.equals(oldText, other.oldText)
+				&& Objects.equals(post, other.post);
 	}
 }

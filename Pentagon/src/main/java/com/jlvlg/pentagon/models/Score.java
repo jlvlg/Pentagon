@@ -9,6 +9,7 @@ import java.util.Objects;
   
 
 public class Score {
+	private Long id;
 	private int score;
 	private User author;;
 	private Profile profile;
@@ -42,14 +43,21 @@ public class Score {
 	public String getCategory() {
 		return category;
 	}
-
 	public void setCategory(String category) {
 		this.category = category;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(author, category, score);
+		return Objects.hash(author, category, id, profile, score);
 	}
 
 	@Override
@@ -61,6 +69,7 @@ public class Score {
 		if (getClass() != obj.getClass())
 			return false;
 		Score other = (Score) obj;
-		return Objects.equals(author, other.author) && Objects.equals(category, other.category) && score == other.score;
+		return Objects.equals(author, other.author) && Objects.equals(category, other.category)
+				&& Objects.equals(id, other.id) && Objects.equals(profile, other.profile) && score == other.score;
 	}
 }

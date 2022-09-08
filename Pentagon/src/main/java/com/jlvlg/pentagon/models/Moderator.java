@@ -4,6 +4,11 @@ import java.util.Objects;
 
 import com.jlvlg.pentagon.exceptions.InvalidModeratorOrderException;
 
+/**
+ * Moderator class. Created when a user turns into a moderator of a page
+ * @author Lucas
+ *
+ */
 public class Moderator {
 	private Long id;
 	private User user;

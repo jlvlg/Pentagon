@@ -10,8 +10,6 @@ import java.util.Objects;
  */
 
 public class User extends Followable {
-	
-	private Long id;
 	private String name;
 	private List<Followable> following;
 	private boolean isAdmin;
@@ -45,13 +43,6 @@ public class User extends Followable {
 	public boolean removeFollowable(Followable followable) {
 		return following.remove(followable);
 	}
-	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public String getName() {
 		return name;
 	}
@@ -70,21 +61,23 @@ public class User extends Followable {
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, isAdmin, name);
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(following, isAdmin, name);
+		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		return Objects.equals(id, other.id) && isAdmin == other.isAdmin && Objects.equals(name, other.name);
+		return Objects.equals(following, other.following) && isAdmin == other.isAdmin
+				&& Objects.equals(name, other.name);
 	}
 }

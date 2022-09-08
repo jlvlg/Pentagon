@@ -14,7 +14,6 @@ import java.util.Objects;
  *
  */
 public class Post extends Postable {
-	private Long id;
 	private Page page;
 	private String image;
 	private List<User> visibility;
@@ -50,14 +49,6 @@ public class Post extends Postable {
 		this.title = title;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public Page getPage() {
 		return page;
 	}
@@ -89,12 +80,12 @@ public class Post extends Postable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(id, image, title, visibility);
+		result = prime * result + Objects.hash(image, page, title, visibility);
 		return result;
 	}
 
@@ -107,10 +98,10 @@ public class Post extends Postable {
 		if (getClass() != obj.getClass())
 			return false;
 		Post other = (Post) obj;
-		return Objects.equals(id, other.id) && Objects.equals(image, other.image) && Objects.equals(title, other.title)
-				&& Objects.equals(visibility, other.visibility);
+		return Objects.equals(image, other.image) && Objects.equals(page, other.page)
+				&& Objects.equals(title, other.title) && Objects.equals(visibility, other.visibility);
 	}
-	
+
 	/**
 	 * Adds an user to the visibility list.
 	 * @param user The user to be added.

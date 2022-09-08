@@ -7,6 +7,7 @@ import java.util.Objects;
  */
 
 public class ScoreMean {
+	private Long id;
 	private String category;
 	private float mean;
 	
@@ -29,9 +30,15 @@ public class ScoreMean {
 	public void setMean(float mean) {
 		this.mean = mean;
 	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(category, mean);
+		return Objects.hash(category, id, mean);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -42,7 +49,7 @@ public class ScoreMean {
 		if (getClass() != obj.getClass())
 			return false;
 		ScoreMean other = (ScoreMean) obj;
-		return Objects.equals(category, other.category)
+		return Objects.equals(category, other.category) && Objects.equals(id, other.id)
 				&& Float.floatToIntBits(mean) == Float.floatToIntBits(other.mean);
 	}
 }

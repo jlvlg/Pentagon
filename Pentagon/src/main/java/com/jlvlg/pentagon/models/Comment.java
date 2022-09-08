@@ -13,16 +13,20 @@ public class Comment {
 	public Comment(Postable postable) {
 		this.postable = postable;
 	}
+
 	public Postable getPostable() {
 		return postable;
 	}
+
 	public void setPostable(Postable postable) {
 		this.postable = postable;
 	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(postable);
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -34,6 +38,4 @@ public class Comment {
 		Comment other = (Comment) obj;
 		return Objects.equals(postable, other.postable);
 	}
-	
-	
 }
