@@ -2,6 +2,8 @@ package com.jlvlg.pentagon.models;
 
 import java.util.Objects;
 
+import com.jlvlg.pentagon.exceptions.InvalidModeratorOrderException;
+
 public class Moderator {
 	private Long id;
 	private User user;
@@ -57,9 +59,9 @@ public class Moderator {
 		return Objects.equals(id, other.id) && order == other.order && Objects.equals(user, other.user);
 	}
 	
-	public void promote() throws InvalidOrderModeratorException {
+	public void promote() throws InvalidModeratorOrderException {
 		if (order <= 1)
-			throw new InvalidOrderModeratorException(this);
+			throw new InvalidModeratorOrderException(this);
 		order--;
 	}
 	

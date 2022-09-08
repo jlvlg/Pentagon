@@ -1,5 +1,7 @@
 package com.jlvlg.pentagon.models;
 
+import com.jlvlg.pentagon.exceptions.NegativeFollowersException;
+
 /**
  * Followable object class. User and Page both inherit from this class.
  * 
@@ -43,14 +45,24 @@ public abstract class Followable {
     /**
   	 * Increments followers attribute
 	 */
-	public void follow() {
+	public void followed() {
 		followers++;
 	}
 	
 	/**
 	 * Decrements followers attribute
+	 * @throws NegativeFollowersException You tried to unfollow from a page with 0 followers
 	 */
-	public void unfollow() {
+	public void unfollowed() throws NegativeFollowersException {
+		if (followers <= 0)
+			throw new NegativeFollowersException(this);
 		followers--;
+	}
+	
+	/**
+	 * Switches active flag
+	 */
+	public void delete() {
+		active = !active;
 	}
 }

@@ -9,12 +9,19 @@
         +unfollow(Followable followable) void
     }
     class Page {
-        -owners: List~User~
+        -moderators: List~Moderator~
         -name: String
         -image: String
         -description: String
-        +addOwner(User user) void
-        +removeOwner(User user) void
+        -creationDate: ZonedDateTime
+        -archived: boolean
+        -active: boolean
+        +addModerator(Moderator moderator) boolean
+        +removeModerator(Moderator moderator) boolean
+        +getModeratorByUser(User user) Optional~Moderator~
+        +authenticateUser(User user) int
+        +archive() void
+        +delete() void
     }
     class Login {
         -username: String
@@ -27,23 +34,25 @@
         <<abstract>>
         -followers: int = 0
         -active: boolean
-        +follow() void
-        +unfollow() void
+        +followed() void
+        +unfollowed() void
+        +delete() void
     }
     class Profile {
-        -scoreMeans: Map~String, float~
+        -scoreMeans: ScoreMean[5] 
     }
     class Postable {
         <<abstract>>
         -author: User
         -text: String
-        -creationDate: Date
+        -creationDate: ZonedDateTime
         -likes: int
         -dislikes: int
         -active: boolean
         -edited: boolean
         +like() void
         +dislike() void
+        +delete() void
     }
     class Post {
         -page: Page
@@ -58,7 +67,7 @@
         -post: Postable
         -oldImage: String
         -oldText: String
-        -date: Date
+        -date: ZonedDateTime
     }
     class Score {
         -score: int
@@ -66,16 +75,28 @@
         -profile: Profile
         -category: String
     }
+    class Moderator {
+        -user: User
+        -order: int
+        +promote() void
+        +demote() void
+    }
+    class ScoreMean {
+        -category: String
+        -mean: float
+    }
     Followable <|-- User
     Followable <|-- Page
     User "1" *-- "1" Login
     User "1" -- "n" Postable
-    User "n" --o "n" Page
+    User "1" --o "n" Moderator
     User "1" -- "n" Score
+    Moderator "n" --o "1" Page
     Page "1" *-- "n" Post
     Postable "1" *-- "n" Modification
     Postable "1" *-- "n" Comment
     Profile "1" *-- "n" Score
+    Profile "1" o-- "5" ScoreMean
     Page <|-- Profile
     Postable <|-- Post
     Postable <|-- Comment
