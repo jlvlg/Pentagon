@@ -5,8 +5,8 @@
         -login: Login
         -following: List~Followable~
         -isAdmin: boolean
-        +follow(Followable followable) void
-        +unfollow(Followable followable) void
+        +addFollowable(Followable followable) void
+        +removeFollowable(Followable followable) void
     }
     class Page {
         -owners: List~User~
@@ -68,6 +68,7 @@
     }
     Followable <|-- User
     Followable <|-- Page
+    Followable "n" -- "n" User
     User "1" *-- "1" Login
     User "1" -- "n" Postable
     User "n" --o "n" Page
