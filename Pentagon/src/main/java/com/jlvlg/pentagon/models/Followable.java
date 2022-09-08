@@ -1,5 +1,7 @@
 package com.jlvlg.pentagon.models;
 
+import java.util.Objects;
+
 import com.jlvlg.pentagon.exceptions.NegativeFollowersException;
 
 /**
@@ -42,7 +44,24 @@ public abstract class Followable {
 		this.active = active;
 	}
 	
-    /**
+    @Override
+	public int hashCode() {
+		return Objects.hash(active, followers, id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Followable other = (Followable) obj;
+		return active == other.active && followers == other.followers && Objects.equals(id, other.id);
+	}
+
+	/**
   	 * Increments followers attribute
 	 */
 	public void followed() {
