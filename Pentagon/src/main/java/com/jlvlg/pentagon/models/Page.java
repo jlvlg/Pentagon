@@ -3,6 +3,7 @@ package com.jlvlg.pentagon.models;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.time.*;
 
 /**@author Luann
@@ -12,40 +13,73 @@ import java.time.*;
  */
 
 public class Page {
-	private List<User> owners;
+	private Long id;
+	private List<Moderator> moderators;
 	private String name;
 	private String image;
 	private String description;
 	private ZonedDateTime creationDate;
+		
+	public Page(String name, String image, String description) {
+		this(name);
+		this.description = description;
+		this.image = image;
+	}
 	
-	public Page (List<User> owners, String name) {
-		this.owners = owners;
+	public Page(String name) {
+		this.moderators = new ArrayList<Moderator>();
 		this.name = name;
-		this.owners = new ArrayList<User>();
-		this.creationDate = ZonedDateTime.now();
+		this.creationDate = ZonedDateTime.now();		
 	}
 	
 	/**
-	 * Method to add one or more owners to an page
-	 * @param User user is a new owner to the receives page
-	 * @return true to a new owner
+	 * Method to add a moderator to a page
+	 * @param Moderator moderator to be added to the page
+	 * @return true to a successful operation
 	 */
 	
-	public boolean addOwner (User user) {
-		return owners.add(user);
+	public boolean addModerator (Moderator moderator) throws SameOrderModeratorException {
+		if (moderator.getOrder() != 0)
+			if (moderators.stream()
+					.anyMatch(x -> x.getOrder() == moderator.getOrder()))
+				throw new SameOrderModeratorException(this, moderator);
+		return moderators.add(moderator);
 	}
 	
-	 /* Method to remove owner to a page
-	 * @param User user is the owner that will be removed 
-	 * @return true to removal of owner 
+	/** 
+	 * Method to remove a moderator from a page
+	 * @param Moderator the moderator that will be removed 
+	 * @return true to a successful operation
 	 */
 	
-	public boolean removeOwner (User user) {
-		return owners.remove(user);
+	public boolean removeModerator (Moderator moderator) {
+		if (moderators.remove(moderator)) {
+			moderators.stream()
+				.filter(x -> x.getOrder() > moderator.getOrder())
+				.forEach(x -> {
+					try {
+						x.promote();
+					} catch (InvalidOrderModeratorException e) {
+						/* Since this method already checks if moderators.remove is 
+						 * successful we can assume that the removed moderator has a 
+						 * order of >= 1, and since the only way of adding moderators 
+						 * is through the addModerator method, which already checks if
+						 * there's another moderator with the same priority order, and
+						 * we're filtering for moderators with lower priority order
+						 * (lower priority = higher number) we can assume that 
+						 * InvalidOrderModeratorException will never be thrown here.
+						 * As such, it will not be dealt with.
+						 */
+						e.printStackTrace();
+					}
+				});
+			return true;
+		}
+		return false;
 	}
 	
-	public List<User> getOwners() {
-		return owners;
+	public List<Moderator> getModerators() {
+		return moderators;
 	}
 
 	public ZonedDateTime getCreationDate() {
@@ -56,8 +90,8 @@ public class Page {
 		this.creationDate = creationDate;
 	}
 
-	public void setOwners(List<User> owners) {
-		this.owners = owners;
+	public void setModerators(List<Moderator> moderators) {
+		this.moderators = moderators;
 	}
 
 	public String getName() {
@@ -84,9 +118,17 @@ public class Page {
 		this.description = description;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(description, image, name, owners);
+		return Objects.hash(creationDate, description, id, image, name, moderators);
 	}
 
 	@Override
@@ -98,9 +140,8 @@ public class Page {
 		if (getClass() != obj.getClass())
 			return false;
 		Page other = (Page) obj;
-		return Objects.equals(description, other.description) && Objects.equals(image, other.image)
-				&& Objects.equals(name, other.name) && Objects.equals(owners, other.owners);
-	}
-	
-	
+		return Objects.equals(creationDate, other.creationDate) && Objects.equals(description, other.description)
+				&& Objects.equals(id, other.id) && Objects.equals(image, other.image)
+				&& Objects.equals(name, other.name) && Objects.equals(moderators, other.moderators);
+	}	
 }
