@@ -5,16 +5,17 @@
         -login: Login
         -following: List~Followable~
         -isAdmin: boolean
-        +addFollowable(Followable followable) void
-        +removeFollowable(Followable followable) void
+        +addFollowable(Followable followable) boolean
+        +removeFollowable(Followable followable) boolean
     }
     class Page {
         -owners: List~User~
         -name: String
         -image: String
         -description: String
-        +addOwner(User user) void
-        +removeOwner(User user) void
+        -creationDate: ZonedDateTime
+        +addOwner(User user) boolean
+        +removeOwner(User user) boolean
     }
     class Login {
         -username: String
@@ -37,7 +38,7 @@
         <<abstract>>
         -author: User
         -text: String
-        -creationDate: Date
+        -creationDate: ZonedDateTime
         -likes: int
         -dislikes: int
         -active: boolean
