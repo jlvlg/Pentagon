@@ -2,15 +2,21 @@ package com.jlvlg.pentagon.models;
 
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+
 /* Comment Object Class
  * 
  * @author Luann
  */
 
-public class Comment {
+@Entity
+public class Comment extends Postable {
+	@ManyToOne
 	private Postable postable;
 
-	public Comment(Postable postable) {
+	public Comment(User author, String text, Postable postable) {
+		super(author, text);
 		this.postable = postable;
 	}
 
@@ -24,14 +30,17 @@ public class Comment {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(postable);
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(postable);
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;

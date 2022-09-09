@@ -2,17 +2,28 @@ package com.jlvlg.pentagon.models;
 
 import java.util.Arrays;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+
 /**
  * Profile Object Class: inherits Page Objects Class
  * @author Luann
  */
 
+@Entity
 public class Profile extends Page {
+	@OneToMany
 	private float [] scoreMeans;
 	
 	public Profile(String name) {
+		this(new float[5], name);
+	}
+	public Profile(float[] scoreMeans, String name) {
 		super(name);
-		this.scoreMeans = new float[5];
+		this.scoreMeans = scoreMeans;
+	}
+	public Profile(String name, String image, String description) {
+		this(new float[5], name, image, description);
 	}
 	public Profile (float[]  scoreMeans, String name, String image, String description) {
 		super(name, image, description);

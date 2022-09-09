@@ -2,21 +2,29 @@ package com.jlvlg.pentagon.models;
 
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /*@author Luann
  * ScoreMean Object Class 
  */
 
+@Entity
 public class ScoreMean {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String category;
 	private float mean;
 	
-	public ScoreMean(String category) {
-		this.category = category;
-	}
 	public ScoreMean(String category, float mean) {
 		this(category);
 		this.mean = mean;
+	}
+	public ScoreMean(String category) {
+		this.category = category;
 	}
 	public String getCategory() {
 		return category;

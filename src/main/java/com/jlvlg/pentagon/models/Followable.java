@@ -2,6 +2,11 @@ package com.jlvlg.pentagon.models;
 
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import com.jlvlg.pentagon.exceptions.NegativeFollowersException;
 
 /**
@@ -13,7 +18,10 @@ import com.jlvlg.pentagon.exceptions.NegativeFollowersException;
  *
  */
 
+@Entity
 public abstract class Followable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private int followers;
 	private boolean active;

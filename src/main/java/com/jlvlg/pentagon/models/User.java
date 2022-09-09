@@ -4,22 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+
 /** 
  * User Object Class: Inherits Followable Objec Abstractt Class
  * @author Luann
  */
 
+@Entity
 public class User extends Followable {
 	private String name;
+	@ManyToMany
 	private List<Followable> following;
 	private boolean isAdmin;
 
 	public User(String name) {
-		super();
-		this.name = name;
-		this.isAdmin = false;
-		this.following = new ArrayList<Followable>();
+		this(name, false);
 	}
+	
 	public User(String name, boolean isAdmin) {
 		super();
 		this.name = name;
