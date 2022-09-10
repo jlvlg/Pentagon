@@ -25,6 +25,8 @@ public class Moderator {
 	private User user;
 	private int order;
 	
+	public Moderator() {}
+	
 	public Moderator(User user, int order) {
 		this(user);
 		this.order = order;

@@ -26,9 +26,7 @@ public abstract class Followable {
 	private int followers;
 	private boolean active;
 	
-	public Followable() {
-		this.active = true;
-	}
+	public Followable() {}
 	
 	public Long getId() {
 		return id;

@@ -27,6 +27,8 @@ public class Post extends Postable {
 	private List<User> visibility;
 	private String title;
 	
+	public Post() {}
+	
 	public Post(User author, Page page, String text, String image, String title) {
 		this(author, page, text, title);
 		this.image = image;

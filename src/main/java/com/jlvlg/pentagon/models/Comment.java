@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 public class Comment extends Postable {
 	@ManyToOne
 	private Postable postable;
+	
+	public Comment() {}
 
 	public Comment(User author, String text, Postable postable) {
 		super(author, text);

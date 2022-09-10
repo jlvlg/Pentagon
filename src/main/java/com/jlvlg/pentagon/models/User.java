@@ -19,6 +19,8 @@ public class User extends Followable {
 	private List<Followable> following;
 	private boolean isAdmin;
 
+	public User() {}
+	
 	public User(String name) {
 		this(name, false);
 	}

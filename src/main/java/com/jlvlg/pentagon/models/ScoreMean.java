@@ -19,6 +19,8 @@ public class ScoreMean {
 	private String category;
 	private float mean;
 	
+	public ScoreMean() {}
+	
 	public ScoreMean(String category, float mean) {
 		this(category);
 		this.mean = mean;

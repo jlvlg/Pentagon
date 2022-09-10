@@ -15,6 +15,8 @@ public class Profile extends Page {
 	@OneToMany
 	private float [] scoreMeans;
 	
+	public Profile() {}
+	
 	public Profile(String name) {
 		this(new float[5], name);
 	}

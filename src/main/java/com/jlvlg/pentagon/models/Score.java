@@ -25,6 +25,8 @@ public class Score {
 	private Profile profile;
 	private String category;
 	
+	public Score() {}
+	
 	public Score(int score, User author, Profile profile, String category) {
 		this.score = score;
 		this.author = author;

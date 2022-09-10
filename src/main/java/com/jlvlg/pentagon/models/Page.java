@@ -35,6 +35,8 @@ public class Page extends Followable {
 	private String description;
 	private ZonedDateTime creationDate;
 	private boolean archived;
+	
+	public Page() {}
 		
 	public Page(String name, String image, String description) {
 		this(name);
