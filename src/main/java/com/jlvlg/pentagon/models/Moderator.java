@@ -2,6 +2,12 @@ package com.jlvlg.pentagon.models;
 
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 import com.jlvlg.pentagon.exceptions.InvalidModeratorOrderException;
 
 /**
@@ -9,10 +15,17 @@ import com.jlvlg.pentagon.exceptions.InvalidModeratorOrderException;
  * @author Lucas
  *
  */
+
+@Entity
 public class Moderator {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@ManyToOne
 	private User user;
 	private int order;
+	
+	public Moderator() {}
 	
 	public Moderator(User user, int order) {
 		this(user);

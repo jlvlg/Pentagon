@@ -15,13 +15,11 @@
         -description: String
         -creationDate: ZonedDateTime
         -archived: boolean
-        -active: boolean
         +addModerator(Moderator moderator) boolean
         +removeModerator(Moderator moderator) boolean
         +getModeratorByUser(User user) Optional~Moderator~
         +authenticateUser(User user) int
         +archive() void
-        +delete() void
     }
     class Login {
         -username: String
@@ -57,7 +55,7 @@
     class Post {
         -page: Page
         -image: String
-        -visibility: List<User>
+        -visibility: List~User~
         -title: String
         +turnVisibleTo(User user) boolean
         +turnInvisibleTo(User user) boolean
@@ -94,11 +92,12 @@
     User "1" -- "n" Postable
     User "1" --o "n" Moderator
     User "1" -- "n" Score
-    Moderator "n" --o "1" Page
+    Moderator "n" --* "1" Page
     Page "1" *-- "n" Post
     Postable "1" *-- "n" Modification
     Postable "1" *-- "n" Comment
     Profile "1" *-- "n" Score
+    User "n" -- "n" Post
     Profile "1" o-- "5" ScoreMean
     Page <|-- Profile
     Postable <|-- Post

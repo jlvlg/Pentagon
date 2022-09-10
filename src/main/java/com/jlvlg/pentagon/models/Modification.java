@@ -3,28 +3,38 @@ package com.jlvlg.pentagon.models;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 /*The Modification model Class serves to modify Postable Abstract Class.
  * It's necessary to inform the post and the field or fields that must be modified 
  * 
  * @author Luann
  */
 
+@Entity
 public class Modification {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@ManyToOne
 	private Postable post;
 	private String oldImage;
 	private String oldText;
 	private ZonedDateTime date;
 	
-	public Modification (Postable post, String oldText) {
-		this.post = post;
-		this.oldText = oldText;
-		this.date = ZonedDateTime.now();
-	}
+	public Modification() {}
 	
 	public Modification (Postable post, String oldImage, String oldText) {
-		this.post = post;
+		this(post, oldText);
 		this.oldImage = oldImage;
+	}
+	
+	public Modification (Postable post, String oldText) {
+		this.post = post;
 		this.oldText = oldText;
 		this.date = ZonedDateTime.now();
 	}

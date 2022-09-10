@@ -2,18 +2,30 @@ package com.jlvlg.pentagon.models;
 
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 /*Score Object Class
  *
  *@author Luann
  */
   
-
+@Entity
 public class Score {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private int score;
-	private User author;;
+	@ManyToOne
+	private User author;
+	@ManyToOne
 	private Profile profile;
 	private String category;
+	
+	public Score() {}
 	
 	public Score(int score, User author, Profile profile, String category) {
 		this.score = score;

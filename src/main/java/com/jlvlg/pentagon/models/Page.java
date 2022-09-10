@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+
 import com.jlvlg.pentagon.exceptions.InvalidModeratorOrderException;
 import com.jlvlg.pentagon.exceptions.ModeratorLimitExceededException;
 import com.jlvlg.pentagon.exceptions.ModeratorNotFoundException;
@@ -23,15 +26,17 @@ import java.time.ZonedDateTime;
  * @author Lucas
  */
 
-public class Page {
-	private Long id;
+@Entity
+public class Page extends Followable {
+	@OneToMany
 	private List<Moderator> moderators;
 	private String name;
 	private String image;
 	private String description;
 	private ZonedDateTime creationDate;
-	private boolean active;
 	private boolean archived;
+	
+	public Page() {}
 		
 	public Page(String name, String image, String description) {
 		this(name);
@@ -40,10 +45,10 @@ public class Page {
 	}
 	
 	public Page(String name) {
+		super();
 		this.moderators = new ArrayList<Moderator>();
 		this.name = name;
 		this.creationDate = ZonedDateTime.now();
-		this.active = true;
 		this.archived = false;
 	}
 	
@@ -87,22 +92,6 @@ public class Page {
 		this.description = description;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
 	public boolean isArchived() {
 		return archived;
 	}
@@ -110,25 +99,27 @@ public class Page {
 	public void setArchived(boolean archived) {
 		this.archived = archived;
 	}
-	
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(active, archived, creationDate, description, id, image, moderators, name);
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(archived, creationDate, description, image, moderators, name);
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Page other = (Page) obj;
-		return active == other.active && archived == other.archived && Objects.equals(creationDate, other.creationDate)
-				&& Objects.equals(description, other.description) && Objects.equals(id, other.id)
-				&& Objects.equals(image, other.image) && Objects.equals(moderators, other.moderators)
-				&& Objects.equals(name, other.name);
+		return archived == other.archived && Objects.equals(creationDate, other.creationDate)
+				&& Objects.equals(description, other.description) && Objects.equals(image, other.image)
+				&& Objects.equals(moderators, other.moderators) && Objects.equals(name, other.name);
 	}
 
 	/**
@@ -261,12 +252,5 @@ public class Page {
 	 */
 	public void archive() {
 		archived = !archived;
-	}
-	
-	/**
-	 * Switches active flag
-	 */
-	public void delete() {
-		active = !active;
 	}
 }
