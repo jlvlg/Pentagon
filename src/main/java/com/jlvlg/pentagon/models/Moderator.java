@@ -8,8 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.jlvlg.pentagon.exceptions.InvalidModeratorOrderException;
-
 /**
  * Moderator class. Created when a user turns into a moderator of a page
  * @author Lucas
@@ -23,17 +21,17 @@ public class Moderator {
 	private Long id;
 	@ManyToOne
 	private User user;
-	private int order;
+	private boolean leader;
 	
 	public Moderator() {}
 	
-	public Moderator(User user, int order) {
-		this(user);
-		this.order = order;
-	}
-
 	public Moderator(User user) {
+		this(user, false);
+	}
+	
+	public Moderator(User user, boolean leader) {
 		this.user = user;
+		this.leader = leader;
 	}
 
 	public Long getId() {
@@ -52,17 +50,17 @@ public class Moderator {
 		this.user = user;
 	}
 
-	public int getOrder() {
-		return order;
+	public boolean isLeader() {
+		return leader;
 	}
 
-	public void setOrder(int order) {
-		this.order = order;
+	public void setLeader(boolean leader) {
+		this.leader = leader;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, order, user);
+		return Objects.hash(id, leader, user);
 	}
 
 	@Override
@@ -74,16 +72,6 @@ public class Moderator {
 		if (getClass() != obj.getClass())
 			return false;
 		Moderator other = (Moderator) obj;
-		return Objects.equals(id, other.id) && order == other.order && Objects.equals(user, other.user);
-	}
-	
-	public void promote() throws InvalidModeratorOrderException {
-		if (order <= 1)
-			throw new InvalidModeratorOrderException(this);
-		order--;
-	}
-	
-	public void demote() {
-		order++;
+		return Objects.equals(id, other.id) && leader == other.leader && Objects.equals(user, other.user);
 	}
 }

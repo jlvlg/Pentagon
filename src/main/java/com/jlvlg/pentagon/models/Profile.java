@@ -2,6 +2,7 @@ package com.jlvlg.pentagon.models;
 
 import java.util.Arrays;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
@@ -12,7 +13,7 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Profile extends Page {
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	private float [] scoreMeans;
 	
 	public Profile() {}

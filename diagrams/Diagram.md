@@ -77,9 +77,7 @@
     }
     class Moderator {
         -user: User
-        -order: int
-        +promote() void
-        +demote() void
+        -leader: boolean
     }
     class ScoreMean {
         -category: String

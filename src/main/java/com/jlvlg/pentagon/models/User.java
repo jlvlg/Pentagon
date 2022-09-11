@@ -103,6 +103,4 @@ public class User extends Followable {
 				&& Objects.equals(login, other.login) && Objects.equals(name, other.name)
 				&& Objects.equals(password, other.password);
 	}
-	
-	
 }
