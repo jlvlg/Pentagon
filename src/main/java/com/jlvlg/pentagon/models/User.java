@@ -14,6 +14,9 @@ import javax.persistence.ManyToMany;
 
 @Entity
 public class User extends Followable {
+	
+	private String login;
+	private String password;
 	private String name;
 	@ManyToMany
 	private List<Followable> following;
@@ -66,13 +69,27 @@ public class User extends Followable {
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
+	public String getLogin() {
+		return login;
+	}
+	public void setLogin(String login) {
+		this.login = login;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(following, isAdmin, name);
+		result = prime * result + Objects.hash(following, isAdmin, login, name, password);
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -83,6 +100,9 @@ public class User extends Followable {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(following, other.following) && isAdmin == other.isAdmin
-				&& Objects.equals(name, other.name);
+				&& Objects.equals(login, other.login) && Objects.equals(name, other.name)
+				&& Objects.equals(password, other.password);
 	}
+	
+	
 }
