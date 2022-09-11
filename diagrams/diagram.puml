@@ -1,9 +1,8 @@
 @startuml Classes
     class User {
-        -login: Login
-        -following: List<Followable>
         -username: String
         -password: String
+        -following: List<Followable>
         -isAdmin: boolean
         +boolean addFollowable(Followable followable)
         +boolean removeFollowable(Followable followable)
