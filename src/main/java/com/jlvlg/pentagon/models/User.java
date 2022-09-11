@@ -7,7 +7,7 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 
-/** 
+/*** 
  * User Object Class: Inherits Followable Objec Abstractt Class
  * @author Luann
  */
