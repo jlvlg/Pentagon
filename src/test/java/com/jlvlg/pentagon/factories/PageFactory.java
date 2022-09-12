@@ -7,7 +7,7 @@ import com.jlvlg.pentagon.models.Page;
 
 /**
  * Contains a single static generate method that returns a Page object with random attribute values
- * @author lucas
+ * @author Lucas
  *
  */
 public class PageFactory {

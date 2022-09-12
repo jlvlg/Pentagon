@@ -12,15 +12,15 @@ import javax.persistence.OneToMany;
 import com.jlvlg.pentagon.exceptions.LeaderModeratorPresentException;
 import com.jlvlg.pentagon.exceptions.ModeratorLimitExceededException;
 import com.jlvlg.pentagon.exceptions.ModeratorNotFoundException;
-import com.jlvlg.pentagon.exceptions.RemovingLeaderModeratorException;
+import com.jlvlg.pentagon.exceptions.NoLeaderModeratorException;
 import com.jlvlg.pentagon.exceptions.UserAlreadyModeratorException;
 import com.jlvlg.pentagon.exceptions.ZeroModeratorsException;
 
 import java.time.ZonedDateTime;
 
 /**
- * Page Object Class: Inherits Followable Object Abstract Class and has an
- * aggregation relationship with User Object Class much to much
+ * Page Object Class: Inherits from the Followable Abstract Class and has an
+ * aggregation relationship with Moderator of one to many
  * @author Luann
  * @author Lucas
  */
@@ -138,9 +138,12 @@ public class Page extends Followable {
 			throw new ModeratorLimitExceededException(this, moderator);
 		if (getModeratorByUser(moderator.getUser()).isPresent())
 			throw new UserAlreadyModeratorException(moderator.getUser(), this, moderator);
-		if (moderator.isLeader())
-			if (getLeaderModerator().isPresent())
+		if (getLeaderModerator().isPresent()) {
+			if (moderator.isLeader())
 				throw new LeaderModeratorPresentException(this, moderator);
+		} else {
+			moderator.setLeader(true);
+		}
 		return moderators.add(moderator);
 	}
 	
@@ -150,39 +153,49 @@ public class Page extends Followable {
 	 * @return true if the operation was successful, else false
 	 * @throws ZeroModeratorsException Tried to remove the page's only moderator
 	 * @throws ModeratorNotFoundException The page could not find the moderator
-	 * @throws RemovingLeaderModeratorException Tried to remove the page's leader moderator
+	 * @throws NoLeaderModeratorException Tried to remove the page's leader moderator
 	 */
-	public boolean removeModerator(Moderator moderator) throws ZeroModeratorsException, ModeratorNotFoundException, RemovingLeaderModeratorException {
+	public boolean removeModerator(Moderator moderator) throws ZeroModeratorsException, ModeratorNotFoundException, NoLeaderModeratorException {
 		if (moderators.size() <= 1)
 			throw new ZeroModeratorsException(this, moderator);
 		if (!moderators.contains(moderator))
 			throw new ModeratorNotFoundException(this, moderator);
 		if (moderator.equals(getLeaderModerator().get()))
-			throw new RemovingLeaderModeratorException(this, moderator);
+			throw new NoLeaderModeratorException(this, moderator);
 		return moderators.remove(moderator);
 	}
 	
 	/**
 	 * Promotes a moderator to leader
 	 * @param moderator the moderator to be promoted
-	 * @throws LeaderModeratorPresentException There is already a moderator present on the page
 	 * @throws ModeratorNotFoundException The provided moderator is not a moderator of the page
 	 */
-	public void promoteModerator(Moderator moderator) throws LeaderModeratorPresentException, ModeratorNotFoundException {
-		if (getLeaderModerator().isPresent())
-			throw new LeaderModeratorPresentException(this, moderator);
+	public void promoteModerator(Moderator moderator) throws ModeratorNotFoundException {
+		Optional<Moderator> leader = getLeaderModerator();
 		if (!moderators.contains(moderator))
 			throw new ModeratorNotFoundException(this, moderator);
+		if (leader.isPresent())
+			leader.get().setLeader(false);
 		moderator.setLeader(true);
 	}
 	
 	/**
-	 * Tries to find a moderator instance that references user and returns its order
+	 * Checks if an user is a moderator
 	 * @param user the user to be authenticated
 	 * @return true if the user is a moderator, else false
 	 */
 	public boolean authenticateUser(User user) {
 		return getModeratorByUser(user).isPresent();
+	}
+	
+	/**
+	 * Checks if an user is the leader moderator
+	 * @param user the user to be authenticated
+	 * @return true if the user is the leader moderator, else false
+	 */
+	public boolean authenticateLeader(User user) {
+		Optional<Moderator> moderator = getLeaderModerator();
+		return moderator.isPresent() && moderator.get().getUser().equals(user);
 	}
 	
 	public Optional<Moderator> getModeratorByUser(User user) {
