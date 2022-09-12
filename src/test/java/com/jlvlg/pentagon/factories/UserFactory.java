@@ -18,7 +18,7 @@ public class UserFactory {
 	public static User generate() {
 		Faker faker = new Faker(new Locale("pt-BR"));
 		return new User(
-				faker.internet().slug(),
+				faker.name().username(),
 				faker.internet().password()
 			);
 	}

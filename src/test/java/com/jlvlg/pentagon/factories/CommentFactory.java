@@ -18,11 +18,9 @@ public class CommentFactory {
 	
 	public static Comment generate() {
 		Faker faker = new Faker(new Locale("pt-br"));
-		UserFactory author = new UserFactory();
-		PostFactory post = new PostFactory();
 		
 		return new Comment(
-				author.generate(), faker.lorem().paragraph(), post.generate()
+				UserFactory.generate(), faker.lorem().paragraph(), PostFactory.generate()
 				);
 	}
 }
