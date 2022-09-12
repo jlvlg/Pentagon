@@ -7,7 +7,7 @@ import com.jlvlg.pentagon.models.Post;
 
 /**
  * Contains a single static generate method that returns a Post object with random attribute values
- * @author lucas
+ * @author Lucas
  *
  */
 public class PostFactory {

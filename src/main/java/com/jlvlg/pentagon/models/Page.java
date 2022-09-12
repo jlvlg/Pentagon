@@ -19,8 +19,8 @@ import com.jlvlg.pentagon.exceptions.ZeroModeratorsException;
 import java.time.ZonedDateTime;
 
 /**
- * Page Object Class: Inherits Followable Object Abstract Class and has an
- * aggregation relationship with User Object Class much to much
+ * Page Object Class: Inherits from the Followable Abstract Class and has an
+ * aggregation relationship with Moderator of one to many
  * @author Luann
  * @author Lucas
  */
