@@ -14,28 +14,28 @@ import javax.persistence.OneToMany;
 @Entity
 public class Profile extends Page {
 	@OneToMany(cascade = CascadeType.ALL)
-	private float [] scoreMeans;
+	private ScoreMean [] scoreMeans;
 	
 	public Profile() {}
 	
 	public Profile(String name) {
-		this(new float[5], name);
+		this(new ScoreMean[5], name);
 	}
-	public Profile(float[] scoreMeans, String name) {
+	public Profile(ScoreMean[] scoreMeans, String name) {
 		super(name);
 		this.scoreMeans = scoreMeans;
 	}
 	public Profile(String name, String image, String description) {
-		this(new float[5], name, image, description);
+		this(new ScoreMean[5], name, image, description);
 	}
-	public Profile (float[]  scoreMeans, String name, String image, String description) {
+	public Profile (ScoreMean[]  scoreMeans, String name, String image, String description) {
 		super(name, image, description);
 		this.scoreMeans = scoreMeans;
 	}
-	public float[] getScoreMeans() {
+	public ScoreMean[] getScoreMeans() {
 		return scoreMeans;
 	}
-	public void setScoreMeans(float[] scoreMeans) {
+	public void setScoreMeans(ScoreMean[] scoreMeans) {
 		this.scoreMeans = scoreMeans;
 	}
 	@Override
