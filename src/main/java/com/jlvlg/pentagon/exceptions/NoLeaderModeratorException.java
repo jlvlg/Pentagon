@@ -8,10 +8,10 @@ import com.jlvlg.pentagon.models.Page;
  * @author lucas
  *
  */
-public class RemovingLeaderModeratorException extends ModeratorPageGenericException {
+public class NoLeaderModeratorException extends ModeratorPageGenericException {
 	private static final long serialVersionUID = 1778315305378860267L;
 
-	public RemovingLeaderModeratorException(Page page, Moderator moderator) {
+	public NoLeaderModeratorException(Page page, Moderator moderator) {
 		super(page, moderator, "The leader moderator of a page cannot be removed");
 	}
 }
