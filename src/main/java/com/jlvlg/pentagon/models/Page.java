@@ -38,9 +38,13 @@ public class Page extends Followable {
 	public Page() {}
 		
 	public Page(String name, String image, String description) {
+		this(name, description);
+		this.image = image;
+	}
+	
+	public Page(String name, String description) {
 		this(name);
 		this.description = description;
-		this.image = image;
 	}
 	
 	public Page(String name) {
