@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import com.github.javafaker.Faker;
 import com.jlvlg.pentagon.models.Profile;
+import com.jlvlg.pentagon.models.ScoreMean;
 
 /*
 * Contains a single static generate method that returns a Profile object with random attribute values
@@ -18,9 +19,15 @@ public class ProfileFactory {
 	 */
 	public static Profile generate() {
 		Faker faker = new Faker(new Locale("pt-br"));
-		PageFactory page = new PageFactory();
 		
 		return new Profile(
+				new ScoreMean[] {
+					ScoreMeanFactory.generate(),
+					ScoreMeanFactory.generate(),
+					ScoreMeanFactory.generate(),
+					ScoreMeanFactory.generate(),
+					ScoreMeanFactory.generate(),
+				},
 				faker.name().username()
 				);
 				
