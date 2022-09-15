@@ -5,7 +5,7 @@ import com.jlvlg.pentagon.models.Page;
 
 /**
  * Thrown when trying to remove a page's leader moderator without demoting them first
- * @author lucas
+ * @author Lucas
  *
  */
 public class NoLeaderModeratorException extends ModeratorPageGenericException {

@@ -5,7 +5,7 @@ import com.jlvlg.pentagon.models.Page;
 
 /**
  * Thrown when trying to add a leader moderator or promote a non-leader moderator when there's already one present 
- * @author lucas
+ * @author Lucas
  *
  */
 public class LeaderModeratorPresentException extends ModeratorPageGenericException {

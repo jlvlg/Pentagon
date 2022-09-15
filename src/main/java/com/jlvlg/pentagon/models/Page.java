@@ -214,11 +214,4 @@ public class Page extends Followable {
 				.filter(x -> x.isLeader())
 				.findFirst();
 	}
-	
-	/**
-	 * Switches archived flag
-	 */
-	public void archive() {
-		archived = !archived;
-	}
 }
