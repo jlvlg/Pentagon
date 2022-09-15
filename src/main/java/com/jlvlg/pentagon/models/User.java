@@ -14,7 +14,6 @@ import javax.persistence.ManyToMany;
 
 @Entity
 public class User extends Followable {
-	
 	private String username;
 	private String password;
 	@ManyToMany

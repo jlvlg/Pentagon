@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Profile extends Page {
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private ScoreMean [] scoreMeans;
 	
 	public Profile() {}

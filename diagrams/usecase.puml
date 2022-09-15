@@ -1,5 +1,7 @@
 @startuml usecase
 
+left to right direction
+
 actor User
 actor Moderator
 actor Admin

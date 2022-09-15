@@ -32,7 +32,10 @@ public abstract class Postable {
 	private boolean active;
 	private boolean edited;
 	
-	public Postable() {}
+	public Postable() {
+		this.active = true;
+		this.creationDate = ZonedDateTime.now();
+	}
 	
 	public Postable(User author, String text) {
 		this.text = text;

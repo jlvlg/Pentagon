@@ -26,7 +26,9 @@ public class Modification {
 	private String oldText;
 	private ZonedDateTime date;
 	
-	public Modification() {}
+	public Modification() {
+		this.date = ZonedDateTime.now();
+	}
 	
 	public Modification (Postable post, String oldImage, String oldText) {
 		this(post, oldText);

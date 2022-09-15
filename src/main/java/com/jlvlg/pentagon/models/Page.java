@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 
 import com.jlvlg.pentagon.exceptions.LeaderModeratorPresentException;
@@ -26,8 +28,9 @@ import java.time.ZonedDateTime;
  */
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Page extends Followable {
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Moderator> moderators;
 	private String name;
 	private String image;
@@ -35,7 +38,9 @@ public class Page extends Followable {
 	private ZonedDateTime creationDate;
 	private boolean archived;
 	
-	public Page() {}
+	public Page() {
+		this.creationDate = ZonedDateTime.now();
+	}
 		
 	public Page(String name, String image, String description) {
 		this(name, description);
