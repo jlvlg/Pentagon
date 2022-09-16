@@ -2,6 +2,8 @@ package com.jlvlg.pentagon.services;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,7 @@ public class PageService implements PageServiceInterface {
 	}
 	
 	@Override
+	@Transactional
 	public Page save(Page page) throws PageNameTakenException, InvalidPageNameException {
 		if (page.getName() == null ||
 			page.getName().isBlank() ||
@@ -53,6 +56,7 @@ public class PageService implements PageServiceInterface {
 	}
 
 	@Override
+	@Transactional
 	public void delete(Page page) throws PageNotFoundException {
 		if (findById(page.getId()).isEmpty())
 			throw new PageNotFoundException(page);

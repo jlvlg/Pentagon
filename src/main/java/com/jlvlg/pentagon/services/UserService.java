@@ -5,6 +5,8 @@ package com.jlvlg.pentagon.services;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +38,8 @@ public class UserService implements UserServiceInterface {
 		return userRepository.findByUsername(username);
 	}
 
-	@Override
+	@Override	
+	@Transactional
 	public User save(User user) throws InvalidUsernameException, UsernameTakenException {
 		if (user.getUsername() == null ||
 			user.getUsername().isBlank() ||
@@ -59,6 +62,7 @@ public class UserService implements UserServiceInterface {
 	}
 
 	@Override
+	@Transactional
 	public void delete(User user) {
 		userRepository.delete(user);
 	}
