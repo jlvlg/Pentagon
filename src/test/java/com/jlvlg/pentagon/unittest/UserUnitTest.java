@@ -14,10 +14,6 @@ import com.jlvlg.pentagon.exceptions.UserNotFollowedException;
 import com.jlvlg.pentagon.factories.UserFactory;
 import com.jlvlg.pentagon.models.User;
 
-/**
- * @author Lucas
- *
- */
 class UserUnitTest {
 	private User user;
 	

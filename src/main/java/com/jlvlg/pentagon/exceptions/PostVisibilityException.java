@@ -7,6 +7,7 @@ import com.jlvlg.pentagon.models.Post;
 import com.jlvlg.pentagon.models.User;
 
 /**
+ * Thrown when trying to turn a post visible/invisible to an already affected user
  * @author Lucas
  *
  */
