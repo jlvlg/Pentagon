@@ -1,9 +1,7 @@
 # Diagrams
 ## Class Diagram
 
-<div hidden>
-
-```
+<!--
 @startuml classes
     skinparam classAttributeIconSize 0
     class User {
@@ -76,33 +74,25 @@
     Postable <|-- Post
     Postable <|-- Comment
 @enduml
-```
-
-</div>
+-->
 
 ![](classes.svg)
 
 ## Actors Diagram
 
-<div hidden>
-
-```
+<!--
 @startuml actors
-:User: --> (App)
-:Admin: --> (App)
+:User: -> (App)
+:Admin: -> (App)
 "Pentagon" as (App)
 @enduml
-```
-
-</div>
+-->
 
 ![](actors.svg)
 
 ## Usecase Diagram
 
-<div hidden>
-
-```
+<!--
 @startuml usecase
 
 left to right direction
@@ -188,8 +178,6 @@ U21 ..> U2 : <<inherits>>
 U21 <.. U22 : <<extends>>
 U21 <.. U23 : <<extends>>
 @enduml
-```
-
-</div>
+-->
 
 ![](usecase.svg)
