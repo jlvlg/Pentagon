@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 
 /**
  * Page class, where users can publish posts. Belongs to an user.
- * @author Luann
+ * @author Lucas
  */
 
 @Entity
