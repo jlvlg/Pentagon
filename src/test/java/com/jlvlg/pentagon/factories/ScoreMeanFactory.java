@@ -19,7 +19,7 @@ public class ScoreMeanFactory {
 		Faker faker = new Faker(new Locale ("pt-br"));
 		return new ScoreMean (
 				faker.name().name(),
-				(float) faker.number().numberBetween(-5, 5)
+				(float) faker.number().randomDouble(2, -5, 5)
 				);
 	}
 }

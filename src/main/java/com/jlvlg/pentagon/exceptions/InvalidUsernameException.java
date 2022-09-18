@@ -6,6 +6,7 @@ package com.jlvlg.pentagon.exceptions;
 import com.jlvlg.pentagon.models.User;
 
 /**
+ * Thrown when trying to create an user with an invalid username
  * @author Lucas
  *
  */

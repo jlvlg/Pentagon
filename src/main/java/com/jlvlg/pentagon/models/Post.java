@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.jlvlg.pentagon.exceptions.PostVisibilityException;
+
 /**
  * The Post model class defines the structure to be used to represent a post. It has required page
  * to be displayed at, text, title, an optional image path string and an optional list of users,
@@ -27,7 +29,10 @@ public class Post extends Postable {
 	private List<User> visibility;
 	private String title;
 	
-	public Post() {}
+	public Post() {
+		super();
+		this.visibility = new ArrayList<User>();
+	}
 	
 	public Post(User author, Page page, String text, String image, String title) {
 		this(author, page, text, title);
@@ -107,8 +112,11 @@ public class Post extends Postable {
 	 * Adds an user to the visibility list.
 	 * @param user The user to be added.
 	 * @return true if successfully added, else false.
+	 * @throws PostVisibilityException The post is already visible to the user
 	 */
-	public boolean turnVisibleTo(User user) {
+	public boolean turnVisibleTo(User user) throws PostVisibilityException {
+		if (visibility.contains(user))
+			throw new PostVisibilityException(this, user);
 		return visibility.add(user);
 	}
 	
@@ -116,8 +124,11 @@ public class Post extends Postable {
 	 * Removes an user from the visibility list.
 	 * @param user The user to be removed.
 	 * @return true if successfully removed, else false.
+	 * @throws PostVisibilityException The post is already invisible to the user
 	 */
-	public boolean turnInvisibleTo(User user) {
+	public boolean turnInvisibleTo(User user) throws PostVisibilityException {
+		if (!visibility.contains(user))
+			throw new PostVisibilityException(this, user);
 		return visibility.remove(user);
 	}
 }

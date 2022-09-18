@@ -1,6 +1,6 @@
 package com.jlvlg.pentagon.exceptions;
 
-import com.jlvlg.pentagon.models.Followable;
+import com.jlvlg.pentagon.models.User;
 
 /**
  * Thrown when trying to decrease the followers attribute of a Followable inherited class
@@ -10,14 +10,14 @@ import com.jlvlg.pentagon.models.Followable;
  */
 public class NegativeFollowersException extends Exception {
 	private static final long serialVersionUID = -2799864130306257759L;
-	private Followable followable;
+	private User user;
 
-	public NegativeFollowersException(Followable followable) {
+	public NegativeFollowersException(User user) {
 		super("Followers attribute must be greater than or equals to 0");
-		this.followable = followable;
+		this.user = user;
 	}
 
-	public Followable getFollowable() {
-		return followable;
+	public User getUser() {
+		return user;
 	}
 }
