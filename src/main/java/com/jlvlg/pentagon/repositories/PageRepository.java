@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.jlvlg.pentagon.models.Page;
+import com.jlvlg.pentagon.models.User;
 
 /**
  * Defines methods to read and write to the Page database
@@ -14,5 +15,5 @@ import com.jlvlg.pentagon.models.Page;
  */
 @Repository
 public interface PageRepository extends JpaRepository<Page, Long> {
-	Optional<Page> findByName(String name);
+	Optional<Page> findByUser(User user);
 }

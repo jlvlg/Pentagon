@@ -5,8 +5,6 @@ package com.jlvlg.pentagon.services;
 
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,18 +26,15 @@ public class UserService implements UserServiceInterface {
 	
 	@Override
 	public Optional<User> findById(Long id) {
-		//TODO DECRYPT THE USER'S PASSWORD >:(
 		return userRepository.findById(id);
 	}
 
 	@Override
 	public Optional<User> findByUsername(String username) {
-		//TODO HERE TOOOOOO!!!
 		return userRepository.findByUsername(username);
 	}
 
-	@Override	
-	@Transactional
+	@Override
 	public User save(User user) throws InvalidUsernameException, UsernameTakenException {
 		if (user.getUsername() == null ||
 			user.getUsername().isBlank() ||
@@ -48,7 +43,6 @@ public class UserService implements UserServiceInterface {
 		Optional<User> storedUser = findByUsername(user.getUsername());
 		if (storedUser.isPresent() && !storedUser.get().getId().equals(user.getId()))
 			throw new UsernameTakenException(user, storedUser.get());
-		//TODO ENCRYPT THE USER PASSWORD          pls :(
 		return userRepository.save(user);
 	}
 
@@ -62,7 +56,6 @@ public class UserService implements UserServiceInterface {
 	}
 
 	@Override
-	@Transactional
 	public void delete(User user) {
 		userRepository.delete(user);
 	}

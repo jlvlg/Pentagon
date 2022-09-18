@@ -1,11 +1,18 @@
 package com.jlvlg.pentagon.models;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+
+import com.jlvlg.pentagon.exceptions.UserAlreadyFollowedException;
+import com.jlvlg.pentagon.exceptions.UserNotFollowedException;
 
 /*** 
  * User Object Class: Inherits Followable Objec Abstractt Class
@@ -13,14 +20,24 @@ import javax.persistence.ManyToMany;
  */
 
 @Entity
-public class User extends Followable {
+public class User {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	private String username;
 	private String password;
 	@ManyToMany
-	private List<Followable> following;
+	private List<User> following;
+	private int followers;
+	private Instant joinDate;
+	private boolean isActive;
 	private boolean isAdmin;
 
-	public User() {}
+	public User() {
+		joinDate = Instant.now();
+		this.isActive = true;
+		this.following = new ArrayList<User>();
+	}
 	
 	public User(String username, String password) {
 		this(username, password, false);
@@ -31,68 +48,115 @@ public class User extends Followable {
 		this.username = username;
 		this.password = password;
 		this.isAdmin = isAdmin;
-		this.following = new ArrayList<Followable>();
+		this.isActive = true;
+		this.following = new ArrayList<User>();
 	}
-	/**
-	 * Method to add followers to a user.
-	 * @param Followable is a new followable to the user receives
-	 * @return true to a new followable
-	 */
 	
-	public boolean addFollowable(Followable followable) {
-		return following.add(followable);
-	}
 	/**
-	 * Method to remove followers to a user
-	 * @param Followable is the followable that will be removed 
-	 * @return true to removal of followable 
+	 * Method to add users to an user's following list.
+	 * @param user the user to be followed
+	 * @return true to a successful operation
+	 * @throws UserAlreadyFollowedException Tried to follow an user you already follow
 	 */
-	public boolean removeFollowable(Followable followable) {
-		return following.remove(followable);
+	public boolean follow(User user) throws UserAlreadyFollowedException {
+		if (following.contains(user))
+			throw new UserAlreadyFollowedException(this, user);
+		return following.add(user);
 	}
-	public List<Followable> getFollowing() {
-		return following;
+	
+	/**
+	 * Method to remove users from an user's following list
+	 * @param user the user to be unfollowed 
+	 * @return true to a successful operation 
+	 * @throws UserNotFollowedException The user was not found in your following list
+	 */
+	public boolean unfollow(User user) throws UserNotFollowedException {
+		if (!following.contains(user))
+			throw new UserNotFollowedException(this, user);
+		return following.remove(user);
 	}
-	public void setFollowing(List<Followable> following) {
-		this.following = following;
+
+	public Long getId() {
+		return id;
 	}
-	public boolean isAdmin() {
-		return isAdmin;
+
+	public void setId(Long id) {
+		this.id = id;
 	}
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
+
 	public String getUsername() {
 		return username;
 	}
-	public void setUsername(String login) {
-		this.username = login;
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
+	public List<User> getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(List<User> following) {
+		this.following = following;
+	}
+
+	public int getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(int followers) {
+		this.followers = followers;
+	}
+
+	public Instant getJoinDate() {
+		return joinDate;
+	}
+
+	public void setJoinDate(Instant joinDate) {
+		this.joinDate = joinDate;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + Objects.hash(following, isAdmin, username, password);
-		return result;
+		return Objects.hash(followers, following, id, isActive, isAdmin, joinDate, password, username);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		return Objects.equals(following, other.following) && isAdmin == other.isAdmin
-				&& Objects.equals(username, other.username) && Objects.equals(password, other.password);
+		return followers == other.followers && Objects.equals(following, other.following)
+				&& Objects.equals(id, other.id) && isActive == other.isActive && isAdmin == other.isAdmin
+				&& Objects.equals(joinDate, other.joinDate) && Objects.equals(password, other.password)
+				&& Objects.equals(username, other.username);
 	}
 }

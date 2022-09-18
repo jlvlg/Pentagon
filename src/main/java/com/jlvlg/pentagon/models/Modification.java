@@ -1,6 +1,6 @@
 package com.jlvlg.pentagon.models;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -21,13 +21,13 @@ public class Modification {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@ManyToOne
-	private Postable post;
+	private Postable postable;
 	private String oldImage;
 	private String oldText;
-	private ZonedDateTime date;
+	private Instant date;
 	
 	public Modification() {
-		this.date = ZonedDateTime.now();
+		this.date = Instant.now();
 	}
 	
 	public Modification (Postable post, String oldImage, String oldText) {
@@ -36,9 +36,9 @@ public class Modification {
 	}
 	
 	public Modification (Postable post, String oldText) {
-		this.post = post;
+		this();
+		this.postable = post;
 		this.oldText = oldText;
-		this.date = ZonedDateTime.now();
 	}
 
 	public Long getId() {
@@ -49,12 +49,12 @@ public class Modification {
 		this.id = id;
 	}
 
-	public Postable getPost() {
-		return post;
+	public Postable getPostable() {
+		return postable;
 	}
 
-	public void setPost(Postable post) {
-		this.post = post;
+	public void setPostable(Postable postable) {
+		this.postable = postable;
 	}
 
 	public String getOldImage() {
@@ -73,17 +73,17 @@ public class Modification {
 		this.oldText = oldText;
 	}
 
-	public ZonedDateTime getDate() {
+	public Instant getDate() {
 		return date;
 	}
 
-	public void setDate(ZonedDateTime date) {
+	public void setDate(Instant date) {
 		this.date = date;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(date, id, oldImage, oldText, post);
+		return Objects.hash(date, id, oldImage, oldText, postable);
 	}
 
 	@Override
@@ -97,6 +97,6 @@ public class Modification {
 		Modification other = (Modification) obj;
 		return Objects.equals(date, other.date) && Objects.equals(id, other.id)
 				&& Objects.equals(oldImage, other.oldImage) && Objects.equals(oldText, other.oldText)
-				&& Objects.equals(post, other.post);
+				&& Objects.equals(postable, other.postable);
 	}
 }

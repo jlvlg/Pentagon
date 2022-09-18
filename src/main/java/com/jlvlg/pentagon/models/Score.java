@@ -22,15 +22,15 @@ public class Score {
 	@ManyToOne
 	private User author;
 	@ManyToOne
-	private Profile profile;
+	private Page page;
 	private String category;
 	
 	public Score() {}
 	
-	public Score(int score, User author, Profile profile, String category) {
+	public Score(int score, User author, Page page, String category) {
 		this.score = score;
 		this.author = author;
-		this.profile = profile;
+		this.page = page;
 		this.category = category;
 	}
 	
@@ -46,11 +46,11 @@ public class Score {
 	public void setAuthor(User author) {
 		this.author = author;
 	}
-	public Profile getProfile() {
-		return profile;
+	public Page getPage() {
+		return page;
 	}
-	public void setProfile(Profile profile) {
-		this.profile = profile;
+	public void setPage(Page page) {
+		this.page = page;
 	}
 	public String getCategory() {
 		return category;
@@ -69,7 +69,7 @@ public class Score {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(author, category, id, profile, score);
+		return Objects.hash(author, category, id, page, score);
 	}
 
 	@Override
@@ -82,6 +82,6 @@ public class Score {
 			return false;
 		Score other = (Score) obj;
 		return Objects.equals(author, other.author) && Objects.equals(category, other.category)
-				&& Objects.equals(id, other.id) && Objects.equals(profile, other.profile) && score == other.score;
+				&& Objects.equals(id, other.id) && Objects.equals(page, other.page) && score == other.score;
 	}
 }

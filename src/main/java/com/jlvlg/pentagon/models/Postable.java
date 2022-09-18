@@ -1,6 +1,6 @@
 package com.jlvlg.pentagon.models;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -26,22 +26,21 @@ public abstract class Postable {
 	@ManyToOne
 	private User author;
 	private String text;
-	private ZonedDateTime creationDate;
+	private Instant creationDate;
 	private int likes;
 	private int dislikes;
-	private boolean active;
-	private boolean edited;
+	private boolean isActive;
+	private boolean isEdited;
 	
 	public Postable() {
-		this.active = true;
-		this.creationDate = ZonedDateTime.now();
+		this.isActive = true;
+		this.creationDate = Instant.now();
 	}
 	
 	public Postable(User author, String text) {
+		this();
 		this.text = text;
 		this.author = author;
-		this.creationDate = ZonedDateTime.now();
-		this.active = true;
 	}
 	
 	public Long getId() {
@@ -68,11 +67,11 @@ public abstract class Postable {
 		this.text = text;
 	}
 
-	public ZonedDateTime getCreationDate() {
+	public Instant getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(ZonedDateTime creationDate) {
+	public void setCreationDate(Instant creationDate) {
 		this.creationDate = creationDate;
 	}
 
@@ -93,24 +92,24 @@ public abstract class Postable {
 	}
 
 	public boolean isActive() {
-		return active;
+		return isActive;
 	}
 
-	public void setActive(boolean active) {
-		this.active = active;
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	public boolean isEdited() {
-		return edited;
+		return isEdited;
 	}
 
-	public void setEdited(boolean edited) {
-		this.edited = edited;
+	public void setEdited(boolean isEdited) {
+		this.isEdited = isEdited;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(active, author, creationDate, dislikes, edited, id, likes, text);
+		return Objects.hash(isActive, author, creationDate, dislikes, isEdited, id, likes, text);
 	}
 
 	@Override
@@ -122,9 +121,9 @@ public abstract class Postable {
 		if (getClass() != obj.getClass())
 			return false;
 		Postable other = (Postable) obj;
-		return active == other.active && Objects.equals(author, other.author)
+		return isActive == other.isActive && Objects.equals(author, other.author)
 				&& Objects.equals(creationDate, other.creationDate) && dislikes == other.dislikes
-				&& edited == other.edited && Objects.equals(id, other.id) && likes == other.likes
+				&& isEdited == other.isEdited && Objects.equals(id, other.id) && likes == other.likes
 				&& Objects.equals(text, other.text);
 	}
 

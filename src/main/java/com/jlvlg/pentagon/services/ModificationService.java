@@ -6,8 +6,6 @@ package com.jlvlg.pentagon.services;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +35,6 @@ public class ModificationService implements ModificationServiceInterface {
 	}
 
 	@Override
-	@Transactional
 	public Modification save(Modification modification) {
 		return modificationRepository.save(modification);
 	}
@@ -52,7 +49,6 @@ public class ModificationService implements ModificationServiceInterface {
 	}
 
 	@Override
-	@Transactional
 	public void delete(Modification modification) throws ModificationNotFoundException {
 		if (findById(modification.getId()).isEmpty())
 			throw new ModificationNotFoundException(modification);

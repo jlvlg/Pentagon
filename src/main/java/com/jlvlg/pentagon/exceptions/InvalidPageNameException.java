@@ -12,7 +12,7 @@ public class InvalidPageNameException extends Exception {
 	private Page page;
 	
 	public InvalidPageNameException(Page page) {
-		super("A page name cannot be null, empty, or contain spaces and/or special characters");
+		super("A page name cannot be null, empty, or contain special characters");
 		this.page = page;
 	}
 

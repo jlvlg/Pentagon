@@ -3,7 +3,6 @@ package com.jlvlg.pentagon.factories;
 import java.util.Locale;
 
 import com.github.javafaker.Faker;
-import com.jlvlg.pentagon.models.Profile;
 import com.jlvlg.pentagon.models.Score;
 
 /*
@@ -24,6 +23,6 @@ public class ScoreFactory {
 		
 		return new Score(
 				faker.number().numberBetween(-5, 5), UserFactory.generate(), 
-				(Profile) ProfileFactory.generate(), faker.name().name());
+				PageFactory.generate(), faker.name().name());
 	}
 }

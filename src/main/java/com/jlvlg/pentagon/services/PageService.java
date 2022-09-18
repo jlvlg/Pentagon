@@ -2,15 +2,13 @@ package com.jlvlg.pentagon.services;
 
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jlvlg.pentagon.exceptions.InvalidPageNameException;
-import com.jlvlg.pentagon.exceptions.PageNameTakenException;
 import com.jlvlg.pentagon.exceptions.PageNotFoundException;
 import com.jlvlg.pentagon.models.Page;
+import com.jlvlg.pentagon.models.User;
 import com.jlvlg.pentagon.repositories.PageRepository;
 
 /**
@@ -29,34 +27,28 @@ public class PageService implements PageServiceInterface {
 	}
 	
 	@Override
-	public Optional<Page> findByName(String name) {
-		return pageRepository.findByName(name);
+	public Optional<Page> findByUser(User user) {
+		return pageRepository.findByUser(user);
 	}
 	
 	@Override
-	@Transactional
-	public Page save(Page page) throws PageNameTakenException, InvalidPageNameException {
+	public Page save(Page page) throws InvalidPageNameException {
 		if (page.getName() == null ||
 			page.getName().isBlank() ||
-			!page.getName().matches("[a-zA-Z0-9_-]+"))
+			!page.getName().matches("[a-zA-Z0-9_- ]+"))
 			throw new InvalidPageNameException(page);
-		Optional<Page> storedPage = findByName(page.getName());
-		if (storedPage.isPresent() && !storedPage.get().getId().equals(page.getId()))
-			throw new PageNameTakenException(page, storedPage.get());
 		return pageRepository.save(page);
 	}
 
 	@Override
-	public Page update(Page page) throws PageNotFoundException, PageNameTakenException, InvalidPageNameException {
+	public Page update(Page page) throws PageNotFoundException, InvalidPageNameException {
 		Optional<Page> oldPage = findById(page.getId());
 		if (oldPage.isEmpty())
 			throw new PageNotFoundException(page);
-		page.setCreationDate(oldPage.get().getCreationDate());
 		return save(page);
 	}
 
 	@Override
-	@Transactional
 	public void delete(Page page) throws PageNotFoundException {
 		if (findById(page.getId()).isEmpty())
 			throw new PageNotFoundException(page);

@@ -3,9 +3,9 @@ package com.jlvlg.pentagon.services;
 import java.util.Optional;
 
 import com.jlvlg.pentagon.exceptions.InvalidPageNameException;
-import com.jlvlg.pentagon.exceptions.PageNameTakenException;
 import com.jlvlg.pentagon.exceptions.PageNotFoundException;
 import com.jlvlg.pentagon.models.Page;
+import com.jlvlg.pentagon.models.User;
 
 /**
  * Defines Page specific repository access methods
@@ -14,28 +14,26 @@ import com.jlvlg.pentagon.models.Page;
  */
 public interface PageServiceInterface extends GenericServiceInterface<Page, Long>{
 	/**
-	 * Finds a page by name
-	 * @param name the page's name
+	 * Finds a page by user
+	 * @param user the page's user
 	 * @return An optional that might contain the page
 	 */
-	Optional<Page> findByName(String name);
+	Optional<Page> findByUser(User user);
 	
 	/**
 	 * Saves a page to the database
-	 * @throws PageNameTakenException Two pages cannot have the same name
-	 * @throws InvalidPageNameException A page name cannot be null, empty, or contain spaces and/or special characters
+	 * @throws InvalidPageNameException A page name cannot be null, empty, or contain special characters
 	 */
 	@Override
-	Page save(Page page) throws PageNameTakenException, InvalidPageNameException;
+	Page save(Page page) throws InvalidPageNameException;
 	
 	/**
 	 * Updates a page in the database
 	 * @throws PageNotFoundException Page not found
-	 * @throws InvalidPageNameException Two pages cannot have the same name
-	 * @throws PageNameTakenException page name cannot be null, empty, or contain spaces and/or special characters
+	 * @throws PageNameTakenException page name cannot be null, empty or contain special characters
 	 */
 	@Override
-	Page update(Page page) throws PageNotFoundException, PageNameTakenException, InvalidPageNameException;
+	Page update(Page page) throws PageNotFoundException, InvalidPageNameException;
 	
 	/**
 	 * Permanently drops a page from the database

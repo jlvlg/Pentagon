@@ -1,6 +1,0 @@
-@startuml actors
-:User: --> (App)
-:Admin: --> (App)
-:Moderator: --> (App)
-"Pentagon" as (App)
-@enduml
