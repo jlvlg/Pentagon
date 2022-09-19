@@ -23,18 +23,25 @@ import com.jlvlg.pentagon.repositories.UserRepository;
 public class UserService implements UserServiceInterface {
 	@Autowired
 	private UserRepository userRepository;
-	
-	@Override
+
 	public Optional<User> findById(Long id) {
 		return userRepository.findById(id);
 	}
 
-	@Override
+	/**
+	 * Finds a user by their username
+	 * @param username the username to search for
+	 * @return An optional that might contain a user
+	 */
 	public Optional<User> findByUsername(String username) {
 		return userRepository.findByUsername(username);
 	}
 
-	@Override
+	/**
+	 * Saves a user into the database
+	 * @throws InvalidUsernameException A username name cannot be null, empty, or contain spaces and/or special characters
+	 * @throws UsernameTakenException Two users cannot have the same username
+	 */
 	public User save(User user) throws InvalidUsernameException, UsernameTakenException {
 		if (user.getUsername() == null ||
 			user.getUsername().isBlank() ||
@@ -46,7 +53,12 @@ public class UserService implements UserServiceInterface {
 		return userRepository.save(user);
 	}
 
-	@Override
+	/**
+	 * Updates a user in the database
+	 * @throws InvalidUsernameException A username name cannot be null, empty, or contain spaces and/or special characters
+	 * @throws UsernameTakenException Two users cannot have the same username
+	 * @throws UserNotFoundException User not found
+	 */
 	public User update(User user) throws UsernameTakenException, InvalidUsernameException, UserNotFoundException {
 		Optional<User> oldUser = findById(user.getId());
 		if (oldUser.isEmpty())
@@ -55,8 +67,13 @@ public class UserService implements UserServiceInterface {
 		return save(user);
 	}
 
-	@Override
-	public void delete(User user) {
+	/**
+	 * Permanently drops a user from the database
+	 * @throws UserNotFoundException User not found
+	 */
+	public void delete(User user) throws UserNotFoundException {
+		if (findById(user.getId()).isEmpty())
+			throw new UserNotFoundException(user);
 		userRepository.delete(user);
 	}
 }

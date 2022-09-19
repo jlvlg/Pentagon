@@ -1,14 +1,5 @@
 package com.jlvlg.pentagon.services;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import com.jlvlg.pentagon.exceptions.CommentMaxCharacterSizeExceededException;
 import com.jlvlg.pentagon.exceptions.CommentNotFoundException;
 import com.jlvlg.pentagon.exceptions.InvalidCommentException;
@@ -16,6 +7,13 @@ import com.jlvlg.pentagon.models.Comment;
 import com.jlvlg.pentagon.models.Postable;
 import com.jlvlg.pentagon.models.User;
 import com.jlvlg.pentagon.repositories.CommentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.Optional;
 
 /*
  * implements logic busines before call the CommentRepository methods
@@ -24,11 +22,10 @@ import com.jlvlg.pentagon.repositories.CommentRepository;
 
 @Service
 public class CommentService implements CommentServiceInterface {
-	
 	@Autowired
 	private CommentRepository commentRepository;
 	
-	@Override
+
 	@Transactional
 	public Comment save(Comment comment) throws InvalidCommentException, CommentMaxCharacterSizeExceededException {
 		if(comment.getText().isEmpty() || comment.getText().isBlank()) {
@@ -39,7 +36,7 @@ public class CommentService implements CommentServiceInterface {
 		}
 		return commentRepository.save(comment);
 	}
-	@Override
+
 	public Comment update(Comment comment) throws CommentNotFoundException, InvalidCommentException, CommentMaxCharacterSizeExceededException {
 		Optional<Comment> oldComment = findById(comment.getId());
 		if(oldComment.isEmpty()) {
@@ -48,7 +45,7 @@ public class CommentService implements CommentServiceInterface {
 		comment.setCreationDate(oldComment.get().getCreationDate());
 		return save(comment);
 	}
-	@Override
+
 	@Transactional
 	public void delete(Comment comment) throws CommentNotFoundException {
 		if(findById(comment.getId()).isEmpty()) {
@@ -56,16 +53,24 @@ public class CommentService implements CommentServiceInterface {
 		}
 		commentRepository.delete(comment);
 	}
-	@Override
+
 	public Optional<Comment> findById(Long id) {
 		return commentRepository.findById(id);
 	}
-	@Override
-	public List<Comment> findByPostableAndActiveTrue(Postable post, Pageable pageable) {
-		return commentRepository.findByPostableAndActiveTrue(post, pageable);
+
+	public Slice<Comment> findByPostableAndIsActiveTrue(Postable postable, Pageable pageable) {
+		return commentRepository.findByPostableAndIsActiveTrue(postable, pageable);
 	}
-	@Override
-	public List<Comment> findByAuthorAndActiveTrue(User author, Pageable pageable) {
-		return commentRepository.findByAuthorAndActiveTrue(author, pageable);
+
+	public long countByPostableAndIsActiveTrue(Postable postable) {
+		return commentRepository.countByPostableAndIsActiveTrue(postable);
+	}
+
+	public Slice<Comment> findByAuthorAndIsActiveTrue(User author, Pageable pageable) {
+		return commentRepository.findByAuthorAndIsActiveTrue(author, pageable);
+	}
+
+	public long countByAuthorAndIsActiveTrue(User author) {
+		return commentRepository.countByAuthorAndIsActiveTrue(author);
 	}
 }

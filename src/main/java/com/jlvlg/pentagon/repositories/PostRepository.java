@@ -1,14 +1,12 @@
 package com.jlvlg.pentagon.repositories;
 
-import java.util.List;
-
 import com.jlvlg.pentagon.models.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import com.jlvlg.pentagon.models.Post;
 import com.jlvlg.pentagon.models.User;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
  
 /**
  * Defines methods to read and write to the Post database
@@ -16,6 +14,8 @@ import com.jlvlg.pentagon.models.User;
  */
 @Repository
 public interface PostRepository extends JpaRepository <Post, Long> {
-	List<Post> findByPageAndActiveTrue(Page page, Pageable pageable);
-	List<Post> findByAuthorAndActiveTrue(User author, Pageable pageable);
+	Slice<Post> findByPageAndIsActiveTrue(Page page, Pageable pageable);
+	long countByPageAndIsActiveTrue(Page page);
+	Slice<Post> findByAuthorAndIsActiveTrue(User author, Pageable pageable);
+	long countByAuthorAndIsActiveTrue(User author);
 }

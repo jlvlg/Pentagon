@@ -23,23 +23,31 @@ import com.jlvlg.pentagon.repositories.ModificationRepository;
 public class ModificationService implements ModificationServiceInterface {
 	@Autowired
 	private ModificationRepository modificationRepository;
-	
-	@Override
+
 	public Optional<Modification> findById(Long id) {
 		return modificationRepository.findById(id);
 	}
 
-	@Override
-	public List<Modification> findByPost(Postable post) {
-		return modificationRepository.findByPostOrderByDateDesc(post);
+	/**
+	 * Finds all modifications of a post
+	 * @param post the post to search for
+	 * @return A list of all modifications
+	 */
+	public List<Modification> findByPostable(Postable post) {
+		return modificationRepository.findByPostableOrderByDateDesc(post);
 	}
 
-	@Override
+	/**
+	 * Saves a post into the database
+	 */
 	public Modification save(Modification modification) {
 		return modificationRepository.save(modification);
 	}
 
-	@Override
+	/**
+	 * Updates a post in the database
+	 * @throws ModificationNotFoundException Modification not found
+	 */
 	public Modification update(Modification modification) throws ModificationNotFoundException {
 		Optional<Modification> oldModification = findById(modification.getId());
 		if (oldModification.isEmpty())
@@ -48,7 +56,10 @@ public class ModificationService implements ModificationServiceInterface {
 		return save(modification);
 	}
 
-	@Override
+	/**
+	 * Permanently drops a post from the database
+	 * @throws ModificationNotFoundException Modification not found
+	 */
 	public void delete(Modification modification) throws ModificationNotFoundException {
 		if (findById(modification.getId()).isEmpty())
 			throw new ModificationNotFoundException(modification);

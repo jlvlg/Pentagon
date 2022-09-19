@@ -1,12 +1,11 @@
 package com.jlvlg.pentagon.repositories;
 
-import java.util.List;
-
+import com.jlvlg.pentagon.models.Score;
 import com.jlvlg.pentagon.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.jlvlg.pentagon.models.Score;
+import java.util.List;
 
 /**
  * Defines methods to read and write to the Score database

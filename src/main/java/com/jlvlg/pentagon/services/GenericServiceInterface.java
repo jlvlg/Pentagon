@@ -14,7 +14,6 @@ public interface GenericServiceInterface<T, ID>{
 	 * Saves an object into the database
 	 * @param object the object to be saved
 	 * @return the saved object
-	 * @throws Exception 
 	 */
 	T save(T object) throws Exception;
 	

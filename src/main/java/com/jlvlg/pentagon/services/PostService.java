@@ -1,22 +1,20 @@
 package com.jlvlg.pentagon.services;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
-
-import com.jlvlg.pentagon.models.Page;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import com.jlvlg.pentagon.exceptions.InvalidPostNameException;
 import com.jlvlg.pentagon.exceptions.InvalidPostTextException;
 import com.jlvlg.pentagon.exceptions.PostMaxCharacterSizeExceededException;
 import com.jlvlg.pentagon.exceptions.PostNotFoundException;
+import com.jlvlg.pentagon.models.Page;
 import com.jlvlg.pentagon.models.Post;
 import com.jlvlg.pentagon.models.User;
 import com.jlvlg.pentagon.repositories.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.Optional;
 
 /*
  * implements logic busines before call the PostRepository methods
@@ -27,12 +25,11 @@ import com.jlvlg.pentagon.repositories.PostRepository;
 public class PostService implements PostServiceInterface {
 	@Autowired
 	private PostRepository postRepository;
-	
-	@Override
+
 	public Optional<Post> findById(Long id) {
 		return postRepository.findById(id);
 	}
-	@Override
+
 	@Transactional
 	public Post save(Post post) throws InvalidPostNameException, InvalidPostTextException, PostMaxCharacterSizeExceededException{
 		if(post.getTitle().isEmpty() || post.getTitle().isBlank()) {
@@ -46,7 +43,7 @@ public class PostService implements PostServiceInterface {
 		}
 		return postRepository.save(post);
 	}
-	@Override
+
 	public Post update(Post post) throws PostNotFoundException, InvalidPostNameException, InvalidPostTextException, PostMaxCharacterSizeExceededException  {
 		Optional<Post> oldPost = findById(post.getId());
 		if(oldPost.isEmpty()) {
@@ -55,7 +52,7 @@ public class PostService implements PostServiceInterface {
 		post.setCreationDate(oldPost.get().getCreationDate());
 		return save(post);
 	}
-	@Override
+
 	@Transactional
 	public void delete(Post post) throws PostNotFoundException {
 		if(findById(post.getId()).isEmpty()) {
@@ -63,12 +60,20 @@ public class PostService implements PostServiceInterface {
 		}
 		postRepository.delete(post);
 	}
-	@Override
-	public List<Post> findByPageAndActiveTrue(Page page, Pageable pageable) {
-		return postRepository.findByPageAndActiveTrue(page, pageable);
+
+	public Slice<Post> findByPageAndIsActiveTrue(Page page, Pageable pageable) {
+		return postRepository.findByPageAndIsActiveTrue(page, pageable);
 	}
-	@Override
-	public List<Post> findByAuthorAndActiveTrue(User author, Pageable pageable) {
-		return postRepository.findByAuthorAndActiveTrue(author, pageable);
+
+	public long countByPageAndIsActiveTrue(Page page) {
+		return postRepository.countByPageAndIsActiveTrue(page);
+	}
+
+	public Slice<Post> findByAuthorAndIsActiveTrue(User author, Pageable pageable) {
+		return postRepository.findByAuthorAndIsActiveTrue(author, pageable);
+	}
+
+	public long countByAuthorAndIsActiveTrue(User author) {
+		return postRepository.countByAuthorAndIsActiveTrue(author);
 	}
 }

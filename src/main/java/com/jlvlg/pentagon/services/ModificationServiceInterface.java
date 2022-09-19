@@ -1,35 +1,21 @@
 package com.jlvlg.pentagon.services;
 
-import java.util.List;
-
 import com.jlvlg.pentagon.exceptions.ModificationNotFoundException;
 import com.jlvlg.pentagon.models.Modification;
 import com.jlvlg.pentagon.models.Postable;
+
+import java.util.List;
 
 /**
  * Defines Modification specific repository access methods
  * @author Lucas
  */
 public interface ModificationServiceInterface extends GenericServiceInterface<Modification, Long> {
-	List<Modification> findByPost(Postable post);
+	List<Modification> findByPostable(Postable post);
 
-	/**
-	 * Saves a post into the database
-	 */
 	@Override
-	Modification save(Modification modification);
+	Modification update(Modification object) throws ModificationNotFoundException;
 
-	/**
-	 * Updates a post in the database
-	 * @throws ModificationNotFoundException Modification not found
-	 */
 	@Override
-	Modification update(Modification modification) throws ModificationNotFoundException;
-
-	/**
-	 * Permanently drops a post from the database
-	 * @throws ModificationNotFoundException Modification not found
-	 */
-	@Override
-	void delete(Modification modification) throws ModificationNotFoundException;
+	void delete(Modification object) throws ModificationNotFoundException;
 }

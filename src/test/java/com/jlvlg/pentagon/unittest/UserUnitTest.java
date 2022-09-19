@@ -15,35 +15,43 @@ import com.jlvlg.pentagon.factories.UserFactory;
 import com.jlvlg.pentagon.models.User;
 
 class UserUnitTest {
-	private User user;
+	private User user1;
+	private User user2;
 	
 	@BeforeEach
 	void setUp() {
-		user = UserFactory.generate();
+		user1 = UserFactory.generate();
+		user2 = UserFactory.generate();
 	}
 
 	@Test
 	@DisplayName("User's follow method")
 	void testFollow() {
-		assertDoesNotThrow(() -> user.follow(UserFactory.generate()));
+		assertDoesNotThrow(() -> user1.follow(user2));
+		assertTrue(user1.getFollowing().contains(user2));
 	}
 	
 	@Test
-	@DisplayName("You cannot follow an user twice")
+	@DisplayName("You cannot follow a user twice")
 	void testFollowAlreadyFollowed() {
-		User user2 = UserFactory.generate();
-		assertDoesNotThrow(() -> user.follow(user2));
-		assertDoesNotThrow(() -> user.follow(UserFactory.generate()));
-		assertThrows(UserAlreadyFollowedException.class, () -> user.follow(user2));
+		assertDoesNotThrow(() -> user1.follow(user2));
+		assertThrows(UserAlreadyFollowedException.class, () -> user1.follow(user2));
+		assertEquals(1, user1.getFollowing().size());
 	}
 	
 	@Test
 	@DisplayName("User's unfollow method")
 	void testUnfollow() {
-		User user2 = UserFactory.generate();
-		assertDoesNotThrow(() -> user.follow(user2));
-		assertDoesNotThrow(() -> user.unfollow(user2));
-		assertThrows(UserNotFollowedException.class, () -> user.unfollow(UserFactory.generate()));
+		assertDoesNotThrow(() -> user1.follow(user2));
+		assertDoesNotThrow(() -> user1.unfollow(user2));
+		assertFalse(user2.getFollowing().contains(user2));
 	}
 
+	@Test
+	@DisplayName("You cannot unfollow a user you're not already following")
+	void testUnfollowNotFollowed() {
+		assertDoesNotThrow(() -> user1.follow(user2));
+		assertDoesNotThrow(() -> user1.unfollow(user2));
+		assertThrows(UserNotFollowedException.class, () -> user1.unfollow(user2));
+	}
 }
