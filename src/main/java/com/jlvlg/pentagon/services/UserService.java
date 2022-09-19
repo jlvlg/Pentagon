@@ -3,6 +3,7 @@
  */
 package com.jlvlg.pentagon.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,15 @@ public class UserService implements UserServiceInterface {
 	 */
 	public Optional<User> findByUsername(String username) {
 		return userRepository.findByUsername(username);
+	}
+
+	/**
+	 * Finds users by username likeness
+	 * @param username the username to search for
+	 * @return A list of users
+	 */
+	public List<User> findByUsernameLikeIgnoreCase(String username) {
+		return userRepository.findByUsernameLikeIgnoreCase(username);
 	}
 
 	/**
