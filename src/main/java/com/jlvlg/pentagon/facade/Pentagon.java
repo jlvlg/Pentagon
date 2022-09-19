@@ -71,31 +71,32 @@ public class Pentagon {
     }
 
     /**
-     * Calls the userService save method
-     * @param user The user to be saved
-     * @return The saved user
+     * Saves a user into the database
+     *
+     * @param user
      * @throws InvalidUsernameException A username name cannot be null, empty, or contain spaces and/or special characters
-     * @throws UsernameTakenException Two users cannot have the same username
+     * @throws UsernameTakenException   Two users cannot have the same username
      */
     public User saveUser(User user) throws InvalidUsernameException, UsernameTakenException {
         return userService.save(user);
     }
 
     /**
-     * Calls the userService update method
-     * @param user The user to be updated
-     * @return The updated user
-     * @throws UsernameTakenException Two users cannot have the same username
+     * Updates a user in the database
+     *
+     * @param user
      * @throws InvalidUsernameException A username name cannot be null, empty, or contain spaces and/or special characters
-     * @throws UserNotFoundException User not found
+     * @throws UsernameTakenException   Two users cannot have the same username
+     * @throws UserNotFoundException    User not found
      */
     public User updateUser(User user) throws UsernameTakenException, InvalidUsernameException, UserNotFoundException {
         return userService.update(user);
     }
 
     /**
-     * Calls the userService delete method
-     * @param user The user to be deleted
+     * Permanently drops a user from the database
+     *
+     * @param user
      * @throws UserNotFoundException User not found
      */
     public void deleteUser(User user) throws UserNotFoundException {
@@ -140,6 +141,12 @@ public class Pentagon {
         }
     }
 
+    /**
+     * Finds a post by ID
+     * @param id The post's ID
+     * @return The post
+     * @throws PostNotFoundException Post not found
+     */
     public Post findPost(Long id) throws PostNotFoundException {
         Optional<Post> post = postService.findById(id);
         if (post.isEmpty())
@@ -147,6 +154,48 @@ public class Pentagon {
         return post.get();
     }
 
+    /**
+     * Saves a post to the database
+     * @param post The post to be saved
+     * @return The saved post
+     * @throws InvalidPostNameException The post name cannot be null or empty
+     * @throws InvalidPostTextException The post text cannot be null or empty
+     * @throws PostMaxCharacterSizeExceededException The post text cannot have more than 1500 characters
+     */
+    public Post savePost(Post post) throws InvalidPostNameException, InvalidPostTextException, PostMaxCharacterSizeExceededException {
+        return postService.save(post);
+    }
+
+    /**
+     * Updates a post in the database
+     * @param post The post to be updated
+     * @return The updated post
+     * @throws PostNotFoundException Post not found
+     * @throws InvalidPostNameException The post name cannot be null or empty
+     * @throws InvalidPostTextException The post text cannot be null or empty
+     * @throws PostMaxCharacterSizeExceededException The post text cannot have more than 1500 characters
+     */
+    public Post updatePost(Post post) throws PostNotFoundException, InvalidPostNameException, InvalidPostTextException, PostMaxCharacterSizeExceededException {
+        return postService.update(post);
+    }
+
+    /**
+     * Deletes a post from the database
+     * @param post
+     * @throws PostNotFoundException Post not found
+     */
+    public void deletePost(Post post) throws PostNotFoundException {
+        postService.delete(post);
+    }
+
+    /**
+     * Loads posts by author in groups of 20
+     * @param author The post's author
+     * @param pageNumber The number of the slice of posts
+     * @return A list of posts
+     * @throws OutOfPostsException There are no posts left
+     * @throws UserNotFoundException Author not found
+     */
     public List<Post> loadPosts(User author, int pageNumber) throws OutOfPostsException, UserNotFoundException {
         findUser(author.getId());
         Slice<Post> posts = postService.findByAuthorAndIsActiveTrue(author, PageRequest.of(pageNumber, 20));
@@ -155,26 +204,22 @@ public class Pentagon {
         return posts.getContent();
     }
 
+    /**
+     * Likes a post
+     * @param post
+     * @throws PostMaxCharacterSizeExceededException
+     * @throws PostNotFoundException
+     * @throws InvalidPostNameException
+     * @throws InvalidPostTextException
+     */
     public void likePost(Post post) throws PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
         post.like();
-        postService.update(post);
+        updatePost(post);
     }
 
     public void unlikePost(Post post) throws PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
         post.unlike();
-        postService.update(post);
-    }
-
-    public Post save(Post object) throws InvalidPostNameException, InvalidPostTextException, PostMaxCharacterSizeExceededException {
-        return postService.save(object);
-    }
-
-    public Post update(Post object) throws PostNotFoundException, InvalidPostNameException, InvalidPostTextException, PostMaxCharacterSizeExceededException {
-        return postService.update(object);
-    }
-
-    public void delete(Post object) throws PostNotFoundException {
-        postService.delete(object);
+        updatePost(post);
     }
 
     public Comment findComment(Long id) throws CommentNotFoundException {
@@ -182,6 +227,18 @@ public class Pentagon {
         if (comment.isEmpty())
             throw new CommentNotFoundException();
         return comment.get();
+    }
+
+    public Comment saveComment(Comment object) throws InvalidCommentException, CommentMaxCharacterSizeExceededException {
+        return commentService.save(object);
+    }
+
+    public Comment updateComment(Comment object) throws CommentNotFoundException, InvalidCommentException, CommentMaxCharacterSizeExceededException {
+        return commentService.update(object);
+    }
+
+    public void deleteComment(Comment object) throws CommentNotFoundException {
+        commentService.delete(object);
     }
 
     public List<Comment> loadComments(Postable postable, int pageNumber) throws PostNotFoundException, CommentNotFoundException {
@@ -194,11 +251,11 @@ public class Pentagon {
 
     public void likeComment(Comment comment) throws CommentMaxCharacterSizeExceededException, InvalidCommentException, CommentNotFoundException {
         comment.like();
-        commentService.update(comment);
+        updateComment(comment);
     }
     public void unlikeComment(Comment comment) throws CommentMaxCharacterSizeExceededException, InvalidCommentException, CommentNotFoundException {
         comment.unlike();
-        commentService.update(comment);
+        updateComment(comment);
     }
 
     public Page findPage(User user) throws PageNotFoundException {
@@ -213,5 +270,36 @@ public class Pentagon {
         if (page.isEmpty())
             throw new PageNotFoundException();
         return page.get();
+    }
+
+    /**
+     * Saves a page to the database
+     *
+     * @param page The page to be saved
+     * @throws InvalidPageNameException A page name cannot be null, empty, or contain special characters
+     */
+    public Page save(Page page) throws InvalidPageNameException {
+        return pageService.save(page);
+    }
+
+    /**
+     * Updates a page in the database
+     *
+     * @param page The paeg to be updated
+     * @throws PageNotFoundException    Page not found
+     * @throws InvalidPageNameException A page name cannot be null, empty, or contain special characters
+     */
+    public Page update(Page page) throws PageNotFoundException, InvalidPageNameException {
+        return pageService.update(page);
+    }
+
+    /**
+     * Permanently drops a page from the database
+     *
+     * @param page The page to be deleted
+     * @throws PageNotFoundException Page not found
+     */
+    public void delete(Page page) throws PageNotFoundException {
+        pageService.delete(page);
     }
 }

@@ -13,14 +13,35 @@ import java.util.Optional;
  *
  */
 public interface PageServiceInterface extends GenericServiceInterface<Page, Long>{
+	/**
+	 * Finds a page by user
+	 * @param user the page's user
+	 * @return An optional that might contain the page
+	 */
 	Optional<Page> findByUser(User user);
 
+	/**
+	 * Saves a page to the database
+	 * @param page The page to be saved
+	 * @throws InvalidPageNameException A page name cannot be null, empty, or contain special characters
+	 */
 	@Override
-	Page save(Page object) throws InvalidPageNameException;
+	Page save(Page page) throws InvalidPageNameException;
 
+	/**
+	 * Updates a page in the database
+	 * @param page The paeg to be updated
+	 * @throws PageNotFoundException Page not found
+	 * @throws InvalidPageNameException A page name cannot be null, empty, or contain special characters
+	 */
 	@Override
-	Page update(Page object) throws PageNotFoundException, InvalidPageNameException;
+	Page update(Page page) throws PageNotFoundException, InvalidPageNameException;
 
+	/**
+	 * Permanently drops a page from the database
+	 * @param page The page to be deleted
+	 * @throws PageNotFoundException Page not found
+	 */
 	@Override
-	void delete(Page object) throws PageNotFoundException;
+	void delete(Page page) throws PageNotFoundException;
 }

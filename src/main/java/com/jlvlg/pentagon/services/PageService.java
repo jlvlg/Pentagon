@@ -25,19 +25,10 @@ public class PageService implements PageServiceInterface {
 		return pageRepository.findById(id);
 	}
 
-	/**
-	 * Finds a page by user
-	 * @param user the page's user
-	 * @return An optional that might contain the page
-	 */
 	public Optional<Page> findByUser(User user) {
 		return pageRepository.findByUser(user);
 	}
 
-	/**
-	 * Saves a page to the database
-	 * @throws InvalidPageNameException A page name cannot be null, empty, or contain special characters
-	 */
 	public Page save(Page page) throws InvalidPageNameException {
 		if (page.getName() == null ||
 			page.getName().isBlank() ||
@@ -46,11 +37,6 @@ public class PageService implements PageServiceInterface {
 		return pageRepository.save(page);
 	}
 
-	/**
-	 * Updates a page in the database
-	 * @throws PageNotFoundException Page not found
-	 * @throws InvalidPageNameException A page name cannot be null, empty, or contain special characters
-	 */
 	public Page update(Page page) throws PageNotFoundException, InvalidPageNameException {
 		Optional<Page> oldPage = findById(page.getId());
 		if (oldPage.isEmpty())
@@ -58,10 +44,6 @@ public class PageService implements PageServiceInterface {
 		return save(page);
 	}
 
-	/**
-	 * Permanently drops a page from the database
-	 * @throws PageNotFoundException Page not found
-	 */
 	public void delete(Page page) throws PageNotFoundException {
 		if (findById(page.getId()).isEmpty())
 			throw new PageNotFoundException(page);
