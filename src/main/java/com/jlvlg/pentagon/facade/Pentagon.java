@@ -226,11 +226,21 @@ public class Pentagon {
         post.like();
         updatePost(post);
     }
-
+    
+    /* Unlikes a post
+     * @param post
+     * @throws PostMaxCharaacterSizeExceededException
+     * @throws PostNotFoundException
+     * @throws InvalidPostNameException
+     * @throws InvalidPostTextException
+     */
+    
     public void unlikePost(Post post) throws PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
         post.unlike();
         updatePost(post);
     }
+    
+    
 
     public void editPost(Post post, String image, String title, String text) throws PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
         if (title == null || title.isBlank())
@@ -259,6 +269,12 @@ public class Pentagon {
         }
         return result;
     }
+    
+    /* Find a post by ID
+     * @param id
+     * @return the comment
+     * @throws CommentNotFoundException
+     */
 
     public Comment findComment(Long id) throws CommentNotFoundException {
         Optional<Comment> comment = commentService.findById(id);
@@ -266,19 +282,51 @@ public class Pentagon {
             throw new CommentNotFoundException();
         return comment.get();
     }
+    
+    /*
+     * Save a comment in the database
+     * @param comment The comment to be saved
+     * @return the save comment
+     * @throws InvalidCommentException
+     * @throws CommentMaxCharacterExceededException
+     */
 
     public Comment saveComment(Comment object) throws InvalidCommentException, CommentMaxCharacterSizeExceededException {
         return commentService.save(object);
     }
-
+    
+    /*
+     * Updates a comment in the database
+     * @param comment The comment to be updated
+     * @return The update comment 
+     * @throws CommentNotFoundException
+     * @throws InvalidCommentException
+     * @throws CommentMaxCharacterSizeExceededException
+     */
+    
     public Comment updateComment(Comment object) throws CommentNotFoundException, InvalidCommentException, CommentMaxCharacterSizeExceededException {
         return commentService.update(object);
     }
+    
+    /*
+     *Deletes a comment from the database
+     *@param comment
+     *@throws CommentNotFoundException
+     */
 
     public void deleteComment(Comment object) throws CommentNotFoundException {
         commentService.delete(object);
     }
-
+    
+    /*
+     * Loads the comments from a post
+     * @param postable
+     * @param page number
+     * @return A list of comments by post
+     * @throws PostNotFoundException
+     * @throws CommentNotFoundException
+     */
+    
     public List<Comment> loadComments(Postable postable, int pageNumber) throws PostNotFoundException, CommentNotFoundException {
         if (postable instanceof Post)
             findPost(postable.getId());
@@ -286,15 +334,34 @@ public class Pentagon {
             findComment(postable.getId());
         return commentService.findByPostableAndIsActiveTrue(postable, PageRequest.of(pageNumber, 50)).getContent();
     }
+    
+    /*
+     * Likes a comment 
+     * @param comment The comment to be liked
+     * @throws CommentMaxCharacterSizeExceededException
+     * @throws InvalidCommentException
+     * @throws CommentNotFoundException
+     */
 
     public void likeComment(Comment comment) throws CommentMaxCharacterSizeExceededException, InvalidCommentException, CommentNotFoundException {
         comment.like();
         updateComment(comment);
     }
+    
+    /*
+     * Unlikes a comment 
+     * @param comment The comment to be liked
+     * @throws CommentMaxCharacterSizeExceededException
+     * @throws InvalidCommentException
+     * @throws CommentNotFoundException
+     */
+    
     public void unlikeComment(Comment comment) throws CommentMaxCharacterSizeExceededException, InvalidCommentException, CommentNotFoundException {
         comment.unlike();
         updateComment(comment);
     }
+    
+    
 
     public void editComment(Comment comment, String text) throws CommentMaxCharacterSizeExceededException, InvalidCommentException, CommentNotFoundException {
         if (text == null || text.isBlank())
@@ -303,6 +370,12 @@ public class Pentagon {
         comment.setText(text);
         updateComment(comment);
     }
+    
+    /*
+     * Find a page by user
+     * @param user The user to be found
+     * @throws PageNotFoundException
+     */
 
     public Page findPage(User user) throws PageNotFoundException {
         Optional<Page> page = pageService.findByUser(user);
@@ -310,6 +383,13 @@ public class Pentagon {
             throw new PageNotFoundException();
         return page.get();
     }
+    
+    /*
+     * Find a page by username
+     * @param username The username to be found
+     * @throws PageNotFoundException
+     * @throws UserNotFoundException
+     */
 
     public Page findPage(String username) throws PageNotFoundException, UserNotFoundException {
         Optional<Page> page = pageService.findByUser(findUser(username));
