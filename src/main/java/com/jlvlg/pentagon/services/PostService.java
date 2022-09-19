@@ -32,10 +32,10 @@ public class PostService implements PostServiceInterface {
 
 	@Transactional
 	public Post save(Post post) throws InvalidPostNameException, InvalidPostTextException, PostMaxCharacterSizeExceededException{
-		if(post.getTitle().isEmpty() || post.getTitle().isBlank()) {
+		if(post.getTitle() == null || post.getTitle().isBlank()) {
 			 throw new InvalidPostNameException(post);
 		}
-		if(post.getText().isEmpty() || post.getText().isBlank()) {
+		if(post.getText() == null || post.getText().isBlank()) {
 			throw new InvalidPostTextException(post);
 		}
 		if(post.getText().length() > 1500) {

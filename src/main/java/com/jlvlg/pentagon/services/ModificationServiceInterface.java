@@ -20,12 +20,16 @@ public interface ModificationServiceInterface extends GenericServiceInterface<Mo
 
 	/**
 	 * Saves a modification into the database
+	 * @param modification The modification to be saved
+	 * @return The saved modification
 	 */
 	@Override
 	Modification save(Modification modification);
 
 	/**
 	 * Updates a modification in the database
+	 * @param modification The modification to be updated
+	 * @return The updated modification
 	 * @throws ModificationNotFoundException Modification not found
 	 */
 	@Override
@@ -33,6 +37,7 @@ public interface ModificationServiceInterface extends GenericServiceInterface<Mo
 
 	/**
 	 * Permanently drops a modification from the database
+	 * @param modification The modification to be dropped
 	 * @throws ModificationNotFoundException Modification not found
 	 */
 	@Override

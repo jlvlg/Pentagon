@@ -22,6 +22,7 @@ public class Modification {
 	private Long id;
 	@ManyToOne
 	private Postable postable;
+	private String oldTitle;
 	private String oldImage;
 	private String oldText;
 	private Instant date;
@@ -30,15 +31,16 @@ public class Modification {
 		this.date = Instant.now();
 	}
 	
-	public Modification (Postable post, String oldImage, String oldText) {
-		this(post, oldText);
+	public Modification (Postable post, String oldImage, String oldText, String oldTitle) {
+		this(post, oldTitle, oldText);
 		this.oldImage = oldImage;
 	}
 	
-	public Modification (Postable post, String oldText) {
+	public Modification (Postable post, String oldTitle, String oldText) {
 		this();
 		this.postable = post;
 		this.oldText = oldText;
+		this.oldTitle = oldTitle;
 	}
 
 	public Long getId() {
@@ -81,22 +83,24 @@ public class Modification {
 		this.date = date;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(date, id, oldImage, oldText, postable);
+	public String getOldTitle() {
+		return oldTitle;
+	}
+
+	public void setOldTitle(String oldTitle) {
+		this.oldTitle = oldTitle;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Modification other = (Modification) obj;
-		return Objects.equals(date, other.date) && Objects.equals(id, other.id)
-				&& Objects.equals(oldImage, other.oldImage) && Objects.equals(oldText, other.oldText)
-				&& Objects.equals(postable, other.postable);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Modification that = (Modification) o;
+		return Objects.equals(id, that.id) && Objects.equals(postable, that.postable) && Objects.equals(oldTitle, that.oldTitle) && Objects.equals(oldImage, that.oldImage) && Objects.equals(oldText, that.oldText) && Objects.equals(date, that.date);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, postable, oldTitle, oldImage, oldText, date);
 	}
 }

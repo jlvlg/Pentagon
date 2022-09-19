@@ -103,6 +103,11 @@ public class Pentagon {
         userService.delete(user);
     }
 
+    public void switchUserIsActive(User user) throws UserNotFoundException, UsernameTakenException, InvalidUsernameException {
+        user.setActive(!user.isActive());
+        updateUser(user);
+    }
+
     /**
      * Increments a user's followers attribute and adds the user to another user's following list
      * @param followingId The ID of the following user
@@ -188,6 +193,11 @@ public class Pentagon {
         postService.delete(post);
     }
 
+    public void switchPostIsActive(Post post) throws PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
+        post.setActive(!post.isActive());
+        updatePost(post);
+    }
+
     /**
      * Loads posts by author in groups of 20
      * @param author The post's author
@@ -220,6 +230,34 @@ public class Pentagon {
     public void unlikePost(Post post) throws PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
         post.unlike();
         updatePost(post);
+    }
+
+    public void editPost(Post post, String image, String title, String text) throws PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
+        if (title == null || title.isBlank())
+            throw new InvalidPostNameException(post);
+        if (text == null || text.isBlank())
+            throw new InvalidPostTextException(post);
+        saveModification(new Modification(post, post.getImage(), post.getTitle(), post.getText()));
+        post.setImage(image);
+        post.setTitle(title);
+        post.setText(text);
+        updatePost(post);
+    }
+
+    public boolean turnPostVisibleTo(Post post, User user) throws PostVisibilityException, PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
+        boolean result = post.turnVisibleTo(user);
+        if (result) {
+            updatePost(post);
+        }
+        return result;
+    }
+
+    public boolean turnPostInvisibleTo(Post post, User user) throws PostVisibilityException, PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
+        boolean result = post.turnInvisibleTo(user);
+        if (result) {
+            updatePost(post);
+        }
+        return result;
     }
 
     public Comment findComment(Long id) throws CommentNotFoundException {
@@ -258,6 +296,14 @@ public class Pentagon {
         updateComment(comment);
     }
 
+    public void editComment(Comment comment, String text) throws CommentMaxCharacterSizeExceededException, InvalidCommentException, CommentNotFoundException {
+        if (text == null || text.isBlank())
+            throw new InvalidCommentException(comment);
+        saveModification(new Modification(comment, null, comment.getText()));
+        comment.setText(text);
+        updateComment(comment);
+    }
+
     public Page findPage(User user) throws PageNotFoundException {
         Optional<Page> page = pageService.findByUser(user);
         if (page.isEmpty())
@@ -278,7 +324,7 @@ public class Pentagon {
      * @param page The page to be saved
      * @throws InvalidPageNameException A page name cannot be null, empty, or contain special characters
      */
-    public Page save(Page page) throws InvalidPageNameException {
+    public Page savePage(Page page) throws InvalidPageNameException {
         return pageService.save(page);
     }
 
@@ -289,7 +335,7 @@ public class Pentagon {
      * @throws PageNotFoundException    Page not found
      * @throws InvalidPageNameException A page name cannot be null, empty, or contain special characters
      */
-    public Page update(Page page) throws PageNotFoundException, InvalidPageNameException {
+    public Page updatePage(Page page) throws PageNotFoundException, InvalidPageNameException {
         return pageService.update(page);
     }
 
@@ -299,7 +345,42 @@ public class Pentagon {
      * @param page The page to be deleted
      * @throws PageNotFoundException Page not found
      */
-    public void delete(Page page) throws PageNotFoundException {
+    public void deletePage(Page page) throws PageNotFoundException {
         pageService.delete(page);
+    }
+
+    public List<Modification> loadModifications(Postable postable) {
+        return modificationService.findByPostable(postable);
+    }
+
+    /**
+     * Saves a modification into the database
+     *
+     * @param modification The modification to be saved
+     * @return The saved modification
+     */
+    public Modification saveModification(Modification modification) {
+        return modificationService.save(modification);
+    }
+
+    /**
+     * Updates a modification in the database
+     *
+     * @param modification The modification to be updated
+     * @return The updated modification
+     * @throws ModificationNotFoundException Modification not found
+     */
+    public Modification updateModification(Modification modification) throws ModificationNotFoundException {
+        return modificationService.update(modification);
+    }
+
+    /**
+     * Permanently drops a modification from the database
+     *
+     * @param modification The modification to be dropped
+     * @throws ModificationNotFoundException Modification not found
+     */
+    public void deleteModification(Modification modification) throws ModificationNotFoundException {
+        modificationService.delete(modification);
     }
 }

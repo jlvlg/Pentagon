@@ -83,7 +83,6 @@
 <!--
 @startuml actors
 :User: -> (App)
-:Admin: -> (App)
 "Pentagon" as (App)
 @enduml
 -->
