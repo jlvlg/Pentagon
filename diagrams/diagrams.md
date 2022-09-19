@@ -98,7 +98,6 @@
 left to right direction
 
 actor User
-actor Admin
 
 usecase "UC01. Login" as U1
 usecase "UC02. Selecionar usuário" as U2
@@ -128,23 +127,20 @@ usecase "UC19. Remover comentário" as U19
 usecase "UC20. Avaliar um usuário" as U20
 
 usecase "UC21. Gerenciar usuário" as U21
-usecase "UC22. Desativar usuário" as U22
-usecase "UC23. Ativar usuário" as U23
+usecase "UC22. Alterar username" as U22
+usecase "UC23. Alterar senha" as U23
+usecase "UC24. Desativar usuário" as U24
+usecase "UC25. Ativar usuário" as U25
 
-User -[#green]-> U3
-User -[#green]-> U7
-User -[#green]-> U9
-User -[#green]-> U10
-User -[#green]-> U14
-User -[#green]-> U16
-User -[#green]-> U17
-User -[#green]-> U20
-User -[#green]-> U21
-
-Admin -[#red]-> U3
-Admin -[#red]-> U10
-Admin -[#red]-> U17
-Admin -[#red]-> U21
+User -[#black]-> U3
+User -[#black]-> U7
+User -[#black]-> U9
+User -[#black]-> U10
+User -[#black]-> U14
+User -[#black]-> U16
+User -[#black]-> U17
+User -[#black]-> U20
+User -[#black]-> U21
 
 U2 ..> U1 : <<inherits>>
 
@@ -173,10 +169,11 @@ U17 <.. U18 : <<extends>>
 U17 <.. U19 : <<extends>>
 
 U20 ..> U2 : <<inherits>>
-U21 ..> U2 : <<inherits>>
 
 U21 <.. U22 : <<extends>>
 U21 <.. U23 : <<extends>>
+U21 <.. U24 : <<extends>>
+U21 <.. U25 : <<extends>>
 @enduml
 -->
 

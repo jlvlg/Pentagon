@@ -5,18 +5,20 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.jlvlg.pentagon.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jlvlg.pentagon.exceptions.ScoreOutOfAllowedException;
-import com.jlvlg.pentagon.models.Profile;
 import com.jlvlg.pentagon.models.Score;
 import com.jlvlg.pentagon.repositories.ScoreRepository;
+import org.springframework.stereotype.Service;
 
 /*
  * implements logic busines before call the ScoreRepository methods
  * @autor Luann
  */
 
+@Service
 public class ScoreService implements ScoreServiceInterface {
 	@Autowired
 	private ScoreRepository scoreRepository;
@@ -34,8 +36,13 @@ public class ScoreService implements ScoreServiceInterface {
 		return scoreRepository.save(score);
 	}
 	@Override
-	public List<Score> findByProfileAndActiveTrue(Profile profile) {
-		return scoreRepository.findByProfileAndActiveTrue(profile);
+	public List<Score> findByPage_User(User user) {
+		return scoreRepository.findByPage_User(user);
+	}
+
+	@Override
+	public List<Score> findByAuthor(User author) {
+		return scoreRepository.findByAuthor(author);
 	}
 
 	@Override

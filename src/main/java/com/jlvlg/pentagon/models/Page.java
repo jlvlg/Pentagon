@@ -1,17 +1,13 @@
 package com.jlvlg.pentagon.models;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 /**
- * Page class, where users can publish posts. Belongs to an user.
+ * Page class, where users can publish posts. Belongs to a user.
  * @author Lucas
  */
 
@@ -20,22 +16,23 @@ public class Page {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@OneToOne
 	private User user;
 	private String name;
 	private String image;
 	private String description;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private ScoreMean [] scoreMeans;
+	private List<ScoreMean> scoreMeans;
 	private boolean isActive;
 	
 	public Page() {
-		this.scoreMeans = new ScoreMean[] {
+		this.scoreMeans = new ArrayList<>(List.of(
 			new ScoreMean("Aparência física"),
 			new ScoreMean("Inteligência"),
 			new ScoreMean("Humor"),
 			new ScoreMean("Responsabilidade"),
 			new ScoreMean("Caráter")
-		};
+		));
 		this.isActive = true;
 	}
 	
@@ -44,7 +41,7 @@ public class Page {
 		this.name = name;
 	}
 	
-	public Page(ScoreMean[] scoreMeans, String name) {
+	public Page(List<ScoreMean> scoreMeans, String name) {
 		this(scoreMeans, name, null, null, true);
 	}
 	
@@ -54,7 +51,7 @@ public class Page {
 		this.description = description;
 	}
 	
-	public Page(ScoreMean[]  scoreMeans, String name, String image, String description, boolean isActive) {
+	public Page(List<ScoreMean>  scoreMeans, String name, String image, String description, boolean isActive) {
 		this.scoreMeans = scoreMeans;
 		this.name = name;
 		this.image = image;
@@ -102,11 +99,11 @@ public class Page {
 		this.description = description;
 	}
 
-	public ScoreMean[] getScoreMeans() {
+	public List<ScoreMean> getScoreMeans() {
 		return scoreMeans;
 	}
 
-	public void setScoreMeans(ScoreMean[] scoreMeans) {
+	public void setScoreMeans(List<ScoreMean> scoreMeans) {
 		this.scoreMeans = scoreMeans;
 	}
 
@@ -119,25 +116,15 @@ public class Page {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(scoreMeans);
-		result = prime * result + Objects.hash(description, id, image, isActive, name, user);
-		return result;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Page page = (Page) o;
+		return isActive == page.isActive && Objects.equals(id, page.id) && Objects.equals(user, page.user) && Objects.equals(name, page.name) && Objects.equals(image, page.image) && Objects.equals(description, page.description) && Objects.equals(scoreMeans, page.scoreMeans);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Page other = (Page) obj;
-		return Objects.equals(description, other.description) && Objects.equals(id, other.id)
-				&& Objects.equals(image, other.image) && isActive == other.isActive && Objects.equals(name, other.name)
-				&& Arrays.equals(scoreMeans, other.scoreMeans) && Objects.equals(user, other.user);
+	public int hashCode() {
+		return Objects.hash(id, user, name, image, description, scoreMeans, isActive);
 	}
 }

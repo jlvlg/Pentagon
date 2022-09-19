@@ -11,7 +11,6 @@ import com.jlvlg.pentagon.models.User;
  *
  */
 public class UserNotFoundException extends ObjectNotFoundException {
-	private static final long serialVersionUID = 6421912423635500812L;
 	private User user;
 	
 	public UserNotFoundException() {

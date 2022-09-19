@@ -6,7 +6,10 @@ import com.jlvlg.pentagon.exceptions.ModificationNotFoundException;
 import com.jlvlg.pentagon.models.Modification;
 import com.jlvlg.pentagon.models.Postable;
 
-
+/**
+ * Defines Modification specific repository access methods
+ * @author Lucas
+ */
 public interface ModificationServiceInterface extends GenericServiceInterface<Modification, Long> {
 	List<Modification> findByPost(Postable post);
 

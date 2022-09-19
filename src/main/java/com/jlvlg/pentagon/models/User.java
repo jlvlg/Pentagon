@@ -36,7 +36,7 @@ public class User {
 	public User() {
 		joinDate = Instant.now();
 		this.isActive = true;
-		this.following = new ArrayList<User>();
+		this.following = new ArrayList<>();
 	}
 	
 	public User(String username, String password) {
@@ -48,15 +48,13 @@ public class User {
 		this.username = username;
 		this.password = password;
 		this.isAdmin = isAdmin;
-		this.isActive = true;
-		this.following = new ArrayList<User>();
 	}
 	
 	/**
-	 * Method to add users to an user's following list.
+	 * Method to add users to a user's following list.
 	 * @param user the user to be followed
 	 * @return true to a successful operation
-	 * @throws UserAlreadyFollowedException Tried to follow an user you already follow
+	 * @throws UserAlreadyFollowedException Tried to follow a user you already follow
 	 */
 	public boolean follow(User user) throws UserAlreadyFollowedException {
 		if (following.contains(user))
@@ -65,7 +63,7 @@ public class User {
 	}
 	
 	/**
-	 * Method to remove users from an user's following list
+	 * Method to remove users from a user's following list
 	 * @param user the user to be unfollowed 
 	 * @return true to a successful operation 
 	 * @throws UserNotFollowedException The user was not found in your following list

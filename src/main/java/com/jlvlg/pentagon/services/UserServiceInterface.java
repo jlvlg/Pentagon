@@ -16,16 +16,16 @@ public interface UserServiceInterface extends GenericServiceInterface<User, Long
 	Optional<User> findByUsername(String username);
 
 	/**
-	 * Saves an user into the database
-	 * @throws InvalidUsernameException An username name cannot be null, empty, or contain spaces and/or special characters
+	 * Saves a user into the database
+	 * @throws InvalidUsernameException A username name cannot be null, empty, or contain spaces and/or special characters
 	 * @throws UsernameTakenException Two users cannot have the same username
 	 */
 	@Override
 	User save(User user) throws InvalidUsernameException, UsernameTakenException;
 
 	/**
-	 * Updates an user in the database
-	 * @throws InvalidUsernameException An username name cannot be null, empty, or contain spaces and/or special characters
+	 * Updates a user in the database
+	 * @throws InvalidUsernameException A username name cannot be null, empty, or contain spaces and/or special characters
 	 * @throws UsernameTakenException Two users cannot have the same username
 	 * @throws UserNotFoundException User not found
 	 */
@@ -33,7 +33,7 @@ public interface UserServiceInterface extends GenericServiceInterface<User, Long
 	User update(User user) throws UsernameTakenException, InvalidUsernameException, UserNotFoundException;
 
 	/**
-	 * Permanently drops an user from the database
+	 * Permanently drops a user from the database
 	 */
 	@Override
 	void delete(User user);

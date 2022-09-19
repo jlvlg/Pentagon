@@ -3,12 +3,11 @@ package com.jlvlg.pentagon.exceptions;
 import com.jlvlg.pentagon.models.Post;
 
 /**
- * Thrown when trying to access a nonexisting post
+ * Thrown when trying to access a nonexistent post
  * @author Luann
  */
 public class PostNotFoundException extends Exception {
-	private static final long serialVersionUID = -6266748018975873420L;
-	private Post post;
+	private final Post post;
 
 	public PostNotFoundException(Post post) {
 		super("Post not found.");

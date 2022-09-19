@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.jlvlg.pentagon.models.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.jlvlg.pentagon.exceptions.InvalidPostNameException;
@@ -47,7 +49,7 @@ public class PostService implements PostServiceInterface {
 	@Override
 	public Post update(Post post) throws PostNotFoundException, InvalidPostNameException, InvalidPostTextException, PostMaxCharacterSizeExceededException  {
 		Optional<Post> oldPost = findById(post.getId());
-		if(!oldPost.isPresent()) {
+		if(oldPost.isEmpty()) {
 			throw new PostNotFoundException(post);
 		}
 		post.setCreationDate(oldPost.get().getCreationDate());
@@ -62,11 +64,11 @@ public class PostService implements PostServiceInterface {
 		postRepository.delete(post);
 	}
 	@Override
-	public List<Post> findByTitleAndActiveTrue(String title) {
-		return postRepository.findByTittleAndActiveTrue(title);
+	public List<Post> findByPageAndActiveTrue(Page page, Pageable pageable) {
+		return postRepository.findByPageAndActiveTrue(page, pageable);
 	}
 	@Override
-	public List<Post> findByTitleAndActiveTrue(User author) {
-		return postRepository.findByAuthorAndActiveTrue(author);
+	public List<Post> findByAuthorAndActiveTrue(User author, Pageable pageable) {
+		return postRepository.findByAuthorAndActiveTrue(author, pageable);
 	}
 }

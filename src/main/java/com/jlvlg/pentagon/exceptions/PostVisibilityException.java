@@ -12,9 +12,8 @@ import com.jlvlg.pentagon.models.User;
  *
  */
 public class PostVisibilityException extends Exception {
-	private static final long serialVersionUID = 1121312434882953469L;
-	private Post post;
-	private User user;
+	private final Post post;
+	private final User user;
 	
 	public PostVisibilityException(Post post, User user) {
 		super("The post is already visible/invisible to the user");

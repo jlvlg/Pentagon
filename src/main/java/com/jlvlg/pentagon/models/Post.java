@@ -31,7 +31,7 @@ public class Post extends Postable {
 	
 	public Post() {
 		super();
-		this.visibility = new ArrayList<User>();
+		this.visibility = new ArrayList<>();
 	}
 	
 	public Post(User author, Page page, String text, String image, String title) {
@@ -40,7 +40,7 @@ public class Post extends Postable {
 	}
 	
 	public Post(User author, Page page, String text, String title) {
-		this(author, page, text, new ArrayList<User>(), title);
+		this(author, page, text, new ArrayList<>(), title);
 	}
 	
 	public Post(User author, Page page, String text, String image, List<User> visibility, String title) {
@@ -109,7 +109,7 @@ public class Post extends Postable {
 	}
 
 	/**
-	 * Adds an user to the visibility list.
+	 * Adds a user to the visibility list.
 	 * @param user The user to be added.
 	 * @return true if successfully added, else false.
 	 * @throws PostVisibilityException The post is already visible to the user
@@ -121,7 +121,7 @@ public class Post extends Postable {
 	}
 	
 	/**
-	 * Removes an user from the visibility list.
+	 * Removes a user from the visibility list.
 	 * @param user The user to be removed.
 	 * @return true if successfully removed, else false.
 	 * @throws PostVisibilityException The post is already invisible to the user

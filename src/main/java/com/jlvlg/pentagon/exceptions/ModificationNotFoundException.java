@@ -11,7 +11,6 @@ import com.jlvlg.pentagon.models.Modification;
  *
  */
 public class ModificationNotFoundException extends ObjectNotFoundException {
-	private static final long serialVersionUID = 3249536314260932162L;
 	private Modification modification;
 	
 	public ModificationNotFoundException() {

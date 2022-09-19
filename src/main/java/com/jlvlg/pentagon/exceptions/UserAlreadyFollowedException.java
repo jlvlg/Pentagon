@@ -11,9 +11,8 @@ import com.jlvlg.pentagon.models.User;
  *
  */
 public class UserAlreadyFollowedException extends Exception {
-	private static final long serialVersionUID = 2454072147111365387L;
-	private User following;
-	private User follower;
+	private final User following;
+	private final User follower;
 	
 	public UserAlreadyFollowedException(User following, User follower) {
 		super("The user is already being followed");

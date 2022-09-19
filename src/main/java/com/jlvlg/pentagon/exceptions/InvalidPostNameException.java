@@ -7,8 +7,7 @@ import com.jlvlg.pentagon.models.Post;
  */
 
 public class InvalidPostNameException extends Exception {
-	private static final long serialVersionUID = 3427285910433893741L;
-	private Post post;
+	private final Post post;
 	
 	public InvalidPostNameException(Post post) {
 		super("A tittle post cannot be null or empty.");

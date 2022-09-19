@@ -7,8 +7,7 @@ import com.jlvlg.pentagon.models.Score;
  */
 
 public class ScoreOutOfAllowedException extends Exception {
-	private static final long serialVersionUID = -3050535032552946579L;
-	private Score score;
+	private final Score score;
 	
 	
 	public ScoreOutOfAllowedException(Score score) {

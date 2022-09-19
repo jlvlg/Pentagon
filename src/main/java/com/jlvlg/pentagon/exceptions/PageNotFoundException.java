@@ -11,7 +11,6 @@ import com.jlvlg.pentagon.models.Page;
  *
  */
 public class PageNotFoundException extends ObjectNotFoundException {
-	private static final long serialVersionUID = 6895929784323122343L;
 	private Page page;
 	
 	public PageNotFoundException() {

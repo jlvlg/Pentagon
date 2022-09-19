@@ -7,8 +7,7 @@ import com.jlvlg.pentagon.models.Post;
  */
 
 public class InvalidPostTextException extends Exception {
-	private static final long serialVersionUID = -6457638317903891194L;
-	private Post post;
+	private final Post post;
 
 	public InvalidPostTextException(Post post) {
 		super("A text post cannot be null or empty.");

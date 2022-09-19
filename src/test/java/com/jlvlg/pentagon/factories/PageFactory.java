@@ -1,10 +1,10 @@
 package com.jlvlg.pentagon.factories;
 
-import java.util.Locale;
-
 import com.github.javafaker.Faker;
 import com.jlvlg.pentagon.models.Page;
-import com.jlvlg.pentagon.models.ScoreMean;
+
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Contains a single static generate method that returns a Page object with random attribute values
@@ -19,13 +19,13 @@ public class PageFactory {
 	public static Page generate() {
 		Faker faker = new Faker(new Locale("pt-BR"));
 		return new Page(
-				new ScoreMean[] {
+				List.of(
 					ScoreMeanFactory.generate(),
 					ScoreMeanFactory.generate(),
 					ScoreMeanFactory.generate(),
 					ScoreMeanFactory.generate(),
 					ScoreMeanFactory.generate()
-				},
+				),
 				faker.hitchhikersGuideToTheGalaxy().location()
 			);
 	}

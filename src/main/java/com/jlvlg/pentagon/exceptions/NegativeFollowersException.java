@@ -9,8 +9,7 @@ import com.jlvlg.pentagon.models.User;
  *
  */
 public class NegativeFollowersException extends Exception {
-	private static final long serialVersionUID = -2799864130306257759L;
-	private User user;
+	private final User user;
 
 	public NegativeFollowersException(User user) {
 		super("Followers attribute must be greater than or equals to 0");

@@ -8,8 +8,7 @@ import com.jlvlg.pentagon.models.Comment;
  */
 
 public class InvalidCommentException extends Exception {
-	private static final long serialVersionUID = 1890544787427700594L;
-	private Comment comment;
+	private final Comment comment;
 
 	public InvalidCommentException(Comment comment) {
 		super("The text comment cannot be null or empty");

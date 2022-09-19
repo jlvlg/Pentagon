@@ -18,7 +18,7 @@ class UserUnitTest {
 	private User user;
 	
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUp() {
 		user = UserFactory.generate();
 	}
 
@@ -38,7 +38,7 @@ class UserUnitTest {
 	}
 	
 	@Test
-	@DisplayName("User's unffolow method")
+	@DisplayName("User's unfollow method")
 	void testUnfollow() {
 		User user2 = UserFactory.generate();
 		assertDoesNotThrow(() -> user.follow(user2));

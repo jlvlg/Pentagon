@@ -10,9 +10,8 @@ import com.jlvlg.pentagon.models.User;
  *
  */
 public class UsernameTakenException extends Exception {
-	private static final long serialVersionUID = 4112232291669422376L;
-	private User offendingUser;
-	private User existingUser;
+	private final User offendingUser;
+	private final User existingUser;
 	
 	public UsernameTakenException(User offendingUser, User existingUser) {
 		super("Two users cannot have the same username");

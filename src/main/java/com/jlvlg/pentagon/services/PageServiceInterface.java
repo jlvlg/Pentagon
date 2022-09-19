@@ -30,7 +30,6 @@ public interface PageServiceInterface extends GenericServiceInterface<Page, Long
 	/**
 	 * Updates a page in the database
 	 * @throws PageNotFoundException Page not found
-	 * @throws PageNameTakenException page name cannot be null, empty or contain special characters
 	 */
 	@Override
 	Page update(Page page) throws PageNotFoundException, InvalidPageNameException;

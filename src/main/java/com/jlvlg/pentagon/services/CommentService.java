@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.jlvlg.pentagon.exceptions.CommentMaxCharacterSizeExceededException;
@@ -22,7 +23,7 @@ import com.jlvlg.pentagon.repositories.CommentRepository;
  */
 
 @Service
-public class CommentService implements CommentServiceInterface{
+public class CommentService implements CommentServiceInterface {
 	
 	@Autowired
 	private CommentRepository commentRepository;
@@ -41,7 +42,7 @@ public class CommentService implements CommentServiceInterface{
 	@Override
 	public Comment update(Comment comment) throws CommentNotFoundException, InvalidCommentException, CommentMaxCharacterSizeExceededException {
 		Optional<Comment> oldComment = findById(comment.getId());
-		if(!oldComment.isPresent()) {
+		if(oldComment.isEmpty()) {
 			throw new CommentNotFoundException(comment);
 		}
 		comment.setCreationDate(oldComment.get().getCreationDate());
@@ -60,11 +61,11 @@ public class CommentService implements CommentServiceInterface{
 		return commentRepository.findById(id);
 	}
 	@Override
-	public List<Comment> findByPostableAndActiveTrue(Postable post) {
-		return commentRepository.findByPostableAndActiveTrue(post);
+	public List<Comment> findByPostableAndActiveTrue(Postable post, Pageable pageable) {
+		return commentRepository.findByPostableAndActiveTrue(post, pageable);
 	}
 	@Override
-	public List<Comment> findByAuthorAndActiveTrue(User author) {
-		return commentRepository.findByAuthorAndActiveTrue(author);
+	public List<Comment> findByAuthorAndActiveTrue(User author, Pageable pageable) {
+		return commentRepository.findByAuthorAndActiveTrue(author, pageable);
 	}
 }
