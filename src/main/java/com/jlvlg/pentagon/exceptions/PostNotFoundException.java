@@ -7,10 +7,14 @@ import com.jlvlg.pentagon.models.Post;
  * @author Luann
  */
 public class PostNotFoundException extends Exception {
-	private final Post post;
+	private Post post;
+
+	public PostNotFoundException() {
+		super("Post");
+	}
 
 	public PostNotFoundException(Post post) {
-		super("Post not found.");
+		this();
 		this.post = post;
 	}
 	public Post getPost() {

@@ -1,11 +1,14 @@
 package com.jlvlg.pentagon.facade;
 
 import com.jlvlg.pentagon.exceptions.*;
-import com.jlvlg.pentagon.models.User;
+import com.jlvlg.pentagon.models.*;
 import com.jlvlg.pentagon.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -54,6 +57,20 @@ public class Pentagon {
         return user.get();
     }
 
+    public Post findPost(Long id) throws PostNotFoundException {
+        Optional<Post> post = postService.findById(id);
+        if (post.isEmpty())
+            throw new PostNotFoundException();
+        return post.get();
+    }
+
+    public Comment findComment(Long id) throws CommentNotFoundException {
+        Optional<Comment> comment = commentService.findById(id);
+        if (comment.isEmpty())
+            throw new CommentNotFoundException();
+        return comment.get();
+    }
+
     /**
      * Increments a user's followers attribute and adds the user to another user's following list
      * @param followingId The ID of the following user
@@ -90,5 +107,40 @@ public class Pentagon {
             userService.update(following);
             userService.update(followed);
         }
+    }
+
+    public List<Post> loadPosts(User author, int pageNumber) throws OutOfPostsException, UserNotFoundException {
+        findUser(author.getId());
+        Slice<Post> posts = postService.findByAuthorAndIsActiveTrue(author, PageRequest.of(pageNumber, 20));
+        if (posts.isEmpty())
+            throw new OutOfPostsException(posts);
+        return posts.getContent();
+    }
+
+    public List<Comment> loadComments(Postable postable, int pageNumber) throws PostNotFoundException, CommentNotFoundException {
+        if (postable instanceof Post)
+            findPost(postable.getId());
+        else if (postable instanceof Comment)
+            findComment(postable.getId());
+        return commentService.findByPostableAndIsActiveTrue(postable, PageRequest.of(pageNumber, 50)).getContent();
+    }
+
+    public void likePost(Post post) throws PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
+        post.like();
+        postService.update(post);
+    }
+
+    public void unlikePost(Post post) throws PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
+        post.unlike();
+        postService.update(post);
+    }
+
+    public void likeComment(Comment comment) throws CommentMaxCharacterSizeExceededException, InvalidCommentException, CommentNotFoundException {
+        comment.like();
+        commentService.update(comment);
+    }
+    public void unlikeComment(Comment comment) throws CommentMaxCharacterSizeExceededException, InvalidCommentException, CommentNotFoundException {
+        comment.unlike();
+        commentService.update(comment);
     }
 }

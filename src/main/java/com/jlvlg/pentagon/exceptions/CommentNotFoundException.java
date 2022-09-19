@@ -6,11 +6,15 @@ import com.jlvlg.pentagon.models.Comment;
  * @author Luann
  */
 
-public class CommentNotFoundException extends Exception {
-	private final Comment comment;
-	
+public class CommentNotFoundException extends ObjectNotFoundException {
+	private Comment comment;
+
+	public CommentNotFoundException() {
+		super("Comment");
+	}
+
 	public CommentNotFoundException(Comment comment) {
-		super ("The comment cannot be found");
+		this();
 		this.comment = comment;
 	}
 	public Comment getComment() {

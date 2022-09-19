@@ -137,7 +137,7 @@ public abstract class Postable {
 	/**
 	 * Increments dislikes attribute
 	 */
-	public void dislike() {
+	public void unlike() {
 		dislikes++;
 	}
 }
