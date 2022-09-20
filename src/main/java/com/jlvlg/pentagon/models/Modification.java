@@ -1,5 +1,8 @@
 package com.jlvlg.pentagon.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.Instant;
 import java.util.Objects;
 
@@ -16,6 +19,7 @@ import javax.persistence.ManyToOne;
  */
 
 @Entity
+@Getter @Setter
 public class Modification {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,54 +44,6 @@ public class Modification {
 		this();
 		this.postable = post;
 		this.oldText = oldText;
-		this.oldTitle = oldTitle;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Postable getPostable() {
-		return postable;
-	}
-
-	public void setPostable(Postable postable) {
-		this.postable = postable;
-	}
-
-	public String getOldImage() {
-		return oldImage;
-	}
-
-	public void setOldImage(String oldImage) {
-		this.oldImage = oldImage;
-	}
-
-	public String getOldText() {
-		return oldText;
-	}
-
-	public void setOldText(String oldText) {
-		this.oldText = oldText;
-	}
-
-	public Instant getDate() {
-		return date;
-	}
-
-	public void setDate(Instant date) {
-		this.date = date;
-	}
-
-	public String getOldTitle() {
-		return oldTitle;
-	}
-
-	public void setOldTitle(String oldTitle) {
 		this.oldTitle = oldTitle;
 	}
 

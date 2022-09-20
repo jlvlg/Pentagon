@@ -1,5 +1,8 @@
 package com.jlvlg.pentagon.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -14,6 +17,7 @@ import javax.persistence.ManyToOne;
  */
   
 @Entity
+@Getter @Setter
 public class Score {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,55 +37,17 @@ public class Score {
 		this.page = page;
 		this.category = category;
 	}
-	
-	public int getScore() {
-		return score;
-	}
-	public void setScore(int score) {
-		this.score = score;
-	}
-	public User getAuthor() {
-		return author;
-	}
-	public void setAuthor(User author) {
-		this.author = author;
-	}
-	public Page getPage() {
-		return page;
-	}
-	public void setPage(Page page) {
-		this.page = page;
-	}
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
-	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Score score1 = (Score) o;
+		return score == score1.score && Objects.equals(id, score1.id) && Objects.equals(author, score1.author) && Objects.equals(page, score1.page) && Objects.equals(category, score1.category);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(author, category, id, page, score);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Score other = (Score) obj;
-		return Objects.equals(author, other.author) && Objects.equals(category, other.category)
-				&& Objects.equals(id, other.id) && Objects.equals(page, other.page) && score == other.score;
+		return Objects.hash(id, score, author, page, category);
 	}
 }

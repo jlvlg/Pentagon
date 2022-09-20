@@ -1,5 +1,8 @@
 package com.jlvlg.pentagon.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -11,6 +14,7 @@ import javax.persistence.ManyToOne;
  */
 
 @Entity
+@Getter @Setter
 public class Comment extends Postable {
 	@ManyToOne
 	private Postable postable;
@@ -24,31 +28,17 @@ public class Comment extends Postable {
 		this.postable = postable;
 	}
 
-	public Postable getPostable() {
-		return postable;
-	}
-
-	public void setPostable(Postable postable) {
-		this.postable = postable;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
+		Comment comment = (Comment) o;
+		return Objects.equals(postable, comment.postable);
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + Objects.hash(postable);
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Comment other = (Comment) obj;
-		return Objects.equals(postable, other.postable);
+		return Objects.hash(super.hashCode(), postable);
 	}
 }
