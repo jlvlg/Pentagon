@@ -1,8 +1,5 @@
 package com.jlvlg.pentagon.models;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.time.Instant;
 import java.util.Objects;
 
@@ -22,7 +19,6 @@ import javax.persistence.ManyToOne;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Getter @Setter
 public abstract class Postable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +42,90 @@ public abstract class Postable {
 		this.text = text;
 		this.author = author;
 	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public User getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(User author) {
+		this.author = author;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public Instant getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Instant creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public int getLikes() {
+		return likes;
+	}
+
+	public void setLikes(int likes) {
+		this.likes = likes;
+	}
+
+	public int getDislikes() {
+		return dislikes;
+	}
+
+	public void setDislikes(int dislikes) {
+		this.dislikes = dislikes;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public boolean isEdited() {
+		return isEdited;
+	}
+
+	public void setEdited(boolean isEdited) {
+		this.isEdited = isEdited;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(isActive, author, creationDate, dislikes, isEdited, id, likes, text);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Postable other = (Postable) obj;
+		return isActive == other.isActive && Objects.equals(author, other.author)
+				&& Objects.equals(creationDate, other.creationDate) && dislikes == other.dislikes
+				&& isEdited == other.isEdited && Objects.equals(id, other.id) && likes == other.likes
+				&& Objects.equals(text, other.text);
+	}
 
 	/**
 	 * Increments likes attribute
@@ -59,18 +139,5 @@ public abstract class Postable {
 	 */
 	public void unlike() {
 		dislikes++;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Postable postable = (Postable) o;
-		return likes == postable.likes && dislikes == postable.dislikes && isActive == postable.isActive && isEdited == postable.isEdited && Objects.equals(id, postable.id) && Objects.equals(author, postable.author) && Objects.equals(text, postable.text) && Objects.equals(creationDate, postable.creationDate);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, author, text, creationDate, likes, dislikes, isActive, isEdited);
 	}
 }
