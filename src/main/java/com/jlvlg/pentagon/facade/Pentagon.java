@@ -72,14 +72,15 @@ public class Pentagon {
 
     /**
      * Saves a user into the database
-     *
      * @param user
      * @throws InvalidUsernameException A username name cannot be null, empty, or contain spaces and/or special characters
      * @throws UsernameTakenException   Two users cannot have the same username
      */
-    public User saveUser(User user) throws InvalidUsernameException, UsernameTakenException {
-        return userService.save(user);
-    }
+//    public User saveUser(User user) throws InvalidUsernameException, UsernameTakenException, InvalidPageNameException {
+//        User result = userService.save(user);
+//        pageService.save(new Page(user));
+//        return result;
+//    }
 
     /**
      * Updates a user in the database
@@ -410,7 +411,7 @@ public class Pentagon {
     /**
      * Updates a page in the database
      *
-     * @param page The paeg to be updated
+     * @param page The page to be updated
      * @throws PageNotFoundException    Page not found
      * @throws InvalidPageNameException A page name cannot be null, empty, or contain special characters
      */
@@ -460,5 +461,41 @@ public class Pentagon {
      */
     public void deleteModification(Modification modification) throws ModificationNotFoundException {
         modificationService.delete(modification);
+    }
+
+    public Optional<Score> findScore(User user, String category, User author) {
+        return scoreService.findByPage_UserAndCategoryAndAuthor(user, category, author);
+    }
+
+    /**
+     * Permanently drops an object from the database
+     *
+     * @param object the object to be dropped
+     */
+    public void deleteScore(Score object) throws Exception {
+        scoreService.delete(object);
+    }
+
+    public Score saveScore(Score object) throws ScoreOutOfAllowedException {
+        return scoreService.save(object);
+    }
+
+    public Score updateScore(Score object) throws ScoreOutOfAllowedException {
+        return scoreService.update(object);
+    }
+
+    public List<Score> loadScores(User user, String category) {
+        return scoreService.findByUser(user);
+    }
+
+    public void vote(User user, String category, User author, int score) throws ScoreOutOfAllowedException, PageNotFoundException {
+        Optional<Score> maybeScore = findScore(user, category, author);
+        if (maybeScore.isPresent()) {
+            Score foundScore = maybeScore.get();
+            foundScore.setScore(score);
+            updateScore(foundScore);
+        }
+        Score newScore = saveScore(new Score(score, author, findPage(user), category));
+//        recalculateScores(user);
     }
 }

@@ -23,9 +23,9 @@ public class ControllerUser {
 	@Autowired
 	private Pentagon pentagon;
 	
-	@PostMapping("user")
-	public ResponseEntity<User> saveUser(@RequestBody User user) throws InvalidUsernameException, UsernameTakenException {
-		user.setJoinDate(Instant.now());
-		return ResponseEntity.status(HttpStatus.CREATED).body(pentagon.saveUser(user));
-	}
+//	@PostMapping("user")
+//	public ResponseEntity<User> saveUser(@RequestBody User user) throws InvalidUsernameException, UsernameTakenException {
+//		user.setJoinDate(Instant.now());
+//		return ResponseEntity.status(HttpStatus.CREATED).body(pentagon.saveUser(user));
+//	}
 }

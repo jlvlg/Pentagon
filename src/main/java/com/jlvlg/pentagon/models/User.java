@@ -19,7 +19,6 @@ import com.jlvlg.pentagon.exceptions.UserNotFollowedException;
  * User Object Class: Inherits Followable Objec Abstractt Class
  * @author Luann
  */
-
 @Entity
 @Table(name = "user")
 public class User {
