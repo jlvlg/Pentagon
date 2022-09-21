@@ -1,5 +1,17 @@
 package com.jlvlg.pentagon.controller;
 
-public class ControllerComment {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.jlvlg.pentagon.facade.Pentagon;
+
+@CrossOrigin (origins = "*")
+@RestController
+@RequestMapping("*")
+public class ControllerComment {
+	@Autowired
+	private Pentagon pentagon;
+	
 }

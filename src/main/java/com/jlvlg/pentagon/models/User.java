@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import com.jlvlg.pentagon.exceptions.UserAlreadyFollowedException;
 import com.jlvlg.pentagon.exceptions.UserNotFollowedException;
@@ -20,6 +21,7 @@ import com.jlvlg.pentagon.exceptions.UserNotFollowedException;
  */
 
 @Entity
+@Table(name = "user")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +33,6 @@ public class User {
 	private int followers;
 	private Instant joinDate;
 	private boolean isActive;
-	private boolean isAdmin;
 
 	public User() {
 		joinDate = Instant.now();
@@ -47,7 +48,6 @@ public class User {
 		this();
 		this.username = username;
 		this.password = password;
-		this.isAdmin = isAdmin;
 	}
 	
 	/**
@@ -130,17 +130,9 @@ public class User {
 		this.isActive = isActive;
 	}
 
-	public boolean isAdmin() {
-		return isAdmin;
-	}
-
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(followers, following, id, isActive, isAdmin, joinDate, password, username);
+		return Objects.hash(followers, following, id, isActive, joinDate, password, username);
 	}
 
 	@Override
@@ -153,8 +145,10 @@ public class User {
 			return false;
 		User other = (User) obj;
 		return followers == other.followers && Objects.equals(following, other.following)
-				&& Objects.equals(id, other.id) && isActive == other.isActive && isAdmin == other.isAdmin
+				&& Objects.equals(id, other.id) && isActive == other.isActive
 				&& Objects.equals(joinDate, other.joinDate) && Objects.equals(password, other.password)
 				&& Objects.equals(username, other.username);
 	}
+
+
 }

@@ -240,7 +240,6 @@ public class Pentagon {
         updatePost(post);
     }
     
-    
 
     public void editPost(Post post, String image, String title, String text) throws PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
         if (title == null || title.isBlank())
@@ -456,7 +455,6 @@ public class Pentagon {
 
     /**
      * Permanently drops a modification from the database
-     *
      * @param modification The modification to be dropped
      * @throws ModificationNotFoundException Modification not found
      */
