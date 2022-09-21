@@ -155,7 +155,7 @@ public class Pentagon {
      */
     public Post findPost(Long id) throws PostNotFoundException {
         Optional<Post> post = postService.findById(id);
-        if (post.isEmpty())
+        if (!post.isPresent())
             throw new PostNotFoundException();
         return post.get();
     }
