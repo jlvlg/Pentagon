@@ -254,7 +254,7 @@ public class Pentagon {
         updatePost(post);
     }
 
-    public boolean turnPostVisibleTo(Post post, User user) throws PostVisibilityException, PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
+    public boolean turnPostVisibleTo(User user, Post post) throws PostVisibilityException, PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
         boolean result = post.turnVisibleTo(user);
         if (result) {
             updatePost(post);
@@ -262,7 +262,7 @@ public class Pentagon {
         return result;
     }
 
-    public boolean turnPostInvisibleTo(Post post, User user) throws PostVisibilityException, PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
+    public boolean turnPostInvisibleTo(User user, Post post) throws PostVisibilityException, PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
         boolean result = post.turnInvisibleTo(user);
         if (result) {
             updatePost(post);
