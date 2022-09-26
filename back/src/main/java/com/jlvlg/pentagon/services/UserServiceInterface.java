@@ -4,6 +4,7 @@ import com.jlvlg.pentagon.exceptions.InvalidUsernameException;
 import com.jlvlg.pentagon.exceptions.UserNotFoundException;
 import com.jlvlg.pentagon.exceptions.UsernameTakenException;
 import com.jlvlg.pentagon.models.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,4 +52,6 @@ public interface UserServiceInterface extends GenericServiceInterface<User, Long
 	 */
 	@Override
 	void delete(User user) throws UserNotFoundException;
+
+	User loadUserByUsername(String username) throws UsernameNotFoundException;
 }

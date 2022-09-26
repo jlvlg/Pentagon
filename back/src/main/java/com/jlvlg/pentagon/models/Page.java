@@ -40,6 +40,11 @@ public class Page {
 		this();
 		this.name = name;
 	}
+
+	public Page(User user) {
+		this(user.getUsername());
+		this.user = user;
+	}
 	
 	public Page(List<ScoreMean> scoreMeans, String name) {
 		this(scoreMeans, name, null, null, true);

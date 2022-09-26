@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.jlvlg.pentagon.exceptions.InvalidUsernameException;
@@ -21,9 +24,8 @@ import com.jlvlg.pentagon.repositories.UserRepository;
  *
  */
 @Service
-public class UserService implements UserServiceInterface {
-	@Autowired
-	private UserRepository userRepository;
+public class UserService implements UserServiceInterface, UserDetailsService {
+	@Autowired private UserRepository userRepository;
 
 	public Optional<User> findById(Long id) {
 		return userRepository.findById(id);
@@ -60,5 +62,13 @@ public class UserService implements UserServiceInterface {
 		if (findById(user.getId()).isEmpty())
 			throw new UserNotFoundException(user);
 		userRepository.delete(user);
+	}
+
+	@Override
+	public User loadUserByUsername(String username) throws UsernameNotFoundException {
+		Optional<User> user = findByUsername(username);
+		if (user.isEmpty())
+			throw new UsernameNotFoundException("User not found");
+		return user.get();
 	}
 }

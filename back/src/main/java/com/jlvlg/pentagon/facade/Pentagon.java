@@ -6,6 +6,8 @@ import com.jlvlg.pentagon.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,30 +20,22 @@ import java.util.Optional;
  */
 @Service
 public class Pentagon {
-    @Autowired
-    private CommentServiceInterface commentService;
-    @Autowired
-    private UserServiceInterface userService;
-    @Autowired
-    private ModificationServiceInterface modificationService;
-    @Autowired
-    private PostServiceInterface postService;
-    @Autowired
-    private PageServiceInterface pageService;
-    @Autowired
-    private ScoreServiceInterface scoreService;
+    @Autowired private CommentServiceInterface commentService;
+    @Autowired private UserServiceInterface userService;
+    @Autowired private ModificationServiceInterface modificationService;
+    @Autowired private PostServiceInterface postService;
+    @Autowired private PageServiceInterface pageService;
+    @Autowired private ScoreServiceInterface scoreService;
+    @Autowired private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
      * Finds a user by username
      * @param username The user's username
      * @return A User
-     * @throws UserNotFoundException User not found
+     * @throws UsernameNotFoundException User not found
      */
-    public User findUser(String username) throws UserNotFoundException {
-        Optional<User> user = userService.findByUsername(username);
-        if (user.isEmpty())
-            throw new UserNotFoundException();
-        return user.get();
+    public User findUser(String username) throws UsernameNotFoundException {
+        return userService.loadUserByUsername(username);
     }
 
     /**
@@ -76,11 +70,12 @@ public class Pentagon {
      * @throws InvalidUsernameException A username name cannot be null, empty, or contain spaces and/or special characters
      * @throws UsernameTakenException   Two users cannot have the same username
      */
-//    public User saveUser(User user) throws InvalidUsernameException, UsernameTakenException, InvalidPageNameException {
-//        User result = userService.save(user);
-//        pageService.save(new Page(user));
-//        return result;
-//    }
+    public User saveUser(User user) throws InvalidUsernameException, UsernameTakenException, InvalidPageNameException {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        User result = userService.save(user);
+        pageService.save(new Page(user));
+        return result;
+    }
 
     /**
      * Updates a user in the database

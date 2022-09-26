@@ -19,8 +19,7 @@ import java.util.Optional;
 
 @Service
 public class ScoreService implements ScoreServiceInterface {
-	@Autowired
-	private ScoreRepository scoreRepository;
+	@Autowired private ScoreRepository scoreRepository;
 
 	@Transactional
 	public Score save(Score score) throws ScoreOutOfAllowedException {

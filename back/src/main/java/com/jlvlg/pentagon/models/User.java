@@ -2,6 +2,7 @@ package com.jlvlg.pentagon.models;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,27 +11,31 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jlvlg.pentagon.exceptions.UserAlreadyFollowedException;
 import com.jlvlg.pentagon.exceptions.UserNotFollowedException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /*** 
  * User Object Class: Inherits Followable Objec Abstractt Class
  * @author Luann
  */
-@Entity
-@Table(name = "user")
-public class User {
+@Entity(name = "PentagonUser")
+public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String username;
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 	@ManyToMany
 	private List<User> following;
 	private int followers;
 	private Instant joinDate;
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private boolean isActive;
 
 	public User() {
@@ -40,10 +45,6 @@ public class User {
 	}
 	
 	public User(String username, String password) {
-		this(username, password, false);
-	}
-	
-	public User(String username, String password, boolean isAdmin) {
 		this();
 		this.username = username;
 		this.password = password;
@@ -85,8 +86,33 @@ public class User {
 		return username;
 	}
 
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return isActive;
+	}
+
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return new ArrayList<>();
 	}
 
 	public String getPassword() {
@@ -148,6 +174,4 @@ public class User {
 				&& Objects.equals(joinDate, other.joinDate) && Objects.equals(password, other.password)
 				&& Objects.equals(username, other.username);
 	}
-
-
 }

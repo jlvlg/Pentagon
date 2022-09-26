@@ -23,8 +23,7 @@ import java.util.Optional;
 
 @Service
 public class PostService implements PostServiceInterface {
-	@Autowired
-	private PostRepository postRepository;
+	@Autowired private PostRepository postRepository;
 
 	public Optional<Post> findById(Long id) {
 		return postRepository.findById(id);

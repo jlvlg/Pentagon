@@ -22,8 +22,7 @@ import java.util.Optional;
 
 @Service
 public class CommentService implements CommentServiceInterface {
-	@Autowired
-	private CommentRepository commentRepository;
+	@Autowired private CommentRepository commentRepository;
 	
 
 	@Transactional

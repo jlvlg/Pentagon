@@ -21,8 +21,7 @@ import com.jlvlg.pentagon.repositories.ModificationRepository;
  */
 @Service
 public class ModificationService implements ModificationServiceInterface {
-	@Autowired
-	private ModificationRepository modificationRepository;
+	@Autowired private ModificationRepository modificationRepository;
 
 	public Optional<Modification> findById(Long id) {
 		return modificationRepository.findById(id);

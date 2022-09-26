@@ -18,8 +18,7 @@ import com.jlvlg.pentagon.repositories.PageRepository;
  */
 @Service
 public class PageService implements PageServiceInterface {
-	@Autowired
-	private PageRepository pageRepository;
+	@Autowired private PageRepository pageRepository;
 
 	public Optional<Page> findById(Long id) {
 		return pageRepository.findById(id);
