@@ -18,7 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
-public class JwtWebConfiguration {
+public class WebConfiguration {
     @Autowired UserDetailsService userDetailsService;
     @Autowired BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired AuthenticationConfiguration authenticationConfiguration;

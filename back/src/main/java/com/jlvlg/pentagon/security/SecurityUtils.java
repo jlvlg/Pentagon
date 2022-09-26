@@ -31,11 +31,10 @@ import java.util.List;
 
 @Service
 public class SecurityUtils {
-    @Autowired private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired private UserDetailsService userDetailsService;
+    @Autowired private AuthenticationManager authenticationManager;
 
     public String authenticateUser(User user) throws AuthenticationException {
-        User result = (User) authenticationManager().authenticate(
+        User result = (User) authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                 user.getUsername(),
                 user.getPassword(),
@@ -43,16 +42,5 @@ public class SecurityUtils {
             )
         ).getPrincipal();
         return JwtUtils.generate(result.getUsername());
-    }
-
-    private AuthenticationManager authenticationManager() {
-        return new ProviderManager(List.of(authenticationProvider()));
-    }
-
-    private DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setPasswordEncoder(bCryptPasswordEncoder);
-        authenticationProvider.setUserDetailsService(userDetailsService);
-        return authenticationProvider;
     }
 }

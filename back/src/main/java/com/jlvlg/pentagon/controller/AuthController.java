@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +29,7 @@ public class AuthController {
     @Autowired private Pentagon pentagon;
 
     @PostMapping("login")
-    public ResponseEntity<String> login(User user) {
+    public ResponseEntity<String> login(@RequestBody User user) {
         try {
             return ResponseEntity.ok(securityUtils.authenticateUser(user));
         } catch (AuthenticationException e) {
@@ -37,7 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("signup")
-    public ResponseEntity<User> signUp(User user) throws InvalidPageNameException, InvalidUsernameException, UsernameTakenException {
+    public ResponseEntity<User> signUp(@RequestBody User user) throws InvalidPageNameException, InvalidUsernameException, UsernameTakenException {
         return ResponseEntity.ok(pentagon.saveUser(new User(user.getUsername(), user.getPassword())));
     }
 }
