@@ -22,11 +22,12 @@ public class AuthenticationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
-        String header = request.getHeader(AppSettings.JWT_HEADER);
-
-        if (header != null && header.startsWith(AppSettings.JWT_HEADER_PREFIX)) {
-            UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(request);
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        if (!request.getServletPath().startsWith("/auth")) {
+            String header = request.getHeader(AppSettings.JWT_HEADER);
+            if (header != null && header.startsWith(AppSettings.JWT_HEADER_PREFIX)) {
+                UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(request);
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
         }
 
         chain.doFilter(request, response);

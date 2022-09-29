@@ -23,8 +23,11 @@ import com.jlvlg.pentagon.repositories.ModificationRepository;
 public class ModificationService implements ModificationServiceInterface {
 	@Autowired private ModificationRepository modificationRepository;
 
-	public Optional<Modification> findById(Long id) {
-		return modificationRepository.findById(id);
+	public Modification findById(Long id) throws ModificationNotFoundException {
+		Optional<Modification> modification = modificationRepository.findById(id);
+		if (modification.isEmpty())
+			throw new ModificationNotFoundException();
+		return modification.get();
 	}
 
 	public List<Modification> findByPostable(Postable post) {
@@ -36,16 +39,13 @@ public class ModificationService implements ModificationServiceInterface {
 	}
 
 	public Modification update(Modification modification) throws ModificationNotFoundException {
-		Optional<Modification> oldModification = findById(modification.getId());
-		if (oldModification.isEmpty())
-			throw new ModificationNotFoundException(modification);
-		modification.setDate(oldModification.get().getDate());
+		Modification oldModification = findById(modification.getId());
+		modification.setDate(oldModification.getDate());
 		return save(modification);
 	}
 
 	public void delete(Modification modification) throws ModificationNotFoundException {
-		if (findById(modification.getId()).isEmpty())
-			throw new ModificationNotFoundException(modification);
+		findById(modification.getId());
 		modificationRepository.delete(modification);
 	}
 

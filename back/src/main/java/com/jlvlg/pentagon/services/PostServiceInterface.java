@@ -1,9 +1,6 @@
 package com.jlvlg.pentagon.services;
 
-import com.jlvlg.pentagon.exceptions.InvalidPostNameException;
-import com.jlvlg.pentagon.exceptions.InvalidPostTextException;
-import com.jlvlg.pentagon.exceptions.PostMaxCharacterSizeExceededException;
-import com.jlvlg.pentagon.exceptions.PostNotFoundException;
+import com.jlvlg.pentagon.exceptions.*;
 import com.jlvlg.pentagon.models.Page;
 import com.jlvlg.pentagon.models.Post;
 import com.jlvlg.pentagon.models.User;
@@ -24,4 +21,7 @@ public interface PostServiceInterface extends GenericServiceInterface<Post, Long
 
 	@Override
 	void delete(Post object) throws PostNotFoundException;
+
+	@Override
+	Post findById(Long id) throws PostNotFoundException;
 }

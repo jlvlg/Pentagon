@@ -20,32 +20,35 @@ import com.jlvlg.pentagon.repositories.PageRepository;
 public class PageService implements PageServiceInterface {
 	@Autowired private PageRepository pageRepository;
 
-	public Optional<Page> findById(Long id) {
-		return pageRepository.findById(id);
+	public Page findById(Long id) throws PageNotFoundException {
+		Optional<Page> page = pageRepository.findById(id);
+		if (page.isEmpty())
+			throw new PageNotFoundException();
+		return page.get();
 	}
 
-	public Optional<Page> findByUser(User user) {
-		return pageRepository.findByUser(user);
+	public Page findByUser(User user) throws PageNotFoundException {
+		Optional<Page> page = pageRepository.findByUserAndActiveTrue(user);
+		if (page.isEmpty())
+			throw new PageNotFoundException();
+		return page.get();
 	}
 
 	public Page save(Page page) throws InvalidPageNameException {
 		if (page.getName() == null ||
 			page.getName().isBlank() ||
-			!page.getName().matches("[ a-zA-Z0-9_-]+"))
+			!page.getName().matches("[ a-zA-Z0-9_.-]+"))
 			throw new InvalidPageNameException(page);
 		return pageRepository.save(page);
 	}
 
 	public Page update(Page page) throws PageNotFoundException, InvalidPageNameException {
-		Optional<Page> oldPage = findById(page.getId());
-		if (oldPage.isEmpty())
-			throw new PageNotFoundException(page);
+		Page oldPage = findById(page.getId());
 		return save(page);
 	}
 
 	public void delete(Page page) throws PageNotFoundException {
-		if (findById(page.getId()).isEmpty())
-			throw new PageNotFoundException(page);
+		findById(page.getId());
 		pageRepository.delete(page);	
 	}
 }

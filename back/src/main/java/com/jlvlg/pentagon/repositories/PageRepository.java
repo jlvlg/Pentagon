@@ -15,5 +15,5 @@ import com.jlvlg.pentagon.models.User;
  */
 @Repository
 public interface PageRepository extends JpaRepository<Page, Long> {
-	Optional<Page> findByUser(User user);
+	Optional<Page> findByUserAndActiveTrue(User user);
 }

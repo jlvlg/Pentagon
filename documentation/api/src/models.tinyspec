@@ -1,0 +1,8 @@
+Auth {
+    username: s,
+    password: s,
+}
+
+User {
+    
+}

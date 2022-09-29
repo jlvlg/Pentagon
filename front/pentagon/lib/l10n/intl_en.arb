@@ -3,5 +3,16 @@
   "password": "Password",
   "login": "Login",
   "signup": "Sign Up",
-  "confirmPassword": "Confirm password"
+  "confirmPassword": "Confirm password",
+  "authExceptionMsg": "Authentication failure, your username or password might be incorrect",
+  "emptyFieldValidation": "{field} is a required field",
+  "invalidFieldValidation": "Field contains invalid characters",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "passwordInvalidLength": "{error} length is {length}",
+  "minimum": "Minimum",
+  "maximum": "Maximum",
+  "onError": "An {error} error has ocurred",
+  "usernameTakenException": "Username taken",
+  "invalidFieldException": "Invalid {field}",
+  "unexpected": "unexpected"
 }

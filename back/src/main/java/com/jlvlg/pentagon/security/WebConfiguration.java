@@ -40,17 +40,17 @@ public class WebConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                .authorizeRequests().antMatchers(HttpMethod.POST, "/auth/**").permitAll()
                 .anyRequest().authenticated().and()
                 .addFilter(new AuthenticationFilter(authenticationManager()))
                 .authenticationProvider(authenticationProvider()).build();
     }
 
     @Bean
-    CorsConfiguration corsConfiguration() {
+    CorsConfiguration corsConfigurationSource() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
-        source.registerCorsConfiguration("/**", corsConfiguration);
+        source.registerCorsConfiguration("**", corsConfiguration);
         return corsConfiguration;
     }
 }

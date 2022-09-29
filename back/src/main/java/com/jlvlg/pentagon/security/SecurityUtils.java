@@ -1,46 +1,41 @@
 package com.jlvlg.pentagon.security;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jlvlg.pentagon.exceptions.UserNotFoundException;
+import com.jlvlg.pentagon.facade.Pentagon;
+import com.jlvlg.pentagon.models.Auth;
 import com.jlvlg.pentagon.settings.AppSettings;
-import com.jlvlg.pentagon.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.net.http.HttpRequest;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Service
 public class SecurityUtils {
     @Autowired private AuthenticationManager authenticationManager;
+    @Autowired private Pentagon pentagon;
 
-    public String authenticateUser(User user) throws AuthenticationException {
-        User result = (User) authenticationManager.authenticate(
+    public String authenticateUser(Auth auth) throws AuthenticationException {
+        Auth result = (Auth) authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
-                user.getUsername(),
-                user.getPassword(),
+                auth.getUsername(),
+                auth.getPassword(),
                 new ArrayList<>()
             )
         ).getPrincipal();
         return JwtUtils.generate(result.getUsername());
+    }
+
+    public boolean authorizeUser(String token, Long id) {
+        try {
+            return JwtUtils.extract(token.replace(AppSettings.JWT_HEADER_PREFIX, ""))
+                    .equals(pentagon.findUser(id).getAuth().getUsername());
+        } catch (UserNotFoundException e) {
+            return false;
+        }
     }
 }

@@ -20,11 +20,14 @@ class AuthScreen extends StatelessWidget {
             height: size.height,
             width: size.width,
             top: -size.height,
-            child: FittedBox(
-              fit: BoxFit.fill,
-              child: Hero(
-                  tag: 'splash_bg',
-                  child: Image.asset('assets/images/splash-bg.png')),
+            child: Hero(
+              tag: 'splash_bg',
+              child: FittedBox(
+                fit: BoxFit.fill,
+                child: Image.asset(
+                  'assets/images/splash-bg.png',
+                ),
+              ),
             ),
           ),
         ],

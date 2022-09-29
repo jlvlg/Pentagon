@@ -29,11 +29,11 @@ public abstract class Postable {
 	private Instant creationDate;
 	private int likes;
 	private int dislikes;
-	private boolean isActive;
-	private boolean isEdited;
+	private boolean active;
+	private boolean edited;
 	
 	public Postable() {
-		this.isActive = true;
+		this.active = true;
 		this.creationDate = Instant.now();
 	}
 	
@@ -92,24 +92,24 @@ public abstract class Postable {
 	}
 
 	public boolean isActive() {
-		return isActive;
+		return active;
 	}
 
 	public void setActive(boolean isActive) {
-		this.isActive = isActive;
+		this.active = isActive;
 	}
 
 	public boolean isEdited() {
-		return isEdited;
+		return edited;
 	}
 
 	public void setEdited(boolean isEdited) {
-		this.isEdited = isEdited;
+		this.edited = isEdited;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(isActive, author, creationDate, dislikes, isEdited, id, likes, text);
+		return Objects.hash(active, author, creationDate, dislikes, edited, id, likes, text);
 	}
 
 	@Override
@@ -121,9 +121,9 @@ public abstract class Postable {
 		if (getClass() != obj.getClass())
 			return false;
 		Postable other = (Postable) obj;
-		return isActive == other.isActive && Objects.equals(author, other.author)
+		return active == other.active && Objects.equals(author, other.author)
 				&& Objects.equals(creationDate, other.creationDate) && dislikes == other.dislikes
-				&& isEdited == other.isEdited && Objects.equals(id, other.id) && likes == other.likes
+				&& edited == other.edited && Objects.equals(id, other.id) && likes == other.likes
 				&& Objects.equals(text, other.text);
 	}
 

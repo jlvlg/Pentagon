@@ -1,5 +1,7 @@
 package com.jlvlg.pentagon.services;
 
+import com.jlvlg.pentagon.exceptions.ObjectNotFoundException;
+import com.jlvlg.pentagon.exceptions.ScoreNotFoundException;
 import com.jlvlg.pentagon.exceptions.ScoreOutOfAllowedException;
 import com.jlvlg.pentagon.models.Page;
 import com.jlvlg.pentagon.models.Score;
@@ -22,4 +24,10 @@ public interface ScoreServiceInterface extends GenericServiceInterface <Score, L
 
 	@Override
 	Score update(Score object) throws ScoreOutOfAllowedException;
+
+	@Override
+	void delete(Score object) throws ScoreNotFoundException;
+
+	@Override
+	Score findById(Long id) throws ScoreNotFoundException;
 }

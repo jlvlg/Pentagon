@@ -1,6 +1,10 @@
+import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:pentagon/providers/auth_provider.dart';
 import 'package:pentagon/util/constants/app_colors.dart';
+import 'package:pentagon/util/constants/app_routes.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -8,19 +12,24 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    // Timer(const Duration(seconds: 3),
-    //     () => Navigator.of(context).pushReplacementNamed(AppRoutes.auth));
+    final AuthProvider auth = Provider.of(context, listen: false);
+    Timer(Duration(seconds: 2), () {
+      auth.tryAutoLogin().whenComplete(() {
+        Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+      });
+    });
     return Stack(
       children: [
         Container(
           height: double.infinity,
           width: double.infinity,
           color: AppColors.primary,
-          child: FittedBox(
-            fit: BoxFit.fill,
-            child: Hero(
-                tag: 'splash_bg',
-                child: Image.asset('assets/images/splash-bg.png')),
+          child: Hero(
+            tag: 'splash_bg',
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Image.asset('assets/images/splash-bg.png'),
+            ),
           ),
         ),
         Center(

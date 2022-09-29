@@ -99,6 +99,116 @@ class S {
       args: [],
     );
   }
+
+  /// `Authentication failure, your username or password might be incorrect`
+  String get authExceptionMsg {
+    return Intl.message(
+      'Authentication failure, your username or password might be incorrect',
+      name: 'authExceptionMsg',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{field} is a required field`
+  String emptyFieldValidation(Object field) {
+    return Intl.message(
+      '$field is a required field',
+      name: 'emptyFieldValidation',
+      desc: '',
+      args: [field],
+    );
+  }
+
+  /// `Field contains invalid characters`
+  String get invalidFieldValidation {
+    return Intl.message(
+      'Field contains invalid characters',
+      name: 'invalidFieldValidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passwords do not match`
+  String get passwordsDoNotMatch {
+    return Intl.message(
+      'Passwords do not match',
+      name: 'passwordsDoNotMatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{error} length is {length}`
+  String passwordInvalidLength(Object error, Object length) {
+    return Intl.message(
+      '$error length is $length',
+      name: 'passwordInvalidLength',
+      desc: '',
+      args: [error, length],
+    );
+  }
+
+  /// `Minimum`
+  String get minimum {
+    return Intl.message(
+      'Minimum',
+      name: 'minimum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Maximum`
+  String get maximum {
+    return Intl.message(
+      'Maximum',
+      name: 'maximum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An {error} error has ocurred`
+  String onError(Object error) {
+    return Intl.message(
+      'An $error error has ocurred',
+      name: 'onError',
+      desc: '',
+      args: [error],
+    );
+  }
+
+  /// `Username taken`
+  String get usernameTakenException {
+    return Intl.message(
+      'Username taken',
+      name: 'usernameTakenException',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid {field}`
+  String invalidFieldException(Object field) {
+    return Intl.message(
+      'Invalid $field',
+      name: 'invalidFieldException',
+      desc: '',
+      args: [field],
+    );
+  }
+
+  /// `unexpected`
+  String get unexpected {
+    return Intl.message(
+      'unexpected',
+      name: 'unexpected',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

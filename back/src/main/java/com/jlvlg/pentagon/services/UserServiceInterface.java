@@ -1,13 +1,11 @@
 package com.jlvlg.pentagon.services;
 
-import com.jlvlg.pentagon.exceptions.InvalidUsernameException;
-import com.jlvlg.pentagon.exceptions.UserNotFoundException;
-import com.jlvlg.pentagon.exceptions.UsernameTakenException;
+import com.jlvlg.pentagon.exceptions.*;
+import com.jlvlg.pentagon.models.Auth;
 import com.jlvlg.pentagon.models.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Defines User specific repository access methods
@@ -17,10 +15,11 @@ import java.util.Optional;
 public interface UserServiceInterface extends GenericServiceInterface<User, Long>{
 	/**
 	 * Finds a user by their username
+	 *
 	 * @param username the username to search for
-	 * @return An optional that might contain a user
+	 * @return A user
 	 */
-	Optional<User> findByUsername(String username);
+	User findByUsername(String username) throws UserNotFoundException;
 
 	/**
 	 * Finds users by their username likeness
@@ -53,5 +52,8 @@ public interface UserServiceInterface extends GenericServiceInterface<User, Long
 	@Override
 	void delete(User user) throws UserNotFoundException;
 
-	User loadUserByUsername(String username) throws UsernameNotFoundException;
+	Auth loadUserByUsername(String username) throws UsernameNotFoundException;
+
+	@Override
+	User findById(Long id) throws UserNotFoundException;
 }

@@ -14,8 +14,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-	Slice<Comment> findByPostableAndIsActiveTrue(Postable postable, Pageable pageable);
-	long countByPostableAndIsActiveTrue(Postable postable);
-	Slice<Comment> findByAuthorAndIsActiveTrue(User author, Pageable pageable);
-	long countByAuthorAndIsActiveTrue(User author);
+	Slice<Comment> findByPostableAndActiveTrue(Postable postable, Pageable pageable);
+	long countByPostableAndActiveTrue(Postable postable);
+	Slice<Comment> findByAuthorAndActiveTrue(User author, Pageable pageable);
+	long countByAuthorAndActiveTrue(User author);
 }

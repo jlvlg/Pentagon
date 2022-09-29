@@ -20,8 +20,7 @@
 //import com.jlvlg.pentagon.models.User;
 //
 //@RestController
-//@CrossOrigin(origins = "*")
-//@RequestMapping("/pentagon/page")
+//@RequestMapping("pages")
 //public class ControllerPage {
 //	@Autowired
 //	private Pentagon pentagon;

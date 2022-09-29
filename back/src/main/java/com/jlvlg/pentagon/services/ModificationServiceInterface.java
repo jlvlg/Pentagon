@@ -1,6 +1,7 @@
 package com.jlvlg.pentagon.services;
 
 import com.jlvlg.pentagon.exceptions.ModificationNotFoundException;
+import com.jlvlg.pentagon.exceptions.ObjectNotFoundException;
 import com.jlvlg.pentagon.models.Modification;
 import com.jlvlg.pentagon.models.Postable;
 
@@ -42,4 +43,7 @@ public interface ModificationServiceInterface extends GenericServiceInterface<Mo
 	 */
 	@Override
 	void delete(Modification modification) throws ModificationNotFoundException;
+
+	@Override
+	Modification findById(Long id) throws ModificationNotFoundException;
 }

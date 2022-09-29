@@ -14,8 +14,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PostRepository extends JpaRepository <Post, Long> {
-	Slice<Post> findByPageAndIsActiveTrue(Page page, Pageable pageable);
-	long countByPageAndIsActiveTrue(Page page);
-	Slice<Post> findByAuthorAndIsActiveTrue(User author, Pageable pageable);
-	long countByAuthorAndIsActiveTrue(User author);
+	Slice<Post> findByPageAndActiveTrue(Page page, Pageable pageable);
+	long countByPageAndActiveTrue(Page page);
+	Slice<Post> findByAuthorAndActiveTrue(User author, Pageable pageable);
+	long countByAuthorAndActiveTrue(User author);
 }

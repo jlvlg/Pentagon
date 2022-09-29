@@ -23,7 +23,6 @@ import java.util.Optional;
 @Service
 public class CommentService implements CommentServiceInterface {
 	@Autowired private CommentRepository commentRepository;
-	
 
 	@Transactional
 	public Comment save(Comment comment) throws InvalidCommentException, CommentMaxCharacterSizeExceededException {
@@ -37,39 +36,37 @@ public class CommentService implements CommentServiceInterface {
 	}
 
 	public Comment update(Comment comment) throws CommentNotFoundException, InvalidCommentException, CommentMaxCharacterSizeExceededException {
-		Optional<Comment> oldComment = findById(comment.getId());
-		if(oldComment.isEmpty()) {
-			throw new CommentNotFoundException(comment);
-		}
-		comment.setCreationDate(oldComment.get().getCreationDate());
+		Comment oldComment = findById(comment.getId());
+		comment.setCreationDate(oldComment.getCreationDate());
 		return save(comment);
 	}
 
 	@Transactional
 	public void delete(Comment comment) throws CommentNotFoundException {
-		if(findById(comment.getId()).isEmpty()) {
-			throw new CommentNotFoundException(comment);
-		}
+		findById(comment.getId());
 		commentRepository.delete(comment);
 	}
 
-	public Optional<Comment> findById(Long id) {
-		return commentRepository.findById(id);
+	public Comment findById(Long id) throws CommentNotFoundException {
+		Optional<Comment> comment = commentRepository.findById(id);
+		if (comment.isEmpty())
+			throw new CommentNotFoundException();
+		return comment.get();
 	}
 
 	public Slice<Comment> findByPostableAndIsActiveTrue(Postable postable, Pageable pageable) {
-		return commentRepository.findByPostableAndIsActiveTrue(postable, pageable);
+		return commentRepository.findByPostableAndActiveTrue(postable, pageable);
 	}
 
 	public long countByPostableAndIsActiveTrue(Postable postable) {
-		return commentRepository.countByPostableAndIsActiveTrue(postable);
+		return commentRepository.countByPostableAndActiveTrue(postable);
 	}
 
 	public Slice<Comment> findByAuthorAndIsActiveTrue(User author, Pageable pageable) {
-		return commentRepository.findByAuthorAndIsActiveTrue(author, pageable);
+		return commentRepository.findByAuthorAndActiveTrue(author, pageable);
 	}
 
 	public long countByAuthorAndIsActiveTrue(User author) {
-		return commentRepository.countByAuthorAndIsActiveTrue(author);
+		return commentRepository.countByAuthorAndActiveTrue(author);
 	}
 }

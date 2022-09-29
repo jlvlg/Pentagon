@@ -3,5 +3,16 @@
   "password": "Senha",
   "login": "Login",
   "signup": "Registrar",
-  "confirmPassword": "Confirmar senha"
+  "confirmPassword": "Confirmar senha",
+  "authExceptionMsg": "Falha na autenticação, seu nome de usuário ou senha podem estar incorretos",
+  "emptyFieldValidation": "{field} é obrigatório(a)",
+  "invalidFieldValidation": "Campo contém caracteres inválidos",
+  "passwordsDoNotMatch": "Senhas não coincidem",
+  "passwordInvalidLength": "Tamanho {error} são {length} caracteres",
+  "minimum": "Mínimo",
+  "maximum": "Máximo",
+  "onError": "Ocorreu um erro {error}",
+  "usernameTakenException": "Nome de usuário em uso",
+  "invalidFieldException": "{field} inválido",
+  "unexpected": "inesperado"
 }

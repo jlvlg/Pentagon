@@ -6,8 +6,9 @@ package com.jlvlg.pentagon.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.jlvlg.pentagon.exceptions.PostNotFoundException;
+import com.jlvlg.pentagon.models.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -27,48 +28,53 @@ import com.jlvlg.pentagon.repositories.UserRepository;
 public class UserService implements UserServiceInterface, UserDetailsService {
 	@Autowired private UserRepository userRepository;
 
-	public Optional<User> findById(Long id) {
-		return userRepository.findById(id);
+	public User findById(Long id) throws UserNotFoundException {
+		Optional<User> user = userRepository.findById(id);
+		if (user.isEmpty())
+			throw new UserNotFoundException();
+		return user.get();
 	}
 
-	public Optional<User> findByUsername(String username) {
-		return userRepository.findByUsername(username);
+	public User findByUsername(String username) throws UserNotFoundException {
+		Optional<User> user = userRepository.findByAuth_UsernameAndAuth_ActiveTrue(username);
+		if (user.isEmpty())
+			throw new UserNotFoundException();
+		return user.get();
 	}
 
 	public List<User> findByUsernameLikeIgnoreCase(String username) {
-		return userRepository.findByUsernameLikeIgnoreCase(username);
+		return userRepository.findByAuth_UsernameContainingIgnoreCaseAndAuth_ActiveTrue(username);
 	}
 
 	public User save(User user) throws InvalidUsernameException, UsernameTakenException {
-		if (user.getUsername() == null ||
-			user.getUsername().isBlank() ||
-			!user.getUsername().matches("[a-zA-Z0-9_-]+"))
+		if (user.getAuth().getUsername() == null ||
+			user.getAuth().getUsername().isBlank() ||
+			!user.getAuth().getUsername().matches("[a-zA-Z0-9_.-]+"))
 			throw new InvalidUsernameException(user);
-		Optional<User> storedUser = findByUsername(user.getUsername());
+		Optional<User> storedUser = userRepository.findByAuth_Username(user.getAuth().getUsername());
 		if (storedUser.isPresent() && !storedUser.get().getId().equals(user.getId()))
 			throw new UsernameTakenException(user, storedUser.get());
 		return userRepository.save(user);
 	}
 
 	public User update(User user) throws UsernameTakenException, InvalidUsernameException, UserNotFoundException {
-		Optional<User> oldUser = findById(user.getId());
-		if (oldUser.isEmpty())
-			throw new UserNotFoundException(user);
-		user.setPassword(oldUser.get().getPassword());
+		User oldUser = findById(user.getId());
+		user.getAuth().setPassword(oldUser.getAuth().getPassword());
 		return save(user);
 	}
 
 	public void delete(User user) throws UserNotFoundException {
-		if (findById(user.getId()).isEmpty())
-			throw new UserNotFoundException(user);
+		findById(user.getId());
 		userRepository.delete(user);
 	}
 
 	@Override
-	public User loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<User> user = findByUsername(username);
-		if (user.isEmpty())
+	public Auth loadUserByUsername(String username) throws UsernameNotFoundException {
+		try {
+			User user = findByUsername(username);
+			return user.getAuth();
+		} catch (UserNotFoundException e) {
 			throw new UsernameNotFoundException("User not found");
-		return user.get();
+		}
 	}
 }

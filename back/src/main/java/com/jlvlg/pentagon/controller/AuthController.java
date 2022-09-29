@@ -2,43 +2,51 @@ package com.jlvlg.pentagon.controller;
 
 import com.jlvlg.pentagon.exceptions.InvalidPageNameException;
 import com.jlvlg.pentagon.exceptions.InvalidUsernameException;
+import com.jlvlg.pentagon.exceptions.UserNotFoundException;
 import com.jlvlg.pentagon.exceptions.UsernameTakenException;
 import com.jlvlg.pentagon.facade.Pentagon;
+import com.jlvlg.pentagon.models.Auth;
 import com.jlvlg.pentagon.models.User;
 import com.jlvlg.pentagon.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("auth")
 public class AuthController {
     @Autowired private SecurityUtils securityUtils;
     @Autowired private Pentagon pentagon;
 
     @PostMapping("login")
-    public ResponseEntity<String> login(@RequestBody User user) {
+    public ResponseEntity<User> login(@RequestBody Auth auth) {
         try {
-            return ResponseEntity.ok(securityUtils.authenticateUser(user));
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.AUTHORIZATION, securityUtils.authenticateUser(auth))
+                    .body(pentagon.findUser(auth.getUsername()));
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(403).body("Access denied");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (UserNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @PostMapping("signup")
-    public ResponseEntity<User> signUp(@RequestBody User user) throws InvalidPageNameException, InvalidUsernameException, UsernameTakenException {
-        return ResponseEntity.ok(pentagon.saveUser(new User(user.getUsername(), user.getPassword())));
+    public ResponseEntity<User> signUp(@RequestBody Auth auth) {
+        try {
+            pentagon.saveUser(new User(auth.getUsername(), auth.getPassword()));
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .header(HttpHeaders.AUTHORIZATION, securityUtils.authenticateUser(auth))
+                    .body(pentagon.findUser(auth.getUsername()));
+        } catch (InvalidUsernameException e) {
+            return ResponseEntity.unprocessableEntity().build();
+        } catch (UsernameTakenException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (InvalidPageNameException | UserNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

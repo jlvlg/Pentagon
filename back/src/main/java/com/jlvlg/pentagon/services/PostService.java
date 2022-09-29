@@ -25,8 +25,11 @@ import java.util.Optional;
 public class PostService implements PostServiceInterface {
 	@Autowired private PostRepository postRepository;
 
-	public Optional<Post> findById(Long id) {
-		return postRepository.findById(id);
+	public Post findById(Long id) throws PostNotFoundException {
+		Optional<Post> post = postRepository.findById(id);
+		if (post.isEmpty())
+			throw new PostNotFoundException();
+		return post.get();
 	}
 
 	@Transactional
@@ -44,35 +47,30 @@ public class PostService implements PostServiceInterface {
 	}
 
 	public Post update(Post post) throws PostNotFoundException, InvalidPostNameException, InvalidPostTextException, PostMaxCharacterSizeExceededException  {
-		Optional<Post> oldPost = findById(post.getId());
-		if(oldPost.isEmpty()) {
-			throw new PostNotFoundException(post);
-		}
-		post.setCreationDate(oldPost.get().getCreationDate());
+		Post oldPost = findById(post.getId());
+		post.setCreationDate(oldPost.getCreationDate());
 		return save(post);
 	}
 
 	@Transactional
 	public void delete(Post post) throws PostNotFoundException {
-		if(findById(post.getId()).isEmpty()) {
-			throw new PostNotFoundException(post);
-		}
+		findById(post.getId());
 		postRepository.delete(post);
 	}
 
 	public Slice<Post> findByPageAndIsActiveTrue(Page page, Pageable pageable) {
-		return postRepository.findByPageAndIsActiveTrue(page, pageable);
+		return postRepository.findByPageAndActiveTrue(page, pageable);
 	}
 
 	public long countByPageAndIsActiveTrue(Page page) {
-		return postRepository.countByPageAndIsActiveTrue(page);
+		return postRepository.countByPageAndActiveTrue(page);
 	}
 
 	public Slice<Post> findByAuthorAndIsActiveTrue(User author, Pageable pageable) {
-		return postRepository.findByAuthorAndIsActiveTrue(author, pageable);
+		return postRepository.findByAuthorAndActiveTrue(author, pageable);
 	}
 
 	public long countByAuthorAndIsActiveTrue(User author) {
-		return postRepository.countByAuthorAndIsActiveTrue(author);
+		return postRepository.countByAuthorAndActiveTrue(author);
 	}
 }

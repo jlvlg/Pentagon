@@ -1,5 +1,6 @@
 package com.jlvlg.pentagon.services;
 
+import com.jlvlg.pentagon.exceptions.ScoreNotFoundException;
 import com.jlvlg.pentagon.exceptions.ScoreOutOfAllowedException;
 import com.jlvlg.pentagon.models.Page;
 import com.jlvlg.pentagon.models.Score;
@@ -50,13 +51,17 @@ public class ScoreService implements ScoreServiceInterface {
 		return scoreRepository.findByPage_UserAndCategory(user, category);
 	}
 
-	@Transactional
-	public void delete(Score score) {
+	@Override
+	public void delete(Score score) throws ScoreNotFoundException {
+		findById(score.getId());
 		scoreRepository.delete(score);
 	}
 
-	public Optional<Score> findById(Long id) {
-		return scoreRepository.findById(id);
+	public Score findById(Long id) throws ScoreNotFoundException {
+		Optional<Score> score = scoreRepository.findById(id);
+		if (score.isEmpty())
+			throw new ScoreNotFoundException();
+		return score.get();
 	}
 
 }

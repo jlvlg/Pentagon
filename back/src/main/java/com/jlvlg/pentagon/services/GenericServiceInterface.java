@@ -1,5 +1,7 @@
 package com.jlvlg.pentagon.services;
 
+import com.jlvlg.pentagon.exceptions.*;
+
 import java.util.Optional;
 
 /**
@@ -33,7 +35,7 @@ public interface GenericServiceInterface<T, ID>{
 	/**
 	 * Finds an object by id
 	 * @param id the object's id
-	 * @return An Optional that might contain the object
+	 * @return The object
 	 */
-	Optional<T> findById(ID id);
+	T findById(ID id) throws ObjectNotFoundException;
 }

@@ -6,7 +6,6 @@ import com.jlvlg.pentagon.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,10 +31,10 @@ public class Pentagon {
      * Finds a user by username
      * @param username The user's username
      * @return A User
-     * @throws UsernameNotFoundException User not found
+     * @throws UserNotFoundException User not found
      */
-    public User findUser(String username) throws UsernameNotFoundException {
-        return userService.loadUserByUsername(username);
+    public User findUser(String username) throws UserNotFoundException {
+        return userService.findByUsername(username);
     }
 
     /**
@@ -45,10 +44,7 @@ public class Pentagon {
      * @throws UserNotFoundException User not found
      */
     public User findUser(Long id) throws UserNotFoundException {
-        Optional<User> user = userService.findById(id);
-        if (user.isEmpty())
-            throw new UserNotFoundException();
-        return user.get();
+        return userService.findById(id);
     }
 
     /**
@@ -71,7 +67,7 @@ public class Pentagon {
      * @throws UsernameTakenException   Two users cannot have the same username
      */
     public User saveUser(User user) throws InvalidUsernameException, UsernameTakenException, InvalidPageNameException {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.getAuth().setPassword(bCryptPasswordEncoder.encode(user.getAuth().getPassword()));
         User result = userService.save(user);
         pageService.save(new Page(user));
         return result;
@@ -99,9 +95,26 @@ public class Pentagon {
         userService.delete(user);
     }
 
-    public void switchUserIsActive(User user) throws UserNotFoundException, UsernameTakenException, InvalidUsernameException {
-        user.setActive(!user.isActive());
-        updateUser(user);
+    public void deleteUser(String username) throws UserNotFoundException {
+        userService.delete(findUser(username));
+    }
+
+    public void switchUserIsActive(User user) throws UserNotFoundException {
+        User _user = findUser(user.getId());
+        _user.getAuth().setActive(!user.getAuth().isActive());
+        try {
+            updateUser(_user);
+        } catch (UsernameTakenException | InvalidUsernameException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void followUser(User following, User followed) throws UserAlreadyFollowedException, UserNotFoundException, UsernameTakenException, InvalidUsernameException {
+        if (following.follow(followed)) {
+            followed.setFollowers(followed.getFollowers() + 1);
+            updateUser(following);
+            updateUser(followed);
+        }
     }
 
     /**
@@ -114,10 +127,16 @@ public class Pentagon {
      * @throws UserAlreadyFollowedException The user is already followed
      */
     public void followUser(Long followingId, Long followedId) throws UserNotFoundException, UsernameTakenException, InvalidUsernameException, UserAlreadyFollowedException {
-        User following = findUser(followingId);
-        User followed = findUser(followedId);
-        if (following.follow(followed)) {
-            followed.setFollowers(followed.getFollowers() + 1);
+        followUser(findUser(followingId), findUser(followedId));
+    }
+
+    public void followUser(String followingUsername, String followedUsername) throws UserNotFoundException, UsernameTakenException, InvalidUsernameException, UserAlreadyFollowedException {
+        followUser(findUser(followingUsername), findUser(followedUsername));
+    }
+
+    public void unfollowUser(User following, User followed) throws UserNotFoundException, UsernameTakenException, InvalidUsernameException, UserNotFollowedException {
+        if (following.unfollow(followed)) {
+            followed.setFollowers(followed.getFollowers() - 1);
             updateUser(following);
             updateUser(followed);
         }
@@ -132,14 +151,12 @@ public class Pentagon {
      * @throws UsernameTakenException Two users cannot have the same username
      * @throws InvalidUsernameException A username name cannot be null, empty, or contain spaces and/or special characters
      */
-    public void unfollowUser(Long followingId, Long followedId) throws UserNotFoundException, UserNotFollowedException, UsernameTakenException, InvalidUsernameException {
-        User following = findUser(followingId);
-        User followed = findUser(followedId);
-        if (following.unfollow(followed)) {
-            followed.setFollowers(followed.getFollowers() - 1);
-            updateUser(following);
-            updateUser(followed);
-        }
+    public void unfollowUser(Long followingId, Long followedId) throws UserNotFoundException, UsernameTakenException, InvalidUsernameException, UserNotFollowedException {
+        unfollowUser(findUser(followingId), findUser(followedId));
+    }
+
+    public void unfollowUser(String followingUsername, String followedUsername) throws UserNotFoundException, UsernameTakenException, InvalidUsernameException, UserNotFollowedException {
+        unfollowUser(findUser(followingUsername), findUser(followedUsername));
     }
 
     /**
@@ -149,10 +166,7 @@ public class Pentagon {
      * @throws PostNotFoundException Post not found
      */
     public Post findPost(Long id) throws PostNotFoundException {
-        Optional<Post> post = postService.findById(id);
-        if (!post.isPresent())
-            throw new PostNotFoundException();
-        return post.get();
+        return postService.findById(id);
     }
 
     /**
@@ -189,9 +203,14 @@ public class Pentagon {
         postService.delete(post);
     }
 
-    public void switchPostIsActive(Post post) throws PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
-        post.setActive(!post.isActive());
-        updatePost(post);
+    public void switchPostIsActive(Post post) throws PostNotFoundException {
+        Post _post = findPost(post.getId());
+        _post.setActive(!_post.isActive());
+        try {
+            updatePost(_post);
+        } catch (InvalidPostNameException | InvalidPostTextException | PostMaxCharacterSizeExceededException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -213,14 +232,16 @@ public class Pentagon {
     /**
      * Likes a post
      * @param post
-     * @throws PostMaxCharacterSizeExceededException
      * @throws PostNotFoundException
-     * @throws InvalidPostNameException
-     * @throws InvalidPostTextException
      */
-    public void likePost(Post post) throws PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
-        post.like();
-        updatePost(post);
+    public void likePost(Post post) throws PostNotFoundException {
+        Post _post = postService.findById(post.getId());
+        _post.like();
+        try {
+            updatePost(_post);
+        } catch (InvalidPostNameException | InvalidPostTextException | PostMaxCharacterSizeExceededException e) {
+            throw new RuntimeException(e);
+        }
     }
     
     /* Unlikes a post
@@ -231,36 +252,46 @@ public class Pentagon {
      * @throws InvalidPostTextException
      */
     
-    public void unlikePost(Post post) throws PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
-        post.unlike();
-        updatePost(post);
+    public void unlikePost(Post post) throws PostNotFoundException {
+        Post _post = postService.findById(post.getId());
+        _post.unlike();
+        try {
+            updatePost(_post);
+        } catch (InvalidPostNameException | InvalidPostTextException | PostMaxCharacterSizeExceededException e) {
+            throw new RuntimeException(e);
+        }
     }
     
 
-    public void editPost(Post post, String image, String title, String text) throws PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
-        if (title == null || title.isBlank())
-            throw new InvalidPostNameException(post);
-        if (text == null || text.isBlank())
-            throw new InvalidPostTextException(post);
+    public void editPost(Post post) throws PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
         saveModification(new Modification(post, post.getImage(), post.getTitle(), post.getText()));
-        post.setImage(image);
-        post.setTitle(title);
-        post.setText(text);
         updatePost(post);
     }
 
-    public boolean turnPostVisibleTo(User user, Post post) throws PostVisibilityException, PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
-        boolean result = post.turnVisibleTo(user);
+    public boolean turnPostVisibleTo(User user, Post post) throws PostVisibilityException, PostNotFoundException {
+        Post _post = postService.findById(post.getId());
+        boolean result = _post.turnVisibleTo(user);
         if (result) {
-            updatePost(post);
+            try {
+                updatePost(_post);
+            } catch (InvalidPostNameException | InvalidPostTextException |
+                     PostMaxCharacterSizeExceededException e) {
+                throw new RuntimeException(e);
+            }
         }
         return result;
     }
 
-    public boolean turnPostInvisibleTo(User user, Post post) throws PostVisibilityException, PostMaxCharacterSizeExceededException, PostNotFoundException, InvalidPostNameException, InvalidPostTextException {
-        boolean result = post.turnInvisibleTo(user);
+    public boolean turnPostInvisibleTo(User user, Post post) throws PostVisibilityException, PostNotFoundException {
+        Post _post = postService.findById(post.getId());
+        boolean result = _post.turnInvisibleTo(user);
         if (result) {
-            updatePost(post);
+            try {
+                updatePost(_post);
+            } catch (InvalidPostNameException | InvalidPostTextException |
+                     PostMaxCharacterSizeExceededException e) {
+                throw new RuntimeException(e);
+            }
         }
         return result;
     }
@@ -272,10 +303,7 @@ public class Pentagon {
      */
 
     public Comment findComment(Long id) throws CommentNotFoundException {
-        Optional<Comment> comment = commentService.findById(id);
-        if (comment.isEmpty())
-            throw new CommentNotFoundException();
-        return comment.get();
+        return commentService.findById(id);
     }
     
     /*
@@ -286,8 +314,8 @@ public class Pentagon {
      * @throws CommentMaxCharacterExceededException
      */
 
-    public Comment saveComment(Comment object) throws InvalidCommentException, CommentMaxCharacterSizeExceededException {
-        return commentService.save(object);
+    public Comment saveComment(Comment comment) throws InvalidCommentException, CommentMaxCharacterSizeExceededException {
+        return commentService.save(comment);
     }
     
     /*
@@ -299,8 +327,8 @@ public class Pentagon {
      * @throws CommentMaxCharacterSizeExceededException
      */
     
-    public Comment updateComment(Comment object) throws CommentNotFoundException, InvalidCommentException, CommentMaxCharacterSizeExceededException {
-        return commentService.update(object);
+    public Comment updateComment(Comment comment) throws CommentNotFoundException, InvalidCommentException, CommentMaxCharacterSizeExceededException {
+        return commentService.update(comment);
     }
     
     /*
@@ -309,8 +337,8 @@ public class Pentagon {
      *@throws CommentNotFoundException
      */
 
-    public void deleteComment(Comment object) throws CommentNotFoundException {
-        commentService.delete(object);
+    public void deleteComment(Comment comment) throws CommentNotFoundException {
+        commentService.delete(comment);
     }
     
     /*
@@ -338,9 +366,14 @@ public class Pentagon {
      * @throws CommentNotFoundException
      */
 
-    public void likeComment(Comment comment) throws CommentMaxCharacterSizeExceededException, InvalidCommentException, CommentNotFoundException {
-        comment.like();
-        updateComment(comment);
+    public void likeComment(Comment comment) throws CommentNotFoundException {
+        Comment _comment = findComment(comment.getId());
+        _comment.like();
+        try {
+            updateComment(_comment);
+        } catch (InvalidCommentException | CommentMaxCharacterSizeExceededException e) {
+            throw new RuntimeException(e);
+        }
     }
     
     /*
@@ -351,19 +384,25 @@ public class Pentagon {
      * @throws CommentNotFoundException
      */
     
-    public void unlikeComment(Comment comment) throws CommentMaxCharacterSizeExceededException, InvalidCommentException, CommentNotFoundException {
-        comment.unlike();
-        updateComment(comment);
+    public void unlikeComment(Comment comment) throws CommentNotFoundException {
+        Comment _comment = findComment(comment.getId());
+        _comment.unlike();
+        try {
+            updateComment(_comment);
+        } catch (InvalidCommentException | CommentMaxCharacterSizeExceededException e) {
+            throw new RuntimeException(e);
+        }
     }
     
     
 
-    public void editComment(Comment comment, String text) throws CommentMaxCharacterSizeExceededException, InvalidCommentException, CommentNotFoundException {
-        if (text == null || text.isBlank())
-            throw new InvalidCommentException(comment);
+    public void editComment(Comment comment) throws CommentMaxCharacterSizeExceededException, InvalidCommentException, CommentNotFoundException {
         saveModification(new Modification(comment, null, comment.getText()));
-        comment.setText(text);
         updateComment(comment);
+    }
+
+    public Page findPage(Long id) throws PageNotFoundException {
+        return pageService.findById(id);
     }
     
     /*
@@ -373,10 +412,7 @@ public class Pentagon {
      */
 
     public Page findPage(User user) throws PageNotFoundException {
-        Optional<Page> page = pageService.findByUser(user);
-        if (page.isEmpty())
-            throw new PageNotFoundException();
-        return page.get();
+        return pageService.findByUser(user);
     }
     
     /*
@@ -387,10 +423,7 @@ public class Pentagon {
      */
 
     public Page findPage(String username) throws PageNotFoundException, UserNotFoundException {
-        Optional<Page> page = pageService.findByUser(findUser(username));
-        if (page.isEmpty())
-            throw new PageNotFoundException();
-        return page.get();
+        return pageService.findByUser(userService.findByUsername(username));
     }
 
     /**
@@ -422,6 +455,24 @@ public class Pentagon {
      */
     public void deletePage(Page page) throws PageNotFoundException {
         pageService.delete(page);
+    }
+
+    public void deletePage(User user) throws PageNotFoundException {
+        pageService.delete(findPage(user));
+    }
+
+    public void deletePage(String username) throws UserNotFoundException, PageNotFoundException {
+        pageService.delete(findPage(username));
+    }
+
+    public void switchPageIsActive(Page page) throws PageNotFoundException {
+        Page _page = findPage(page.getId());
+        _page.setActive(!_page.isActive());
+        try {
+            updatePage(_page);
+        } catch (InvalidPageNameException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<Modification> loadModifications(Postable postable) {

@@ -1,11 +1,10 @@
 package com.jlvlg.pentagon.services;
 
 import com.jlvlg.pentagon.exceptions.InvalidPageNameException;
+import com.jlvlg.pentagon.exceptions.ObjectNotFoundException;
 import com.jlvlg.pentagon.exceptions.PageNotFoundException;
 import com.jlvlg.pentagon.models.Page;
 import com.jlvlg.pentagon.models.User;
-
-import java.util.Optional;
 
 /**
  * Defines Page specific repository access methods
@@ -15,10 +14,12 @@ import java.util.Optional;
 public interface PageServiceInterface extends GenericServiceInterface<Page, Long>{
 	/**
 	 * Finds a page by user
+	 *
 	 * @param user the page's user
-	 * @return An optional that might contain the page
+	 * @return The page
+	 * @throws  PageNotFoundException Page not found
 	 */
-	Optional<Page> findByUser(User user);
+	Page findByUser(User user) throws PageNotFoundException;
 
 	/**
 	 * Saves a page to the database
@@ -44,4 +45,7 @@ public interface PageServiceInterface extends GenericServiceInterface<Page, Long
 	 */
 	@Override
 	void delete(Page page) throws PageNotFoundException;
+
+	@Override
+	Page findById(Long id) throws PageNotFoundException;
 }

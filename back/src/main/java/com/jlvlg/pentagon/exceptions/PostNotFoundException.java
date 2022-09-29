@@ -6,7 +6,7 @@ import com.jlvlg.pentagon.models.Post;
  * Thrown when trying to access a nonexistent post
  * @author Luann
  */
-public class PostNotFoundException extends Exception {
+public class PostNotFoundException extends ObjectNotFoundException {
 	private Post post;
 
 	public PostNotFoundException() {

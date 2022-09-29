@@ -23,10 +23,8 @@
 //import com.jlvlg.pentagon.models.Comment;
 //import com.jlvlg.pentagon.models.Postable;
 //
-//@CrossOrigin (origins = "*")
 //@RestController
-//@RequestMapping("/pentagon/post/comments")
-//public class ControllerComment {
+//public class CommentController {
 //	@Autowired
 //	private Pentagon pentagon;
 //
@@ -71,4 +69,4 @@
 //		pentagon.editComment(comment, text);
 //	}
 //}
-//
+
