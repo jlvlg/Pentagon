@@ -1,5 +1,7 @@
 package com.jlvlg.pentagon.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,7 +14,7 @@ import javax.persistence.*;
  */
 
 @Entity
-public class Page {
+public class Profile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -23,9 +25,10 @@ public class Page {
 	private String description;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ScoreMean> scoreMeans;
+	@JsonIgnore
 	private boolean active;
 	
-	public Page() {
+	public Profile() {
 		this.scoreMeans = new ArrayList<>(List.of(
 			new ScoreMean("Aparência física"),
 			new ScoreMean("Inteligência"),
@@ -36,27 +39,27 @@ public class Page {
 		this.active = true;
 	}
 	
-	public Page(String name) {
+	public Profile(String name) {
 		this();
 		this.name = name;
 	}
 
-	public Page(User user) {
+	public Profile(User user) {
 		this(user.getAuth().getUsername());
 		this.user = user;
 	}
 	
-	public Page(List<ScoreMean> scoreMeans, String name) {
+	public Profile(List<ScoreMean> scoreMeans, String name) {
 		this(scoreMeans, name, null, null, true);
 	}
 	
-	public Page(String name, String image, String description) {
+	public Profile(String name, String image, String description) {
 		this(name);
 		this.image = image;
 		this.description = description;
 	}
 	
-	public Page(List<ScoreMean>  scoreMeans, String name, String image, String description, boolean active) {
+	public Profile(List<ScoreMean>  scoreMeans, String name, String image, String description, boolean active) {
 		this.scoreMeans = scoreMeans;
 		this.name = name;
 		this.image = image;
@@ -124,8 +127,8 @@ public class Page {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		Page page = (Page) o;
-		return active == page.active && Objects.equals(id, page.id) && Objects.equals(user, page.user) && Objects.equals(name, page.name) && Objects.equals(image, page.image) && Objects.equals(description, page.description) && Objects.equals(scoreMeans, page.scoreMeans);
+		Profile profile = (Profile) o;
+		return active == profile.active && Objects.equals(id, profile.id) && Objects.equals(user, profile.user) && Objects.equals(name, profile.name) && Objects.equals(image, profile.image) && Objects.equals(description, profile.description) && Objects.equals(scoreMeans, profile.scoreMeans);
 	}
 
 	@Override

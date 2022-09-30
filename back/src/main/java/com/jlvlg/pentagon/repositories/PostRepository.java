@@ -1,6 +1,6 @@
 package com.jlvlg.pentagon.repositories;
 
-import com.jlvlg.pentagon.models.Page;
+import com.jlvlg.pentagon.models.Profile;
 import com.jlvlg.pentagon.models.Post;
 import com.jlvlg.pentagon.models.User;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +14,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PostRepository extends JpaRepository <Post, Long> {
-	Slice<Post> findByPageAndActiveTrue(Page page, Pageable pageable);
-	long countByPageAndActiveTrue(Page page);
+	Slice<Post> findByProfileAndActiveTrue(Profile profile, Pageable pageable);
+	long countByProfileAndActiveTrue(Profile profile);
 	Slice<Post> findByAuthorAndActiveTrue(User author, Pageable pageable);
 	long countByAuthorAndActiveTrue(User author);
 }

@@ -12,8 +12,8 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final AuthProvider auth = Provider.of(context, listen: false);
-    Timer(Duration(seconds: 2), () {
+    final AuthProvider auth = Provider.of(context);
+    Timer(const Duration(seconds: 2), () {
       auth.tryAutoLogin().whenComplete(() {
         Navigator.of(context).pushReplacementNamed(AppRoutes.home);
       });

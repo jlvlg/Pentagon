@@ -1,16 +1,14 @@
 import 'dart:convert';
 
 class Auth {
-  String id;
-  String token;
-  String username;
+  final String? token;
+  final String username;
 
   Auth({
-    required this.id,
-    required this.token,
+    this.token,
     required this.username,
   });
 
-  get toMap => {'id': id, 'token': token, 'username': username};
+  get toMap => {'token': token ?? '', 'username': username};
   get toJson => jsonEncode(toMap);
 }

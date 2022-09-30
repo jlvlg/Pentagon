@@ -1,6 +1,6 @@
 package com.jlvlg.pentagon.controller;
 
-import com.jlvlg.pentagon.exceptions.InvalidPageNameException;
+import com.jlvlg.pentagon.exceptions.InvalidProfileNameException;
 import com.jlvlg.pentagon.exceptions.InvalidUsernameException;
 import com.jlvlg.pentagon.exceptions.UserNotFoundException;
 import com.jlvlg.pentagon.exceptions.UsernameTakenException;
@@ -45,7 +45,7 @@ public class AuthController {
             return ResponseEntity.unprocessableEntity().build();
         } catch (UsernameTakenException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } catch (InvalidPageNameException | UserNotFoundException e) {
+        } catch (InvalidProfileNameException | UserNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

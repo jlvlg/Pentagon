@@ -24,30 +24,44 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(field) => "Invalid ${field}";
 
-  static String m2(error) => "An ${error} error has ocurred";
+  static String m2(object) => "No ${object} found";
 
-  static String m3(error, length) => "${error} length is ${length}";
+  static String m3(object) => "${object} not found";
+
+  static String m4(error) => "An ${error} error has ocurred";
+
+  static String m5(error, length) => "${error} length is ${length}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accessForbidden":
+            MessageLookupByLibrary.simpleMessage("Access forbidden"),
         "authExceptionMsg": MessageLookupByLibrary.simpleMessage(
             "Authentication failure, your username or password might be incorrect"),
+        "badRequest": MessageLookupByLibrary.simpleMessage("Bad request"),
         "confirmPassword":
             MessageLookupByLibrary.simpleMessage("Confirm password"),
         "emptyFieldValidation": m0,
+        "home": MessageLookupByLibrary.simpleMessage("Home"),
         "invalidFieldException": m1,
         "invalidFieldValidation": MessageLookupByLibrary.simpleMessage(
             "Field contains invalid characters"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "logout": MessageLookupByLibrary.simpleMessage("Logout"),
         "maximum": MessageLookupByLibrary.simpleMessage("Maximum"),
         "minimum": MessageLookupByLibrary.simpleMessage("Minimum"),
-        "onError": m2,
+        "noObjectfound": m2,
+        "objectNotFound": m3,
+        "onError": m4,
         "password": MessageLookupByLibrary.simpleMessage("Password"),
-        "passwordInvalidLength": m3,
+        "passwordInvalidLength": m5,
         "passwordsDoNotMatch":
             MessageLookupByLibrary.simpleMessage("Passwords do not match"),
+        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "signup": MessageLookupByLibrary.simpleMessage("Sign Up"),
         "unexpected": MessageLookupByLibrary.simpleMessage("unexpected"),
+        "user": MessageLookupByLibrary.simpleMessage("User"),
         "username": MessageLookupByLibrary.simpleMessage("Username"),
         "usernameTakenException":
             MessageLookupByLibrary.simpleMessage("Username taken")

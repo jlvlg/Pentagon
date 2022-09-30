@@ -23,7 +23,7 @@ public class Pentagon {
     @Autowired private UserServiceInterface userService;
     @Autowired private ModificationServiceInterface modificationService;
     @Autowired private PostServiceInterface postService;
-    @Autowired private PageServiceInterface pageService;
+    @Autowired private ProfileServiceInterface profileService;
     @Autowired private ScoreServiceInterface scoreService;
     @Autowired private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -66,10 +66,10 @@ public class Pentagon {
      * @throws InvalidUsernameException A username name cannot be null, empty, or contain spaces and/or special characters
      * @throws UsernameTakenException   Two users cannot have the same username
      */
-    public User saveUser(User user) throws InvalidUsernameException, UsernameTakenException, InvalidPageNameException {
+    public User saveUser(User user) throws InvalidUsernameException, UsernameTakenException, InvalidProfileNameException {
         user.getAuth().setPassword(bCryptPasswordEncoder.encode(user.getAuth().getPassword()));
         User result = userService.save(user);
-        pageService.save(new Page(user));
+        profileService.save(new Profile(user));
         return result;
     }
 
@@ -401,76 +401,82 @@ public class Pentagon {
         updateComment(comment);
     }
 
-    public Page findPage(Long id) throws PageNotFoundException {
-        return pageService.findById(id);
+    public Profile findProfile(Long id) throws ProfileNotFoundException {
+        return profileService.findById(id);
     }
     
-    /*
-     * Find a page by user
+    /**
+     * Find a profile by user
      * @param user The user to be found
-     * @throws PageNotFoundException
+     * @throws ProfileNotFoundException
      */
-
-    public Page findPage(User user) throws PageNotFoundException {
-        return pageService.findByUser(user);
+    public Profile findProfile(User user) throws ProfileNotFoundException {
+        return profileService.findByUser(user);
     }
     
-    /*
-     * Find a page by username
+    /**
+     * Find a profile by username
      * @param username The username to be found
-     * @throws PageNotFoundException
+     * @throws ProfileNotFoundException
      * @throws UserNotFoundException
      */
 
-    public Page findPage(String username) throws PageNotFoundException, UserNotFoundException {
-        return pageService.findByUser(userService.findByUsername(username));
+    public Profile findProfile(String username) throws ProfileNotFoundException, UserNotFoundException {
+        return profileService.findByUser(userService.findByUsername(username));
+    }
+
+    public List<Profile> searchProfiles(String text) throws ProfileNotFoundException {
+        List<Profile> profiles = profileService.search(text);
+        if (profiles.isEmpty())
+            throw new ProfileNotFoundException();
+        return profiles;
     }
 
     /**
-     * Saves a page to the database
+     * Saves a profile to the database
      *
-     * @param page The page to be saved
-     * @throws InvalidPageNameException A page name cannot be null, empty, or contain special characters
+     * @param profile The profile to be saved
+     * @throws InvalidProfileNameException A profile name cannot be null, empty, or contain special characters
      */
-    public Page savePage(Page page) throws InvalidPageNameException {
-        return pageService.save(page);
+    public Profile saveProfile(Profile profile) throws InvalidProfileNameException {
+        return profileService.save(profile);
     }
 
     /**
-     * Updates a page in the database
+     * Updates a profile in the database
      *
-     * @param page The page to be updated
-     * @throws PageNotFoundException    Page not found
-     * @throws InvalidPageNameException A page name cannot be null, empty, or contain special characters
+     * @param profile The profile to be updated
+     * @throws ProfileNotFoundException Profile not found
+     * @throws InvalidProfileNameException A profile name cannot be null, empty, or contain special characters
      */
-    public Page updatePage(Page page) throws PageNotFoundException, InvalidPageNameException {
-        return pageService.update(page);
+    public Profile updateProfile(Profile profile) throws ProfileNotFoundException, InvalidProfileNameException {
+        return profileService.update(profile);
     }
 
     /**
-     * Permanently drops a page from the database
+     * Permanently drops a profile from the database
      *
-     * @param page The page to be deleted
-     * @throws PageNotFoundException Page not found
+     * @param profile The profile to be deleted
+     * @throws ProfileNotFoundException Profile not found
      */
-    public void deletePage(Page page) throws PageNotFoundException {
-        pageService.delete(page);
+    public void deleteProfile(Profile profile) throws ProfileNotFoundException {
+        profileService.delete(profile);
     }
 
-    public void deletePage(User user) throws PageNotFoundException {
-        pageService.delete(findPage(user));
+    public void deleteProfile(User user) throws ProfileNotFoundException {
+        profileService.delete(findProfile(user));
     }
 
-    public void deletePage(String username) throws UserNotFoundException, PageNotFoundException {
-        pageService.delete(findPage(username));
+    public void deleteProfile(String username) throws UserNotFoundException, ProfileNotFoundException {
+        profileService.delete(findProfile(username));
     }
 
-    public void switchPageIsActive(Page page) throws PageNotFoundException {
-        Page _page = findPage(page.getId());
-        _page.setActive(!_page.isActive());
+    public void switchProfileIsActive(Profile profile) throws ProfileNotFoundException {
+        Profile _profile = findProfile(profile.getId());
+        _profile.setActive(!_profile.isActive());
         try {
-            updatePage(_page);
-        } catch (InvalidPageNameException e) {
+            updateProfile(_profile);
+        } catch (InvalidProfileNameException e) {
             throw new RuntimeException(e);
         }
     }
@@ -510,7 +516,7 @@ public class Pentagon {
     }
 
     public Optional<Score> findScore(User user, String category, User author) {
-        return scoreService.findByPage_UserAndCategoryAndAuthor(user, category, author);
+        return scoreService.findByProfile_UserAndCategoryAndAuthor(user, category, author);
     }
 
     /**
@@ -534,14 +540,14 @@ public class Pentagon {
         return scoreService.findByUser(user);
     }
 
-    public void vote(User user, String category, User author, int score) throws ScoreOutOfAllowedException, PageNotFoundException {
+    public void vote(User user, String category, User author, int score) throws ScoreOutOfAllowedException, ProfileNotFoundException {
         Optional<Score> maybeScore = findScore(user, category, author);
         if (maybeScore.isPresent()) {
             Score foundScore = maybeScore.get();
             foundScore.setScore(score);
             updateScore(foundScore);
         }
-        Score newScore = saveScore(new Score(score, author, findPage(user), category));
+        Score newScore = saveScore(new Score(score, author, findProfile(user), category));
 //        recalculateScores(user);
     }
 }

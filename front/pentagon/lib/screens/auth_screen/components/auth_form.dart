@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:pentagon/exceptions/auth_exception.dart';
+import 'package:pentagon/exceptions/http_exception.dart';
 import 'package:pentagon/generated/l10n.dart';
 import 'package:pentagon/providers/auth_provider.dart';
 import 'package:pentagon/util/components/text_input.dart';
@@ -47,10 +47,10 @@ class _AuthFormState extends State<AuthForm> {
         } else {
           await auth.signUp(_usernameController.text, _passwordController.text);
         }
-      } on AuthException catch (error) {
+      } on HttpException catch (error) {
         _showErrorDialog(error.toString());
-      } catch (error) {
-        _showErrorDialog(S.of(context).onError(S.of(context).unexpected));
+        // } catch (error) {
+        //   _showErrorDialog(S.of(context).onError(S.of(context).unexpected));
       }
 
       setState(() {
@@ -79,8 +79,8 @@ class _AuthFormState extends State<AuthForm> {
               obscureText: true,
               textInputAction: TextInputAction.done,
               onSubmitted: (_) => _submit(),
-              validator: (_password) {
-                final password = _password ?? '';
+              validator: (text) {
+                final password = text ?? '';
                 if (password != _passwordController.text) {
                   return S.of(context).passwordsDoNotMatch;
                 }
@@ -97,7 +97,7 @@ class _AuthFormState extends State<AuthForm> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(msg),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       ),
     );
   }
@@ -111,8 +111,8 @@ class _AuthFormState extends State<AuthForm> {
         margin: const EdgeInsets.only(bottom: 10),
         textInputAction: TextInputAction.next,
         controller: _usernameController,
-        validator: (_username) {
-          final username = _username ?? '';
+        validator: (text) {
+          final username = text ?? '';
           if (username.trim().isEmpty) {
             return local.emptyFieldValidation(local.username);
           }
@@ -124,13 +124,13 @@ class _AuthFormState extends State<AuthForm> {
       ),
       TextInput(
         label: local.password,
-        margin: EdgeInsets.only(bottom: 10),
+        margin: const EdgeInsets.only(bottom: 10),
         obscureText: true,
         textInputAction: _isLogin ? TextInputAction.done : TextInputAction.next,
         controller: _passwordController,
         onSubmitted: (_) => _submit(),
-        validator: (_password) {
-          final password = _password ?? '';
+        validator: (text) {
+          final password = text ?? '';
           if (password.trim().isEmpty) {
             return local.emptyFieldValidation(local.password);
           }
@@ -150,8 +150,8 @@ class _AuthFormState extends State<AuthForm> {
           obscureText: true,
           textInputAction: TextInputAction.done,
           onSubmitted: (_) => _submit(),
-          validator: (_password) {
-            final password = _password ?? '';
+          validator: (text) {
+            final password = text ?? '';
             if (password != _passwordController.text) {
               return local.passwordsDoNotMatch;
             }

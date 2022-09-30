@@ -1,9 +1,7 @@
 package com.jlvlg.pentagon.services;
 
-import com.jlvlg.pentagon.exceptions.ObjectNotFoundException;
 import com.jlvlg.pentagon.exceptions.ScoreNotFoundException;
 import com.jlvlg.pentagon.exceptions.ScoreOutOfAllowedException;
-import com.jlvlg.pentagon.models.Page;
 import com.jlvlg.pentagon.models.Score;
 import com.jlvlg.pentagon.models.User;
 
@@ -15,7 +13,7 @@ public interface ScoreServiceInterface extends GenericServiceInterface <Score, L
 
 	List<Score> findByAuthor(User author);
 
-	Optional<Score> findByPage_UserAndCategoryAndAuthor(User user, String category, User author);
+	Optional<Score> findByProfile_UserAndCategoryAndAuthor(User user, String category, User author);
 
 	List<Score> findByUserAndCategory(User user, String category);
 

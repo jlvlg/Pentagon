@@ -35,7 +35,7 @@
         +void dislike()
     }
     class Post {
-        -page: Profile
+        -profile: Profile
         -image: String
         -visibility: List~User~
         -title: String

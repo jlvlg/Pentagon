@@ -209,6 +209,96 @@ class S {
       args: [],
     );
   }
+
+  /// `Home`
+  String get home {
+    return Intl.message(
+      'Home',
+      name: 'home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message(
+      'Profile',
+      name: 'profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settings {
+    return Intl.message(
+      'Settings',
+      name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bad request`
+  String get badRequest {
+    return Intl.message(
+      'Bad request',
+      name: 'badRequest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{object} not found`
+  String objectNotFound(Object object) {
+    return Intl.message(
+      '$object not found',
+      name: 'objectNotFound',
+      desc: '',
+      args: [object],
+    );
+  }
+
+  /// `No {object} found`
+  String noObjectfound(Object object) {
+    return Intl.message(
+      'No $object found',
+      name: 'noObjectfound',
+      desc: '',
+      args: [object],
+    );
+  }
+
+  /// `User`
+  String get user {
+    return Intl.message(
+      'User',
+      name: 'user',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Access forbidden`
+  String get accessForbidden {
+    return Intl.message(
+      'Access forbidden',
+      name: 'accessForbidden',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logout`
+  String get logout {
+    return Intl.message(
+      'Logout',
+      name: 'logout',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

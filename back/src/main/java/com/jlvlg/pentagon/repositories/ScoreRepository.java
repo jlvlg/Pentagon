@@ -1,6 +1,5 @@
 package com.jlvlg.pentagon.repositories;
 
-import com.jlvlg.pentagon.models.Page;
 import com.jlvlg.pentagon.models.Score;
 import com.jlvlg.pentagon.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,8 +14,8 @@ import java.util.Optional;
  */
 @Repository
 public interface ScoreRepository extends JpaRepository<Score, Long> {
-	List<Score> findByPage_User(User user);
+	List<Score> findByProfile_User(User user);
 	List<Score> findByAuthor(User author);
-	Optional<Score> findByPage_UserAndCategoryAndAuthor(User user, String category, User author);
-	List<Score> findByPage_UserAndCategory(User user, String category);
+	Optional<Score> findByProfile_UserAndCategoryAndAuthor(User user, String category, User author);
+	List<Score> findByProfile_UserAndCategory(User user, String category);
 }

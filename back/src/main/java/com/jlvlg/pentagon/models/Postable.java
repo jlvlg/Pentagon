@@ -1,5 +1,7 @@
 package com.jlvlg.pentagon.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.Instant;
 import java.util.Objects;
 
@@ -29,6 +31,7 @@ public abstract class Postable {
 	private Instant creationDate;
 	private int likes;
 	private int dislikes;
+	@JsonIgnore
 	private boolean active;
 	private boolean edited;
 	

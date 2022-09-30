@@ -14,5 +14,14 @@
   "onError": "An {error} error has ocurred",
   "usernameTakenException": "Username taken",
   "invalidFieldException": "Invalid {field}",
-  "unexpected": "unexpected"
+  "unexpected": "unexpected",
+  "home": "Home",
+  "profile": "Profile",
+  "settings": "Settings",
+  "badRequest": "Bad request",
+  "objectNotFound": "{object} not found",
+  "noObjectfound": "No {object} found",
+  "user": "User",
+  "accessForbidden": "Access forbidden",
+  "logout": "Logout"
 }

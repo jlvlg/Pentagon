@@ -1,49 +1,25 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:pentagon/data/store.dart';
-import 'package:pentagon/exceptions/auth_exception.dart';
-import 'package:pentagon/generated/l10n.dart';
-import 'package:pentagon/models/auth.dart';
-import 'package:pentagon/util/constants/api_endpoints.dart';
-import 'package:pentagon/util/helpers/api.dart';
+import 'package:pentagon/models/user.dart';
+import 'package:pentagon/controllers/auth_controller.dart';
 
 class AuthProvider with ChangeNotifier {
-  Auth? auth;
+  User? _authUser;
 
-  bool get isAuth => auth != null;
+  bool get isAuth => _authUser != null && _authUser!.auth.token != null;
+  User? get authUser => isAuth ? _authUser : null;
+  String? get token => authUser?.auth.token;
+  String? get id => authUser?.id;
 
   Future<void> _authenticate(
       String username, String password, String urlFragment) async {
-    final response = await Api.post(
-      '${ApiEndpoints.auth}/$urlFragment',
-      data: {
-        'username': username,
-        'password': password,
-      },
-    );
-
-    switch (response.statusCode) {
-      case 403:
-        throw AuthException(S.current.authExceptionMsg);
-      case 409:
-        throw AuthException(S.current.usernameTakenException);
-      case 422:
-        throw AuthException(
-            S.current.invalidFieldException(S.current.username));
-    }
-
-    final body = jsonDecode(response.body);
-
-    auth = Auth(
-      token: response.headers['authorization']!,
-      id: body['id'].toString(),
-      username: body['auth']['username'],
-    );
+    _authUser =
+        await AuthController.authenticate(username, password, urlFragment);
 
     Store.saveMap(
       'userDetails',
-      auth!.toMap,
+      _authUser!.toMap,
     );
 
     notifyListeners();
@@ -59,17 +35,13 @@ class AuthProvider with ChangeNotifier {
     if (!isAuth) {
       final userData = await Store.getMap('userDetails');
       if (userData.isNotEmpty) {
-        auth = Auth(
-          id: userData['id'],
-          token: userData['token'],
-          username: userData['username'],
-        );
+        _authUser = User.fromMap(userData, userData['auth']['token']);
       }
     }
   }
 
   void logout() {
-    auth = null;
+    _authUser = null;
     Store.remove('userDetails').whenComplete(() {
       notifyListeners();
     });

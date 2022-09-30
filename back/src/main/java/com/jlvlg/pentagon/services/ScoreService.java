@@ -2,7 +2,6 @@ package com.jlvlg.pentagon.services;
 
 import com.jlvlg.pentagon.exceptions.ScoreNotFoundException;
 import com.jlvlg.pentagon.exceptions.ScoreOutOfAllowedException;
-import com.jlvlg.pentagon.models.Page;
 import com.jlvlg.pentagon.models.Score;
 import com.jlvlg.pentagon.models.User;
 import com.jlvlg.pentagon.repositories.ScoreRepository;
@@ -34,7 +33,7 @@ public class ScoreService implements ScoreServiceInterface {
 	}
 
 	public List<Score> findByUser(User user) {
-		return scoreRepository.findByPage_User(user);
+		return scoreRepository.findByProfile_User(user);
 	}
 
 	public List<Score> findByAuthor(User author) {
@@ -42,13 +41,13 @@ public class ScoreService implements ScoreServiceInterface {
 	}
 
 	@Override
-	public Optional<Score> findByPage_UserAndCategoryAndAuthor(User user, String category, User author) {
-		return scoreRepository.findByPage_UserAndCategoryAndAuthor(user, category, author);
+	public Optional<Score> findByProfile_UserAndCategoryAndAuthor(User user, String category, User author) {
+		return scoreRepository.findByProfile_UserAndCategoryAndAuthor(user, category, author);
 	}
 
 	@Override
 	public List<Score> findByUserAndCategory(User user, String category) {
-		return scoreRepository.findByPage_UserAndCategory(user, category);
+		return scoreRepository.findByProfile_UserAndCategory(user, category);
 	}
 
 	@Override

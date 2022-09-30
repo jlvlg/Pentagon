@@ -5,6 +5,7 @@ class CustomNavigationBarItem extends StatelessWidget {
   final Widget? activeIcon;
   final bool isActive;
   final Color? color;
+  final double? size;
   final Function()? onTap;
 
   const CustomNavigationBarItem({
@@ -12,6 +13,7 @@ class CustomNavigationBarItem extends StatelessWidget {
     this.onTap,
     this.activeIcon,
     this.color,
+    this.size,
     this.isActive = false,
     super.key,
   });
@@ -21,13 +23,13 @@ class CustomNavigationBarItem extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: IconTheme(
-          data: IconThemeData(
-              color: color ?? Theme.of(context).colorScheme.primary, size: 30),
-          child: isActive ? activeIcon ?? icon : icon,
+      child: IconTheme(
+        data: IconThemeData(
+          color: color ?? Theme.of(context).colorScheme.primary,
+          size: size,
+          // size: double.infinity,
         ),
+        child: isActive ? activeIcon ?? icon : icon,
       ),
     );
   }

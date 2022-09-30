@@ -1,13 +1,13 @@
 import 'package:pentagon/models/user.dart';
 
 class Post {
-  int id;
-  User author;
-  String text;
-  DateTime creationDate;
-  int likes;
-  int unlikes;
-  bool isEdited;
+  final int id;
+  final User author;
+  final String text;
+  final DateTime creationDate;
+  final int likes;
+  final int unlikes;
+  final bool isEdited;
 
   Post({
     required this.id,

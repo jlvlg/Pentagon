@@ -49,7 +49,7 @@ public class UserController {
 									   String username) {
 		try {
 			if (securityUtils.authorizeUser(token, pentagon.findUser(username).getId())) {
-				pentagon.deletePage(username);
+				pentagon.deleteProfile(username);
 				pentagon.deleteUser(username);
 				return ResponseEntity.noContent().build();
 			} else {
@@ -57,7 +57,7 @@ public class UserController {
 			}
 		} catch (UserNotFoundException e) {
 			return ResponseEntity.notFound().build();
-		} catch (PageNotFoundException e) {
+		} catch (ProfileNotFoundException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -124,11 +124,11 @@ public class UserController {
 		try {
 			if (securityUtils.authorizeUser(token, user.getId())) {
 				pentagon.switchUserIsActive(user);
-				pentagon.switchPageIsActive(pentagon.findPage(user));
+				pentagon.switchProfileIsActive(pentagon.findProfile(user));
 				return ResponseEntity.noContent().build();
 			}
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-		} catch (UserNotFoundException | PageNotFoundException e) {
+		} catch (UserNotFoundException | ProfileNotFoundException e) {
 			return ResponseEntity.notFound().build();
 		}
 	}

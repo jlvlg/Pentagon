@@ -4,7 +4,7 @@ import com.jlvlg.pentagon.exceptions.InvalidPostNameException;
 import com.jlvlg.pentagon.exceptions.InvalidPostTextException;
 import com.jlvlg.pentagon.exceptions.PostMaxCharacterSizeExceededException;
 import com.jlvlg.pentagon.exceptions.PostNotFoundException;
-import com.jlvlg.pentagon.models.Page;
+import com.jlvlg.pentagon.models.Profile;
 import com.jlvlg.pentagon.models.Post;
 import com.jlvlg.pentagon.models.User;
 import com.jlvlg.pentagon.repositories.PostRepository;
@@ -58,12 +58,12 @@ public class PostService implements PostServiceInterface {
 		postRepository.delete(post);
 	}
 
-	public Slice<Post> findByPageAndIsActiveTrue(Page page, Pageable pageable) {
-		return postRepository.findByPageAndActiveTrue(page, pageable);
+	public Slice<Post> findByProfileAndIsActiveTrue(Profile profile, Pageable pageable) {
+		return postRepository.findByProfileAndActiveTrue(profile, pageable);
 	}
 
-	public long countByPageAndIsActiveTrue(Page page) {
-		return postRepository.countByPageAndActiveTrue(page);
+	public long countByProfileAndIsActiveTrue(Profile profile) {
+		return postRepository.countByProfileAndActiveTrue(profile);
 	}
 
 	public Slice<Post> findByAuthorAndIsActiveTrue(User author, Pageable pageable) {

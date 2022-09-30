@@ -23,7 +23,7 @@ import com.jlvlg.pentagon.exceptions.PostVisibilityException;
 @Entity
 public class Post extends Postable {
 	@ManyToOne
-	private Page page;
+	private Profile profile;
 	private String image;
 	@ManyToMany
 	private List<User> visibility;
@@ -34,33 +34,33 @@ public class Post extends Postable {
 		this.visibility = new ArrayList<>();
 	}
 	
-	public Post(User author, Page page, String text, String image, String title) {
-		this(author, page, text, title);
+	public Post(User author, Profile profile, String text, String image, String title) {
+		this(author, profile, text, title);
 		this.image = image;
 	}
 	
-	public Post(User author, Page page, String text, String title) {
-		this(author, page, text, new ArrayList<>(), title);
+	public Post(User author, Profile profile, String text, String title) {
+		this(author, profile, text, new ArrayList<>(), title);
 	}
 	
-	public Post(User author, Page page, String text, String image, List<User> visibility, String title) {
-		this(author, page, text, visibility, title);
+	public Post(User author, Profile profile, String text, String image, List<User> visibility, String title) {
+		this(author, profile, text, visibility, title);
 		this.image = image;
 	}
 
-	public Post(User author, Page page, String text, List<User> visibility, String title) {
+	public Post(User author, Profile profile, String text, List<User> visibility, String title) {
 		super(author, text);
-		this.page = page;
+		this.profile = profile;
 		this.visibility = visibility;
 		this.title = title;
 	}
 
-	public Page getPage() {
-		return page;
+	public Profile getPage() {
+		return profile;
 	}
 
-	public void setPage(Page page) {
-		this.page = page;
+	public void setPage(Profile profile) {
+		this.profile = profile;
 	}
 
 	public String getImage() {
@@ -91,7 +91,7 @@ public class Post extends Postable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(image, page, title, visibility);
+		result = prime * result + Objects.hash(image, profile, title, visibility);
 		return result;
 	}
 
@@ -104,7 +104,7 @@ public class Post extends Postable {
 		if (getClass() != obj.getClass())
 			return false;
 		Post other = (Post) obj;
-		return Objects.equals(image, other.image) && Objects.equals(page, other.page)
+		return Objects.equals(image, other.image) && Objects.equals(profile, other.profile)
 				&& Objects.equals(title, other.title) && Objects.equals(visibility, other.visibility);
 	}
 

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pentagon/generated/l10n.dart';
 import 'package:pentagon/providers/auth_provider.dart';
 import 'package:pentagon/providers/localizations_provider.dart';
+import 'package:pentagon/providers/profile_provider.dart';
+import 'package:pentagon/providers/user_provider.dart';
 import 'package:pentagon/screens/auth_or_home_screen/auth_or_home_screen.dart';
+import 'package:pentagon/screens/not_found_screen/not_found_screen.dart';
+import 'package:pentagon/screens/search_screen.dart/search_screen.dart';
 import 'package:pentagon/screens/splash_screen/splash_screen.dart';
 import 'package:pentagon/util/constants/app_colors.dart';
 import 'package:pentagon/util/constants/app_names.dart';
@@ -15,9 +20,31 @@ class PentagonApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+            .size
+            .shortestSide <
+        550) {
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    }
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProxyProvider<AuthProvider, UserProvider>(
+          create: (_) => UserProvider(),
+          update: (context, value, previous) => UserProvider(
+            value.token ?? '',
+            previous?.user,
+            previous?.users ?? [],
+          ),
+        ),
+        ChangeNotifierProxyProvider<AuthProvider, ProfileProvider>(
+          create: (_) => ProfileProvider(),
+          update: (context, value, previous) => ProfileProvider(
+            value.token ?? '',
+            previous?.profile,
+            previous?.profiles ?? [],
+          ),
+        ),
       ],
       child: MaterialApp(
         localizationsDelegates: const [
@@ -36,23 +63,24 @@ class PentagonApp extends StatelessWidget {
             secondary: AppColors.secondary,
           ),
         ),
-        // routes: {
-        //   AppRoutes.splash: (context) => const SplashScreen(),
-        //   AppRoutes.home: (context) => const HomeScreen(),
-        //   AppRoutes.auth: (context) => const AuthScreen(),
-        // },
         onGenerateRoute: (settings) {
-          const routes = {
-            AppRoutes.splash: SplashScreen(),
-            AppRoutes.home: AuthOrHomeScreen(),
-          };
-          if (routes.containsKey(settings.name)) {
-            return PageRouteBuilder(
-                settings: settings,
-                transitionDuration: Duration(seconds: 1),
-                pageBuilder: (_, __, ___) => routes[settings.name]!);
+          Widget? route;
+          switch (settings.name) {
+            case AppRoutes.splash:
+              route = const SplashScreen();
+              break;
+            case AppRoutes.home:
+              route = AuthOrHomeScreen(
+                  initScreen: (settings.arguments ?? 0) as int);
+              break;
+            case AppRoutes.search:
+              route = SearchScreen(settings.arguments as String);
           }
-          return null;
+          return PageRouteBuilder(
+            settings: settings,
+            transitionDuration: const Duration(seconds: 1),
+            pageBuilder: (_, __, ___) => route ?? const NotFoundScreen(),
+          );
         },
       ),
     );
