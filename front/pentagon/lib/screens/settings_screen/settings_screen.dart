@@ -91,9 +91,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           Button(
                             label: local.logout,
                             onPressed: () {
+                              context.read<AuthProvider>().logout();
                               Navigator.of(context).pop();
-                              Timer(const Duration(milliseconds: 200),
-                                  () => context.read<AuthProvider>().logout());
                             },
                             color: Theme.of(context).errorColor,
                           ),
@@ -129,12 +128,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                             ).then((value) {
                               if (value) {
+                                context.read<AuthProvider>().deleteAccount();
                                 Navigator.of(context).pop();
-                                Timer(
-                                    const Duration(milliseconds: 200),
-                                    () => context
-                                        .read<AuthProvider>()
-                                        .deleteAccount());
                               }
                             });
                           },

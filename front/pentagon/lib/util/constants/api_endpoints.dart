@@ -1,6 +1,6 @@
 class ApiEndpoints {
   static const String scheme = 'http';
-  static const String host = '172.20.74.208';
+  static const String host = '192.168.118.165';
   static const int port = 8080;
   static const String api = 'api';
   static const String auth = 'auth';
