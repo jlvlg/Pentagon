@@ -13,12 +13,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
-
-/*
- * implements logic busines before call the CommentRepository methods
- * @autor Luann
- */
 
 @Service
 public class CommentService implements CommentServiceInterface {
@@ -54,19 +50,11 @@ public class CommentService implements CommentServiceInterface {
 		return comment.get();
 	}
 
-	public Slice<Comment> findByPostableAndIsActiveTrue(Postable postable, Pageable pageable) {
-		return commentRepository.findByPostableAndActiveTrue(postable, pageable);
+	public List<Comment> findByPostable(Postable postable) {
+		return commentRepository.findByPostable(postable);
 	}
 
-	public long countByPostableAndIsActiveTrue(Postable postable) {
-		return commentRepository.countByPostableAndActiveTrue(postable);
-	}
-
-	public Slice<Comment> findByAuthorAndIsActiveTrue(User author, Pageable pageable) {
-		return commentRepository.findByAuthorAndActiveTrue(author, pageable);
-	}
-
-	public long countByAuthorAndIsActiveTrue(User author) {
-		return commentRepository.countByAuthorAndActiveTrue(author);
+	public List<Comment> findByAuthor(User author) {
+		return commentRepository.findByAuthor(author);
 	}
 }

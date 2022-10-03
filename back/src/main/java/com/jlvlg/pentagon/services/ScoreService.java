@@ -2,6 +2,7 @@ package com.jlvlg.pentagon.services;
 
 import com.jlvlg.pentagon.exceptions.ScoreNotFoundException;
 import com.jlvlg.pentagon.exceptions.ScoreOutOfAllowedException;
+import com.jlvlg.pentagon.models.Profile;
 import com.jlvlg.pentagon.models.Score;
 import com.jlvlg.pentagon.models.User;
 import com.jlvlg.pentagon.repositories.ScoreRepository;
@@ -11,11 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-
-/*
- * implements logic busines before call the ScoreRepository methods
- * @autor Luann
- */
 
 @Service
 public class ScoreService implements ScoreServiceInterface {
@@ -32,22 +28,26 @@ public class ScoreService implements ScoreServiceInterface {
 		return save(score);
 	}
 
-	public List<Score> findByUser(User user) {
-		return scoreRepository.findByProfile_User(user);
+	public List<Score> findByProfile(Profile profile) {
+		return scoreRepository.findByProfile(profile);
 	}
 
 	public List<Score> findByAuthor(User author) {
 		return scoreRepository.findByAuthor(author);
 	}
 
-	@Override
-	public Optional<Score> findByProfile_UserAndCategoryAndAuthor(User user, String category, User author) {
-		return scoreRepository.findByProfile_UserAndCategoryAndAuthor(user, category, author);
+	public List<Score> findByProfileAndAuthor(Profile profile, User author) {
+		return scoreRepository.findByProfileAndAuthor(profile, author);
 	}
 
 	@Override
-	public List<Score> findByUserAndCategory(User user, String category) {
-		return scoreRepository.findByProfile_UserAndCategory(user, category);
+	public Optional<Score> findByProfileAndCategoryAndAuthor(Profile profile, String category, User author) {
+		return scoreRepository.findByProfileAndCategoryAndAuthor(profile, category, author);
+	}
+
+	@Override
+	public List<Score> findByProfileAndCategory(Profile profile, String category) {
+		return scoreRepository.findByProfileAndCategory(profile, category);
 	}
 
 	@Override

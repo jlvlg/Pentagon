@@ -56,13 +56,9 @@ public class ProfileController {
     }
 
     @PatchMapping
-    public ResponseEntity<Profile> update(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
-                                          @RequestBody Profile profile) {
+    public ResponseEntity<Profile> update(@RequestBody Profile profile) {
         try {
-            if (securityUtils.authorizeUser(token, pentagon.findProfile(profile.getId()).getUser().getId())) {
-                return ResponseEntity.ok(pentagon.updateProfile(profile));
-            }
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.ok(pentagon.updateProfile(profile));
         } catch (ProfileNotFoundException e) {
             return ResponseEntity.notFound().build();
         } catch (InvalidProfileNameException e) {
@@ -71,14 +67,10 @@ public class ProfileController {
     }
 
 	@DeleteMapping
-	public ResponseEntity<Void> delete(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
-                       @RequestBody Profile profile) {
+	public ResponseEntity<Void> delete(@RequestBody Profile profile) {
         try {
-            if (securityUtils.authorizeUser(token, pentagon.findProfile(profile.getId()).getUser().getId())) {
-                pentagon.deleteProfile(profile);
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            pentagon.deleteProfile(profile);
+            return ResponseEntity.noContent().build();
         } catch (ProfileNotFoundException e) {
             return ResponseEntity.notFound().build();
         }

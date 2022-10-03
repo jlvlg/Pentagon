@@ -7,11 +7,12 @@ import com.jlvlg.pentagon.models.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
+import java.util.List;
+
 public interface PostServiceInterface extends GenericServiceInterface<Post, Long>{
-	Slice<Post> findByProfileAndIsActiveTrue(Profile profile, Pageable pageable);
-	long countByProfileAndIsActiveTrue(Profile profile);
-	Slice<Post> findByAuthorAndIsActiveTrue(User author, Pageable pageable);
-	long countByAuthorAndIsActiveTrue(User author);
+	List<Post> findByProfile(Profile profile);
+	List<Post> findByAuthor(User author);
+	List<Post> followingPosts(List<User> following);
 
 	@Override
 	Post save(Post object) throws InvalidPostNameException, InvalidPostTextException, PostMaxCharacterSizeExceededException;

@@ -23,6 +23,6 @@ public class ScoreFactory {
 		
 		return new Score(
 				faker.number().numberBetween(-5, 5), UserFactory.generate(), 
-				PageFactory.generate(), faker.name().name());
+				ProfileFactory.generate(), faker.name().name());
 	}
 }

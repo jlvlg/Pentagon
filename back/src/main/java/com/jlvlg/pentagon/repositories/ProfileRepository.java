@@ -16,7 +16,7 @@ import com.jlvlg.pentagon.models.User;
  */
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
-	Optional<Profile> findByUserAndActiveTrue(User user);
-	List<Profile> findByUser_Auth_UsernameContainsIgnoreCaseAndActiveTrue(String username);
-	List<Profile> findByNameContainsIgnoreCaseAndActiveTrue(String name);
+	Optional<Profile> findByUser(User user);
+	List<Profile> findByUser_Auth_UsernameContainsIgnoreCase(String username);
+	List<Profile> findByNameContainsIgnoreCase(String name);
 }

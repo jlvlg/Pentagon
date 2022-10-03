@@ -1,7 +1,5 @@
 package com.jlvlg.pentagon.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.time.Instant;
 import java.util.Objects;
 
@@ -12,12 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
-
-/**
- * Abstract Postable class. Serves as base to Post and Comment classes.
- * @author Lucas
- *
- */
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -30,13 +22,10 @@ public abstract class Postable {
 	private String text;
 	private Instant creationDate;
 	private int likes;
-	private int dislikes;
-	@JsonIgnore
-	private boolean active;
+	private int unlikes;
 	private boolean edited;
 	
 	public Postable() {
-		this.active = true;
 		this.creationDate = Instant.now();
 	}
 	
@@ -86,20 +75,12 @@ public abstract class Postable {
 		this.likes = likes;
 	}
 
-	public int getDislikes() {
-		return dislikes;
+	public int getUnlikes() {
+		return unlikes;
 	}
 
-	public void setDislikes(int dislikes) {
-		this.dislikes = dislikes;
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean isActive) {
-		this.active = isActive;
+	public void setUnlikes(int dislikes) {
+		this.unlikes = dislikes;
 	}
 
 	public boolean isEdited() {
@@ -112,7 +93,7 @@ public abstract class Postable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(active, author, creationDate, dislikes, edited, id, likes, text);
+		return Objects.hash(author, creationDate, unlikes, edited, id, likes, text);
 	}
 
 	@Override
@@ -124,23 +105,17 @@ public abstract class Postable {
 		if (getClass() != obj.getClass())
 			return false;
 		Postable other = (Postable) obj;
-		return active == other.active && Objects.equals(author, other.author)
-				&& Objects.equals(creationDate, other.creationDate) && dislikes == other.dislikes
+		return Objects.equals(author, other.author)
+				&& Objects.equals(creationDate, other.creationDate) && unlikes == other.unlikes
 				&& edited == other.edited && Objects.equals(id, other.id) && likes == other.likes
 				&& Objects.equals(text, other.text);
 	}
 
-	/**
-	 * Increments likes attribute
-	 */
 	public void like() {
 		likes++;
 	}
-	
-	/**
-	 * Increments dislikes attribute
-	 */
+
 	public void unlike() {
-		dislikes++;
+		unlikes++;
 	}
 }

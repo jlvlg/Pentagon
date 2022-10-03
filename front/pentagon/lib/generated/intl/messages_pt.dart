@@ -37,31 +37,62 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accessForbidden":
             MessageLookupByLibrary.simpleMessage("Acesso proibido"),
+        "account": MessageLookupByLibrary.simpleMessage("Conta"),
+        "alreadyFollowing":
+            MessageLookupByLibrary.simpleMessage("Você já segue este usuário"),
+        "appearance": MessageLookupByLibrary.simpleMessage("Aparência"),
         "authExceptionMsg": MessageLookupByLibrary.simpleMessage(
             "Falha na autenticação, seu nome de usuário ou senha podem estar incorretos"),
         "badRequest":
             MessageLookupByLibrary.simpleMessage("Requisição não sucedida"),
+        "body": MessageLookupByLibrary.simpleMessage("Texto"),
+        "camera": MessageLookupByLibrary.simpleMessage("Câmera"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
+        "changePassword": MessageLookupByLibrary.simpleMessage("Alterar senha"),
+        "character": MessageLookupByLibrary.simpleMessage("Caráter"),
         "confirmPassword":
             MessageLookupByLibrary.simpleMessage("Confirmar senha"),
+        "cropImage": MessageLookupByLibrary.simpleMessage("Cortar imagem"),
+        "currentPassword": MessageLookupByLibrary.simpleMessage("Senha atual"),
+        "delete": MessageLookupByLibrary.simpleMessage("Deletar"),
+        "deleteAccountMsg": MessageLookupByLibrary.simpleMessage(
+            "Tem certeza que deseja deletar sua conta? Esta ação não pode ser desfeita"),
+        "description": MessageLookupByLibrary.simpleMessage("Descrição"),
+        "edit": MessageLookupByLibrary.simpleMessage("Editar"),
         "emptyFieldValidation": m0,
+        "gallery": MessageLookupByLibrary.simpleMessage("Galeria"),
         "home": MessageLookupByLibrary.simpleMessage("Página inicial"),
+        "humor": MessageLookupByLibrary.simpleMessage("Humor"),
+        "intelligence": MessageLookupByLibrary.simpleMessage("Inteligência"),
         "invalidFieldException": m1,
         "invalidFieldValidation": MessageLookupByLibrary.simpleMessage(
             "Campo contém caracteres inválidos"),
+        "language": MessageLookupByLibrary.simpleMessage("Linguagem"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "logout": MessageLookupByLibrary.simpleMessage("Sair"),
         "maximum": MessageLookupByLibrary.simpleMessage("Máximo"),
         "minimum": MessageLookupByLibrary.simpleMessage("Mínimo"),
+        "name": MessageLookupByLibrary.simpleMessage("Nome"),
         "noObjectfound": m2,
+        "notFollowing":
+            MessageLookupByLibrary.simpleMessage("Você não segue este usuário"),
         "objectNotFound": m3,
+        "offline": MessageLookupByLibrary.simpleMessage("Sem conexão"),
         "onError": m4,
         "password": MessageLookupByLibrary.simpleMessage("Senha"),
         "passwordInvalidLength": m5,
         "passwordsDoNotMatch":
             MessageLookupByLibrary.simpleMessage("Senhas não coincidem"),
+        "post": MessageLookupByLibrary.simpleMessage("Postagem"),
         "profile": MessageLookupByLibrary.simpleMessage("Perfil"),
+        "responsibility":
+            MessageLookupByLibrary.simpleMessage("Responsabilidade"),
+        "save": MessageLookupByLibrary.simpleMessage("Salvar"),
         "settings": MessageLookupByLibrary.simpleMessage("Configurações"),
         "signup": MessageLookupByLibrary.simpleMessage("Registrar"),
+        "source": MessageLookupByLibrary.simpleMessage("Fonte"),
+        "title": MessageLookupByLibrary.simpleMessage("Título"),
+        "toPost": MessageLookupByLibrary.simpleMessage("Postar"),
         "unexpected": MessageLookupByLibrary.simpleMessage("inesperado"),
         "user": MessageLookupByLibrary.simpleMessage("Usuário"),
         "username": MessageLookupByLibrary.simpleMessage("Usuário"),

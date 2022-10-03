@@ -17,16 +17,13 @@ import java.util.Objects;
 public class Auth implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Long id;
     private String username;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    @JsonIgnore
-    private boolean active;
 
     public Auth() {
-        this.active = true;
+
     }
 
     public Auth(String username, String password) {
@@ -65,7 +62,7 @@ public class Auth implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return active;
+        return true;
     }
 
     public void setUsername(String username) {
@@ -86,24 +83,16 @@ public class Auth implements UserDetails {
         this.password = password;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Auth auth = (Auth) o;
-        return active == auth.active && Objects.equals(username, auth.username) && Objects.equals(password, auth.password);
+        return Objects.equals(username, auth.username) && Objects.equals(password, auth.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, password, active);
+        return Objects.hash(username, password);
     }
 }

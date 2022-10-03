@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "441374976580",
+    "project_id": "pentagon-3b34b",
+    "storage_bucket": "pentagon-3b34b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:441374976580:android:05582d5d1d952dfa9caa11",
+        "android_client_info": {
+          "package_name": "com.jlvlg.pentagon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "441374976580-8el63egtspp8rcagd4h4ral5q9n109gm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdW0d73D3eDBBHIUmf--201sjBKCP-sSE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "441374976580-8el63egtspp8rcagd4h4ral5q9n109gm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "441374976580-q7qoa4kr2etr5lru8u5vilqb1mhta0s0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jlvlg.pentagon"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,18 +3,17 @@ package com.jlvlg.pentagon.services;
 import com.jlvlg.pentagon.exceptions.CommentMaxCharacterSizeExceededException;
 import com.jlvlg.pentagon.exceptions.CommentNotFoundException;
 import com.jlvlg.pentagon.exceptions.InvalidCommentException;
-import com.jlvlg.pentagon.exceptions.ObjectNotFoundException;
 import com.jlvlg.pentagon.models.Comment;
 import com.jlvlg.pentagon.models.Postable;
 import com.jlvlg.pentagon.models.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
+import java.util.List;
+
 public interface CommentServiceInterface extends GenericServiceInterface <Comment, Long> {
-	Slice<Comment> findByPostableAndIsActiveTrue(Postable postable, Pageable pageable);
-	long countByPostableAndIsActiveTrue(Postable postable);
-	Slice<Comment> findByAuthorAndIsActiveTrue(User author, Pageable pageable);
-	long countByAuthorAndIsActiveTrue(User author);
+	List<Comment> findByPostable(Postable postable);
+	List<Comment> findByAuthor(User author);
 
 	@Override
 	Comment save(Comment object) throws InvalidCommentException, CommentMaxCharacterSizeExceededException;

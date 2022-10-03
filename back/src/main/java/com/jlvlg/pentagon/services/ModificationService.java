@@ -14,11 +14,6 @@ import com.jlvlg.pentagon.models.Modification;
 import com.jlvlg.pentagon.models.Postable;
 import com.jlvlg.pentagon.repositories.ModificationRepository;
 
-/**
- * Implements business logic before calling the ModificationRepository methods
- * @author Lucas
- *
- */
 @Service
 public class ModificationService implements ModificationServiceInterface {
 	@Autowired private ModificationRepository modificationRepository;

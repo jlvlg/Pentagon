@@ -16,7 +16,7 @@ public class UserFactory {
 	 * @return A User object with random attribute values
 	 */
 	public static User generate() {
-		Faker faker = new Faker(new Locale("pt-BR"));
+		Faker faker = new Faker();
 		return new User(
 				faker.name().username(),
 				faker.internet().password()

@@ -11,13 +11,20 @@ class ProfilePicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      width: size,
-      height: size,
-      imageUrl: profile.image ?? '',
-      placeholder: (context, url) => const CircularProgressIndicator(),
-      errorWidget: (context, url, error) =>
-          SvgPicture.asset('assets/images/default_profile_picture.svg'),
+    return Hero(
+      tag: profile.id,
+      child: CachedNetworkImage(
+        fit: BoxFit.cover,
+        width: size,
+        height: size,
+        imageUrl: profile.image ?? '',
+        placeholder: (context, url) => const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: CircularProgressIndicator(),
+        ),
+        errorWidget: (context, url, error) =>
+            SvgPicture.asset('assets/images/default_profile_picture.svg'),
+      ),
     );
   }
 }

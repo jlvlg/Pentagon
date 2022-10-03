@@ -19,7 +19,7 @@ public class PostFactory {
 		Faker faker = new Faker(new Locale("pt-BR"));
 		return new Post(
 				UserFactory.generate(),
-				PageFactory.generate(),
+				ProfileFactory.generate(),
 				faker.lorem().paragraph(),
 				faker.lorem().sentence()
 			);

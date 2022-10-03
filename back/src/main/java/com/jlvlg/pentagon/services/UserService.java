@@ -6,7 +6,6 @@ package com.jlvlg.pentagon.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.jlvlg.pentagon.exceptions.PostNotFoundException;
 import com.jlvlg.pentagon.models.Auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,11 +18,6 @@ import com.jlvlg.pentagon.exceptions.UsernameTakenException;
 import com.jlvlg.pentagon.models.User;
 import com.jlvlg.pentagon.repositories.UserRepository;
 
-/**
- * Implements business logic before calling the UserRepository methods
- * @author Lucas
- *
- */
 @Service
 public class UserService implements UserServiceInterface, UserDetailsService {
 	@Autowired private UserRepository userRepository;
@@ -36,14 +30,10 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 	}
 
 	public User findByUsername(String username) throws UserNotFoundException {
-		Optional<User> user = userRepository.findByAuth_UsernameAndAuth_ActiveTrue(username);
+		Optional<User> user = userRepository.findByAuth_Username(username);
 		if (user.isEmpty())
 			throw new UserNotFoundException();
 		return user.get();
-	}
-
-	public List<User> findByUsernameLikeIgnoreCase(String username) {
-		return userRepository.findByAuth_UsernameContainingIgnoreCaseAndAuth_ActiveTrue(username);
 	}
 
 	public User save(User user) throws InvalidUsernameException, UsernameTakenException {
@@ -60,6 +50,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 	public User update(User user) throws UsernameTakenException, InvalidUsernameException, UserNotFoundException {
 		User oldUser = findById(user.getId());
 		user.getAuth().setPassword(oldUser.getAuth().getPassword());
+		user.setJoinDate(oldUser.getJoinDate());
 		return save(user);
 	}
 

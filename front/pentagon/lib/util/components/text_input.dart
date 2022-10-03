@@ -3,11 +3,15 @@ import 'package:pentagon/util/constants/app_colors.dart';
 
 class TextInput extends StatelessWidget {
   final String label;
+  final void Function(String)? onChanged;
   final TextInputAction? textInputAction;
   final String? Function(String?)? validator;
+  final String? initialText;
   final void Function(String?)? onSaved;
   final TextEditingController? controller;
   final void Function(String)? onSubmitted;
+  final int maxLines;
+  final int? maxLength;
   final bool obscureText;
   final EdgeInsets margin;
 
@@ -15,8 +19,12 @@ class TextInput extends StatelessWidget {
     required this.label,
     this.validator,
     this.onSaved,
+    this.onChanged,
+    this.initialText,
     this.textInputAction,
     this.controller,
+    this.maxLines = 1,
+    this.maxLength,
     this.onSubmitted,
     this.obscureText = false,
     this.margin = const EdgeInsets.all(5),
@@ -39,6 +47,9 @@ class TextInput extends StatelessWidget {
           ),
           TextFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            maxLines: maxLines,
+            maxLength: maxLength,
+            onChanged: onChanged,
             decoration: InputDecoration(
               filled: true,
               fillColor: const Color(0xFFEAEAEA),
@@ -55,7 +66,7 @@ class TextInput extends StatelessWidget {
             validator: validator,
             onSaved: onSaved,
             textInputAction: textInputAction,
-            controller: controller,
+            controller: controller ?? TextEditingController(text: initialText),
             obscureText: obscureText,
             onFieldSubmitted: onSubmitted,
           ),

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
-class AccentButton extends StatelessWidget {
+class Button extends StatelessWidget {
+  final Color? color;
+  final Color? textColor;
   final Function() onPressed;
   final String label;
 
-  const AccentButton({
+  const Button({
     required this.label,
     required this.onPressed,
+    this.color,
+    this.textColor,
     super.key,
   });
 
@@ -15,8 +19,9 @@ class AccentButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
+        backgroundColor: color ?? Theme.of(context).colorScheme.secondary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        foregroundColor: textColor ?? Colors.white,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),

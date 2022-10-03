@@ -36,30 +36,62 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accessForbidden":
             MessageLookupByLibrary.simpleMessage("Access forbidden"),
+        "account": MessageLookupByLibrary.simpleMessage("Account"),
+        "alreadyFollowing":
+            MessageLookupByLibrary.simpleMessage("Already following"),
+        "appearance": MessageLookupByLibrary.simpleMessage("Appearance"),
         "authExceptionMsg": MessageLookupByLibrary.simpleMessage(
             "Authentication failure, your username or password might be incorrect"),
         "badRequest": MessageLookupByLibrary.simpleMessage("Bad request"),
+        "body": MessageLookupByLibrary.simpleMessage("Body"),
+        "camera": MessageLookupByLibrary.simpleMessage("Camera"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "changePassword":
+            MessageLookupByLibrary.simpleMessage("Change password"),
+        "character": MessageLookupByLibrary.simpleMessage("Character"),
         "confirmPassword":
             MessageLookupByLibrary.simpleMessage("Confirm password"),
+        "cropImage": MessageLookupByLibrary.simpleMessage("Crop image"),
+        "currentPassword":
+            MessageLookupByLibrary.simpleMessage("Current password"),
+        "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+        "deleteAccountMsg": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to delete your account? This action cannot be undone."),
+        "description": MessageLookupByLibrary.simpleMessage("Description"),
+        "edit": MessageLookupByLibrary.simpleMessage("Edit"),
         "emptyFieldValidation": m0,
+        "gallery": MessageLookupByLibrary.simpleMessage("Gallery"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
+        "humor": MessageLookupByLibrary.simpleMessage("Humor"),
+        "intelligence": MessageLookupByLibrary.simpleMessage("Intelligence"),
         "invalidFieldException": m1,
         "invalidFieldValidation": MessageLookupByLibrary.simpleMessage(
             "Field contains invalid characters"),
+        "language": MessageLookupByLibrary.simpleMessage("Language"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "logout": MessageLookupByLibrary.simpleMessage("Logout"),
         "maximum": MessageLookupByLibrary.simpleMessage("Maximum"),
         "minimum": MessageLookupByLibrary.simpleMessage("Minimum"),
+        "name": MessageLookupByLibrary.simpleMessage("Name"),
         "noObjectfound": m2,
+        "notFollowing": MessageLookupByLibrary.simpleMessage("Not following"),
         "objectNotFound": m3,
+        "offline": MessageLookupByLibrary.simpleMessage("Offline"),
         "onError": m4,
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "passwordInvalidLength": m5,
         "passwordsDoNotMatch":
             MessageLookupByLibrary.simpleMessage("Passwords do not match"),
+        "post": MessageLookupByLibrary.simpleMessage("Post"),
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+        "responsibility":
+            MessageLookupByLibrary.simpleMessage("Responsibility"),
+        "save": MessageLookupByLibrary.simpleMessage("Save"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "signup": MessageLookupByLibrary.simpleMessage("Sign Up"),
+        "source": MessageLookupByLibrary.simpleMessage("Source"),
+        "title": MessageLookupByLibrary.simpleMessage("Title"),
+        "toPost": MessageLookupByLibrary.simpleMessage("Post"),
         "unexpected": MessageLookupByLibrary.simpleMessage("unexpected"),
         "user": MessageLookupByLibrary.simpleMessage("User"),
         "username": MessageLookupByLibrary.simpleMessage("Username"),

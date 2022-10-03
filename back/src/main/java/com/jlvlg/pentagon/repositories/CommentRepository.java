@@ -4,9 +4,10 @@ import com.jlvlg.pentagon.models.Comment;
 import com.jlvlg.pentagon.models.Postable;
 import com.jlvlg.pentagon.models.User;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Defines methods to read and write to the Comment database
@@ -14,8 +15,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-	Slice<Comment> findByPostableAndActiveTrue(Postable postable, Pageable pageable);
-	long countByPostableAndActiveTrue(Postable postable);
-	Slice<Comment> findByAuthorAndActiveTrue(User author, Pageable pageable);
-	long countByAuthorAndActiveTrue(User author);
+	List<Comment> findByPostable(Postable postable);
+	List<Comment> findByAuthor(User author);
 }

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.jlvlg.pentagon.exceptions.InvalidPostNameException;
 import com.jlvlg.pentagon.exceptions.InvalidPostTextException;
-import com.jlvlg.pentagon.exceptions.OutOfPostsException;
 import com.jlvlg.pentagon.exceptions.PostMaxCharacterSizeExceededException;
 import com.jlvlg.pentagon.exceptions.PostNotFoundException;
 import com.jlvlg.pentagon.exceptions.PostVisibilityException;
@@ -38,21 +37,27 @@ public class PostController {
     }
 
 	@GetMapping
-	public ResponseEntity<List<Post>> getPosts(Optional<Long> id, Optional<User> author, Optional<Integer> pageNumber) {
+	public ResponseEntity<List<Post>> getPosts(Optional<Long> id, Optional<Long> author) {
 		try {
             if (id.isPresent()) {
                 return ResponseEntity.ok(List.of(pentagon.findPost(id.get())));
             } else if (author.isPresent()) {
-                if (pageNumber.isPresent()) {
-                    return ResponseEntity.ok(pentagon.loadPosts(author.get(), pageNumber.get()));
-                }
-                return ResponseEntity.ok(pentagon.loadPosts(author.get(), 0));
+                return ResponseEntity.ok(pentagon.loadPosts(author.get()));
             } else {
                 return ResponseEntity.badRequest().build();
             }
-        } catch (PostNotFoundException | UserNotFoundException | OutOfPostsException e) {
+        } catch (PostNotFoundException | UserNotFoundException e) {
             return ResponseEntity.notFound().build();
-        }
+		}
+	}
+
+	@GetMapping("followed")
+	public ResponseEntity<List<Post>> followingPosts(Long user) {
+		try {
+			return ResponseEntity.ok(pentagon.followingPosts(user));
+		} catch (UserNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@DeleteMapping
@@ -73,16 +78,6 @@ public class PostController {
 			return ResponseEntity.notFound().build();
 		} catch (InvalidPostNameException | InvalidPostTextException | PostMaxCharacterSizeExceededException e) {
 			return ResponseEntity.unprocessableEntity().build();
-		}
-	}
-
-	@PatchMapping("activation")
-	public ResponseEntity<Void> switchPostIsActive(@RequestBody Post post) {
-		try {
-			pentagon.switchPostIsActive(post);
-			return ResponseEntity.noContent().build();
-		} catch (PostNotFoundException e) {
-			return ResponseEntity.notFound().build();
 		}
 	}
 

@@ -5,6 +5,7 @@ import 'package:pentagon/screens/settings_screen/settings_screen.dart';
 import 'package:pentagon/screens/create_post_screen/create_post_screen.dart';
 import 'package:pentagon/screens/feed_screen/feed_screen.dart';
 import 'package:pentagon/util/components/app_layout.dart';
+import 'package:pentagon/util/components/search_field.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,8 +19,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late final PageController _pageController;
-  bool _isTrayOpen = false;
-  bool _trayShadow = false;
   late int _currentPage;
 
   @override
@@ -35,13 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _pageController.dispose();
   }
 
-  void switchTray() {
-    setState(() {
-      _isTrayOpen = !_isTrayOpen;
-      _trayShadow = false;
-    });
-  }
-
   void changePage(int page) {
     _pageController.animateToPage(
       page,
@@ -54,7 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
-    final size = mediaQuery.size;
 
     return AppLayout(
       onTap: changePage,
@@ -62,45 +53,57 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: SizedBox(
         height: 50,
         width: 50,
-        child: FloatingActionButton(
-          elevation: 10,
-          onPressed: switchTray,
-          heroTag: 'homefab',
-          child: IconTheme(
-            data: const IconThemeData(color: Colors.white),
-            child: AnimatedRotation(
-              turns: _isTrayOpen ? 1 / 8 : 0,
-              duration: const Duration(milliseconds: 200),
-              child: const Icon(Icons.add),
+        child: [
+          FloatingActionButton(
+            elevation: 10,
+            onPressed: () => showModalBottomSheet(
+                context: context,
+                builder: (context) => const CreatePostScreen()),
+            heroTag: 'homefab',
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
             ),
           ),
-        ),
+          isLandscape
+              ? null
+              : FloatingActionButton(
+                  elevation: 10,
+                  onPressed: () => showModalBottomSheet(
+                      context: context,
+                      builder: (context) => const SettingsScreen()),
+                  heroTag: 'homefab',
+                  child: const Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                  ),
+                ),
+          null,
+        ][_currentPage],
       ),
       child: Stack(
         children: [
-          PageView(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: _pageController,
-            scrollDirection: isLandscape ? Axis.vertical : Axis.horizontal,
-            onPageChanged: (value) => setState(() => _currentPage = value),
-            children: [
-              const FeedScreen(),
-              Consumer<AuthProvider>(
-                builder: (context, value, child) => ProfileDetails(value.id!),
-              ),
-              const SettingsScreen(),
-            ],
-          ),
-          AnimatedPositioned(
-            left: 0,
-            right: 0,
-            top: _isTrayOpen ? 0 : size.height,
-            bottom: _isTrayOpen ? 0 : -size.height,
-            duration: const Duration(milliseconds: 300),
-            child: CreatePostScreen(
-              shadow: _trayShadow,
+          Consumer<AuthProvider>(
+            builder: (context, value, child) => PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: _pageController,
+              scrollDirection: isLandscape ? Axis.vertical : Axis.horizontal,
+              onPageChanged: (value) => setState(() => _currentPage = value),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Column(
+                    children: const [
+                      SearchField(),
+                      Expanded(
+                        child: FeedScreen(),
+                      ),
+                    ],
+                  ),
+                ),
+                ProfileDetails(value.authProfile!),
+              ],
             ),
-            onEnd: () => setState(() => _trayShadow = _isTrayOpen && true),
           ),
         ],
       ),

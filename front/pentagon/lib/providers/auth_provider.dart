@@ -1,25 +1,31 @@
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:pentagon/controllers/profile_controller.dart';
 import 'package:pentagon/data/store.dart';
+import 'package:pentagon/models/profile.dart';
 import 'package:pentagon/models/user.dart';
 import 'package:pentagon/controllers/auth_controller.dart';
 
 class AuthProvider with ChangeNotifier {
-  User? _authUser;
+  Profile? _authProfile;
 
-  bool get isAuth => _authUser != null && _authUser!.auth.token != null;
-  User? get authUser => isAuth ? _authUser : null;
+  bool get isAuth =>
+      _authProfile != null && _authProfile!.user.auth.token != null;
+  Profile? get authProfile => isAuth ? _authProfile : null;
+  User? get authUser => authProfile?.user;
+  String? get id => authProfile?.id;
   String? get token => authUser?.auth.token;
-  String? get id => authUser?.id;
+  String? get uid => authUser?.id;
 
   Future<void> _authenticate(
       String username, String password, String urlFragment) async {
-    _authUser =
+    _authProfile =
         await AuthController.authenticate(username, password, urlFragment);
 
     Store.saveMap(
       'userDetails',
-      _authUser!.toMap,
+      _authProfile!.toMap,
     );
 
     notifyListeners();
@@ -34,14 +40,57 @@ class AuthProvider with ChangeNotifier {
   Future<void> tryAutoLogin() async {
     if (!isAuth) {
       final userData = await Store.getMap('userDetails');
+
       if (userData.isNotEmpty) {
-        _authUser = User.fromMap(userData, userData['auth']['token']);
+        _authProfile =
+            Profile.fromMap(userData, userData['user']['auth']['token']);
       }
     }
   }
 
+  Future<void> deleteAccount() async {
+    if (isAuth) {
+      await ProfileController.deleteProfile(
+        authProfile!,
+        token: token!,
+      );
+      logout();
+    }
+  }
+
+  Future<void> reloadProfile() async {
+    if (isAuth) {
+      _authProfile = await ProfileController.getProfile(
+        id: id,
+        token: token!,
+        setToken: true,
+      );
+      Store.saveMap(
+        'userDetails',
+        _authProfile!.toMap,
+      );
+      notifyListeners();
+    }
+  }
+
+  Future<void> patchProfile(Profile profile, File? image) async {
+    if (isAuth) {
+      _authProfile = await ProfileController.patchProfile(
+        profile,
+        image: image,
+        token: token!,
+        setToken: true,
+      );
+      Store.saveMap(
+        'userDetails',
+        _authProfile!.toMap,
+      );
+      notifyListeners();
+    }
+  }
+
   void logout() {
-    _authUser = null;
+    _authProfile = null;
     Store.remove('userDetails').whenComplete(() {
       notifyListeners();
     });

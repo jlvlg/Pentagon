@@ -7,19 +7,17 @@ import java.util.Objects;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jlvlg.pentagon.exceptions.UserAlreadyFollowedException;
 import com.jlvlg.pentagon.exceptions.UserNotFollowedException;
 
-/*** 
- * User Object Class: Inherits Followable Objec Abstractt Class
- * @author Luann
- */
 @Entity(name = "PentagonUser")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@ManyToMany
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private List<User> following;
 	private int followers;
 	private Instant joinDate;
@@ -35,25 +33,13 @@ public class User {
 		this();
 		this.auth = new Auth(username, password);
 	}
-	
-	/**
-	 * Method to add users to a user's following list.
-	 * @param user the user to be followed
-	 * @return true to a successful operation
-	 * @throws UserAlreadyFollowedException Tried to follow a user you already follow
-	 */
+
 	public boolean follow(User user) throws UserAlreadyFollowedException {
 		if (following.contains(user))
 			throw new UserAlreadyFollowedException(this, user);
 		return following.add(user);
 	}
-	
-	/**
-	 * Method to remove users from a user's following list
-	 * @param user the user to be unfollowed 
-	 * @return true to a successful operation 
-	 * @throws UserNotFollowedException The user was not found in your following list
-	 */
+
 	public boolean unfollow(User user) throws UserNotFollowedException {
 		if (!following.contains(user))
 			throw new UserNotFollowedException(this, user);

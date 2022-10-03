@@ -15,9 +15,5 @@ import com.jlvlg.pentagon.models.User;
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
-	Optional<User> findByAuth_UsernameAndAuth_ActiveTrue(String username);
-
 	Optional<User> findByAuth_Username(String username);
-
-	List<User> findByAuth_UsernameContainingIgnoreCaseAndAuth_ActiveTrue(String username);
 }

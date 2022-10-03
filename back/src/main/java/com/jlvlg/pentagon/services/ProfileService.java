@@ -11,11 +11,6 @@ import com.jlvlg.pentagon.exceptions.ProfileNotFoundException;
 import com.jlvlg.pentagon.models.User;
 import com.jlvlg.pentagon.repositories.ProfileRepository;
 
-/**
- * Implements business logic before calling the PageRepository methods
- * @author Lucas
- *
- */
 @Service
 public class ProfileService implements ProfileServiceInterface {
 	@Autowired private ProfileRepository profileRepository;
@@ -28,28 +23,28 @@ public class ProfileService implements ProfileServiceInterface {
 	}
 
 	public Profile findByUser(User user) throws ProfileNotFoundException {
-		Optional<Profile> page = profileRepository.findByUserAndActiveTrue(user);
+		Optional<Profile> page = profileRepository.findByUser(user);
 		if (page.isEmpty())
 			throw new ProfileNotFoundException();
 		return page.get();
 	}
 
 	public List<Profile> search(String text) {
-		Set<Profile> profiles = new LinkedHashSet<>(profileRepository.findByNameContainsIgnoreCaseAndActiveTrue(text));
-		profiles.addAll(profileRepository.findByUser_Auth_UsernameContainsIgnoreCaseAndActiveTrue(text));
+		Set<Profile> profiles = new LinkedHashSet<>(profileRepository.findByNameContainsIgnoreCase(text));
+		profiles.addAll(profileRepository.findByUser_Auth_UsernameContainsIgnoreCase(text));
 		return new ArrayList<>(profiles);
 	}
 
 	public Profile save(Profile profile) throws InvalidProfileNameException {
 		if (profile.getName() == null ||
 			profile.getName().isBlank() ||
-			!profile.getName().matches("[ a-zA-Z0-9_.-]+"))
+			!profile.getName().matches("[ A-Za-zÀ-ÖØ-öø-ÿ_.-]+"))
 			throw new InvalidProfileNameException(profile);
 		return profileRepository.save(profile);
 	}
 
 	public Profile update(Profile profile) throws ProfileNotFoundException, InvalidProfileNameException {
-		Profile oldProfile = findById(profile.getId());
+		profile.setUser(findById(profile.getId()).getUser());
 		return save(profile);
 	}
 

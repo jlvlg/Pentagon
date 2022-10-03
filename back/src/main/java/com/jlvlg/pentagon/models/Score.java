@@ -8,11 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-/*Score Object Class
- *
- *@author Luann
- */
-  
 @Entity
 public class Score {
 	@Id

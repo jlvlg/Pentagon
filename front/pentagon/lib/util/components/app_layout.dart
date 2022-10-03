@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pentagon/generated/l10n.dart';
 import 'package:pentagon/providers/auth_provider.dart';
+import 'package:pentagon/screens/settings_screen/settings_screen.dart';
 import 'package:pentagon/util/components/custom_navigation_bar.dart';
 import 'package:pentagon/util/components/custom_navigation_bar_item.dart';
 import 'package:pentagon/util/components/lateral_bar.dart';
@@ -58,6 +59,12 @@ class AppLayout extends StatelessWidget {
                       icon: const Icon(Icons.settings_outlined),
                       activeIcon: const Icon(Icons.settings),
                       label: S.of(context).settings,
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) => const SettingsScreen(),
+                        );
+                      },
                     ),
                     LateralBarItem(
                         icon: const Icon(Icons.logout),

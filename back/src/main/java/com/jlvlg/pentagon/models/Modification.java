@@ -9,12 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-/*The Modification model Class serves to modify Postable Abstract Class.
- * It's necessary to inform the post and the field or fields that must be modified 
- * 
- * @author Luann
- */
-
 @Entity
 public class Modification {
 	@Id

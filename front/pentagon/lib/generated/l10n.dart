@@ -299,6 +299,276 @@ class S {
       args: [],
     );
   }
+
+  /// `Offline`
+  String get offline {
+    return Intl.message(
+      'Offline',
+      name: 'offline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get edit {
+    return Intl.message(
+      'Edit',
+      name: 'edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Source`
+  String get source {
+    return Intl.message(
+      'Source',
+      name: 'source',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gallery`
+  String get gallery {
+    return Intl.message(
+      'Gallery',
+      name: 'gallery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Camera`
+  String get camera {
+    return Intl.message(
+      'Camera',
+      name: 'camera',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Crop image`
+  String get cropImage {
+    return Intl.message(
+      'Crop image',
+      name: 'cropImage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name`
+  String get name {
+    return Intl.message(
+      'Name',
+      name: 'name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message(
+      'Delete',
+      name: 'delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account`
+  String get account {
+    return Intl.message(
+      'Account',
+      name: 'account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete your account? This action cannot be undone.`
+  String get deleteAccountMsg {
+    return Intl.message(
+      'Are you sure you want to delete your account? This action cannot be undone.',
+      name: 'deleteAccountMsg',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description`
+  String get description {
+    return Intl.message(
+      'Description',
+      name: 'description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Language`
+  String get language {
+    return Intl.message(
+      'Language',
+      name: 'language',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Current password`
+  String get currentPassword {
+    return Intl.message(
+      'Current password',
+      name: 'currentPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change password`
+  String get changePassword {
+    return Intl.message(
+      'Change password',
+      name: 'changePassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Already following`
+  String get alreadyFollowing {
+    return Intl.message(
+      'Already following',
+      name: 'alreadyFollowing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not following`
+  String get notFollowing {
+    return Intl.message(
+      'Not following',
+      name: 'notFollowing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Title`
+  String get title {
+    return Intl.message(
+      'Title',
+      name: 'title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Body`
+  String get body {
+    return Intl.message(
+      'Body',
+      name: 'body',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Post`
+  String get post {
+    return Intl.message(
+      'Post',
+      name: 'post',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Post`
+  String get toPost {
+    return Intl.message(
+      'Post',
+      name: 'toPost',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Appearance`
+  String get appearance {
+    return Intl.message(
+      'Appearance',
+      name: 'appearance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Intelligence`
+  String get intelligence {
+    return Intl.message(
+      'Intelligence',
+      name: 'intelligence',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Character`
+  String get character {
+    return Intl.message(
+      'Character',
+      name: 'character',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Humor`
+  String get humor {
+    return Intl.message(
+      'Humor',
+      name: 'humor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Responsibility`
+  String get responsibility {
+    return Intl.message(
+      'Responsibility',
+      name: 'responsibility',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

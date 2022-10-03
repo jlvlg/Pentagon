@@ -4,24 +4,32 @@
 <!--
 @startuml classes
     skinparam classAttributeIconSize 0
-    class User {
+    class Auth {
         -username: String
         -password: String
+        +boolean isAccountNonExpired()
+        +boolean isAccountNonLocked()
+        +boolean isCredentialsNonExpired()
+        +boolean isEnabled()
+    }
+    class User {
+        -auth: Auth
         -following: List<User>
         -followers: int = 0
         -joinDate: Instant
-        -isActive: boolean
-        -isAdmin: boolean
         +boolean follow(User user)
         +boolean unfollow(User user)
     }
-    class Page {
+    class Profile {
         -user: User
         -name: String
         -image: String
         -description: String
-        -scoreMeans: ScoreMean[5] 
-        -isActive: boolean
+        -appearanceScore: double
+        -intelligenceScore: double
+        -characterScore: double
+        -humorScore: double
+        -responsibilityScore: double
     }
     abstract class Postable {
         -author: User
@@ -29,13 +37,12 @@
         -creationDate: Instant
         -likes: int
         -dislikes: int
-        -isActive: boolean
-        -isEdited: boolean
+        -edited: boolean
         +void like()
         +void dislike()
     }
     class Post {
-        -page: Profile
+        -profile: Profile
         -image: String
         -visibility: List~User~
         -title: String
@@ -47,6 +54,7 @@
     }
     class Modification {
         -postable: Postable
+        -oldTitle: String
         -oldImage: String
         -oldText: String
         -date: Instant
@@ -57,18 +65,14 @@
         -profile: Profile
         -category: String
     }
-    class ScoreMean {
-        -category: String
-        -mean: float
-    }
     User "n" -- "n" User
     User "1" --o "n" Postable
     User "1" --o "n" Score
     User "n" -- "n" Post
-    User "1" --o "1" Page
-    Page "1" *-- "n" Post
-    Page "1" *-- "n" Score
-    Page "1" o-- "5" ScoreMean
+    User "1" --o "1" Profile
+    User "1" o-- "1" Auth
+    Profile "1" *-- "n" Post
+    Profile "1" *-- "n" Score
     Postable "1" *-- "n" Modification
     Postable "1" *-- "n" Comment
     Postable <|-- Post

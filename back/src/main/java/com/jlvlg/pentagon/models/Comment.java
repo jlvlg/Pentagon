@@ -5,11 +5,6 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-/* Comment Object Class
- * 
- * @author Luann
- */
-
 @Entity
 public class Comment extends Postable {
 	@ManyToOne

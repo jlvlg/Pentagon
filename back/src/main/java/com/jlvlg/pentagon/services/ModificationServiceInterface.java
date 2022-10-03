@@ -12,35 +12,14 @@ import java.util.List;
  * @author Lucas
  */
 public interface ModificationServiceInterface extends GenericServiceInterface<Modification, Long> {
-	/**
-	 * Finds all modifications of a post
-	 * @param post the post to search for
-	 * @return A list of all modifications
-	 */
 	List<Modification> findByPostable(Postable post);
 
-	/**
-	 * Saves a modification into the database
-	 * @param modification The modification to be saved
-	 * @return The saved modification
-	 */
 	@Override
 	Modification save(Modification modification);
 
-	/**
-	 * Updates a modification in the database
-	 * @param modification The modification to be updated
-	 * @return The updated modification
-	 * @throws ModificationNotFoundException Modification not found
-	 */
 	@Override
 	Modification update(Modification modification) throws ModificationNotFoundException;
 
-	/**
-	 * Permanently drops a modification from the database
-	 * @param modification The modification to be dropped
-	 * @throws ModificationNotFoundException Modification not found
-	 */
 	@Override
 	void delete(Modification modification) throws ModificationNotFoundException;
 

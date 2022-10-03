@@ -14,12 +14,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
-
-/*
- * implements logic busines before call the PostRepository methods
- * @autor Luann
- */
 
 @Service
 public class PostService implements PostServiceInterface {
@@ -58,19 +54,15 @@ public class PostService implements PostServiceInterface {
 		postRepository.delete(post);
 	}
 
-	public Slice<Post> findByProfileAndIsActiveTrue(Profile profile, Pageable pageable) {
-		return postRepository.findByProfileAndActiveTrue(profile, pageable);
+	public List<Post> followingPosts(List<User> following) {
+		return postRepository.findByAuthorInOrderByCreationDateDesc(following);
 	}
 
-	public long countByProfileAndIsActiveTrue(Profile profile) {
-		return postRepository.countByProfileAndActiveTrue(profile);
+	public List<Post> findByProfile(Profile profile) {
+		return postRepository.findByProfile(profile);
 	}
 
-	public Slice<Post> findByAuthorAndIsActiveTrue(User author, Pageable pageable) {
-		return postRepository.findByAuthorAndActiveTrue(author, pageable);
-	}
-
-	public long countByAuthorAndIsActiveTrue(User author) {
-		return postRepository.countByAuthorAndActiveTrue(author);
+	public List<Post> findByAuthor(User author) {
+		return postRepository.findByAuthor(author);
 	}
 }
