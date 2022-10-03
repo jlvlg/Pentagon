@@ -20,34 +20,39 @@ class ProfileScreen extends StatelessWidget {
 
     return EnsureOnline(
       AppLayout(
-        floatingActionButton: FloatingActionButton(
-          heroTag: 'homefab',
-          onPressed: () {
-            UserController.switchFollowUser(
-                    provider.authProfile.user.id, profile.user.id,
-                    token: provider.token)
-                .then(
-              (value) => provider.loadProfile(id: profile.id).whenComplete(
-                    () => ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        duration: const Duration(seconds: 1),
-                        content: Text(
-                          value == null
-                              ? S.of(context).onError(S.of(context).unexpected)
-                              : value == 0
-                                  ? 'Followed'
-                                  : 'Unfollowed',
-                        ),
-                      ),
-                    ),
-                  ),
-            );
-          },
-          child: const Icon(
-            Icons.group_add,
-            color: Colors.white,
-          ),
-        ),
+        floatingActionButton: provider.profile != provider.authProfile
+            ? FloatingActionButton(
+                heroTag: 'homefab',
+                onPressed: () {
+                  UserController.switchFollowUser(
+                          provider.authProfile.user.id, profile.user.id,
+                          token: provider.token)
+                      .then(
+                    (value) =>
+                        provider.loadProfile(id: profile.id).whenComplete(
+                              () => ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  duration: const Duration(seconds: 1),
+                                  content: Text(
+                                    value == null
+                                        ? S
+                                            .of(context)
+                                            .onError(S.of(context).unexpected)
+                                        : value == 0
+                                            ? 'Followed'
+                                            : 'Unfollowed',
+                                  ),
+                                ),
+                              ),
+                            ),
+                  );
+                },
+                child: const Icon(
+                  Icons.group_add,
+                  color: Colors.white,
+                ),
+              )
+            : null,
         floatingActionButtonLocation:
             MediaQuery.of(context).orientation == Orientation.landscape
                 ? FloatingActionButtonLocation.startFloat

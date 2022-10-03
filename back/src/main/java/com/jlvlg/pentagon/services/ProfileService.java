@@ -38,7 +38,7 @@ public class ProfileService implements ProfileServiceInterface {
 	public Profile save(Profile profile) throws InvalidProfileNameException {
 		if (profile.getName() == null ||
 			profile.getName().isBlank() ||
-			!profile.getName().matches("[ A-Za-zÀ-ÖØ-öø-ÿ_.-]+"))
+			!profile.getName().matches("[ 0-9A-Za-zÀ-ÖØ-öø-ÿ_.-]+"))
 			throw new InvalidProfileNameException(profile);
 		return profileRepository.save(profile);
 	}

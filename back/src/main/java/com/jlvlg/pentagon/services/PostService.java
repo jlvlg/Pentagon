@@ -9,8 +9,6 @@ import com.jlvlg.pentagon.models.Post;
 import com.jlvlg.pentagon.models.User;
 import com.jlvlg.pentagon.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -59,10 +57,10 @@ public class PostService implements PostServiceInterface {
 	}
 
 	public List<Post> findByProfile(Profile profile) {
-		return postRepository.findByProfile(profile);
+		return postRepository.findByProfileOrderByCreationDateDesc(profile);
 	}
 
 	public List<Post> findByAuthor(User author) {
-		return postRepository.findByAuthor(author);
+		return postRepository.findByAuthorOrderByCreationDateDesc(author);
 	}
 }

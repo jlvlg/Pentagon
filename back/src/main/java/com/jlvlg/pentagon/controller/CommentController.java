@@ -16,7 +16,7 @@ import com.jlvlg.pentagon.facade.Pentagon;
 import com.jlvlg.pentagon.models.Comment;
 import com.jlvlg.pentagon.models.Postable;
 
-@RestController
+@RestController("comments")
 public class CommentController {
 	@Autowired
 	private Pentagon pentagon;
@@ -39,11 +39,14 @@ public class CommentController {
         }
     }
 
-	@GetMapping("/search/{postable}/")
-	public ResponseEntity<List<Comment>> loadComments(@PathVariable (value = "postasble") Postable postable) throws CommentNotFoundException, PostNotFoundException {
-		List<Comment> load = pentagon.loadComments(postable);
-		return ResponseEntity.status(HttpStatus.OK).body(load);
-	}
+	@GetMapping("/load")
+	public ResponseEntity<List<Comment>> loadComments(@RequestBody Postable postable) {
+        try {
+            return ResponseEntity.ok(pentagon.loadComments(postable));
+        } catch (PostNotFoundException | CommentNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 	@DeleteMapping
 	public ResponseEntity<Void> delete(@RequestBody Comment comment ) {

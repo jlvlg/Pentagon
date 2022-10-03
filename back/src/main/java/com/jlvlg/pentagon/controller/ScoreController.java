@@ -44,7 +44,7 @@ public class ScoreController {
 	@GetMapping
 	public ResponseEntity<Optional<Score>> find(Long profile, String category, Long author) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(pentagon.findScore(pentagon.findProfile(profile), category, pentagon.findUser(author)));
+			return ResponseEntity.ok(pentagon.findScore(pentagon.findProfile(profile), category, pentagon.findUser(author)));
 		} catch (ProfileNotFoundException | UserNotFoundException e) {
 			return ResponseEntity.notFound().build();
 		}

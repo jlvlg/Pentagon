@@ -135,6 +135,8 @@ usecase "UC23. Alterar senha" as U23
 usecase "UC24. Desativar usuário" as U24
 usecase "UC25. Ativar usuário" as U25
 
+usecase "UC26. Seguir usuário" as U26
+
 User -[#black]-> U3
 User -[#black]-> U7
 User -[#black]-> U9
@@ -177,6 +179,8 @@ U21 <.. U22 : <<extends>>
 U21 <.. U23 : <<extends>>
 U21 <.. U24 : <<extends>>
 U21 <.. U25 : <<extends>>
+
+U2 <.. U26 : <<extends>>
 @enduml
 -->
 

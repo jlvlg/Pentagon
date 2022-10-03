@@ -1,0 +1,910 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v1
+servers:
+  - url: http://localhost:8080/api
+    description: Pentagon Api
+paths:
+  /comments:
+    get:
+      tags:
+        - comment-controller
+      operationId: load
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "404":
+          description: Not found
+    post:
+      tags:
+        - comment-controller
+      operationId: save
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Comment"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "422":
+          description: Unprocessable Entity
+    delete:
+      tags:
+        - comment-controller
+      operationId: delete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Comment"
+        required: true
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Not found
+    patch:
+      tags:
+        - comment-controller
+      operationId: update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Comment"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "404":
+          description: Not found
+        "422":
+          description: Unprocessable Entity
+  /score:
+    get:
+      tags:
+        - score-controller
+      operationId: find
+      parameters:
+        - name: profile
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: category
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: author
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Score"
+        "422":
+          description: Unprocessable Entity
+    post:
+      tags:
+        - score-controller
+      operationId: save_1
+      parameters:
+        - name: profile
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: category
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: author
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: score
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Score"
+        "404":
+          description: Not found
+        "422":
+          description: Unprocessable Entity
+    delete:
+      tags:
+        - score-controller
+      operationId: delete_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Score"
+        required: true
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Not found
+  /profiles:
+    get:
+      tags:
+        - profile-controller
+      operationId: getProfile
+      parameters:
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: username
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Profile"
+        "400":
+          description: Bad request
+        "404":
+          description: Not found
+    post:
+      tags:
+        - profile-controller
+      operationId: save_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Profile"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Profile"
+        "422":
+          description: Unprocessable Entity
+    delete:
+      tags:
+        - profile-controller
+      operationId: delete_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Profile"
+        required: true
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Not found
+    patch:
+      tags:
+        - profile-controller
+      operationId: update_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Profile"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Profile"
+        "404":
+          description: Not found
+        "422":
+          description: Unprocessable Entity
+  /posts:
+    get:
+      tags:
+        - post-controller
+      operationId: getPosts
+      parameters:
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: author
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+        "400":
+          description: Bad request
+        "404":
+          description: Not found
+    post:
+      tags:
+        - post-controller
+      operationId: save_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Post"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Post"
+        "422":
+          description: Unprocessable Entity
+    delete:
+      tags:
+        - post-controller
+      operationId: delete_4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Post"
+        required: true
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Not found
+
+    patch:
+      tags:
+        - post-controller
+      operationId: update_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Post"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Post"
+        "404":
+          description: Not found
+        "422":
+          description: Unprocessable Entity
+  /auth/signup:
+    post:
+      tags:
+        - auth-controller
+      operationId: signUp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Auth"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Profile"
+        "409":
+          description: Conflict
+        "422":
+          description: Unprocessable Entity
+  /auth/login:
+    post:
+      tags:
+        - auth-controller
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Auth"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Profile"
+        "403":
+          description: Forbidden
+  /users:
+    get:
+      tags:
+        - user-controller
+      operationId: getUser
+      parameters:
+        - name: username
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Bad request
+        "404":
+          description: Not found
+    delete:
+      tags:
+        - user-controller
+      operationId: delete_1
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Not found
+    patch:
+      tags:
+        - user-controller
+      operationId: update_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: Not found
+        "409":
+          description: Conflict
+        "422":
+          description: Unprocessable Entity
+  /users/follow:
+    patch:
+      tags:
+        - user-controller
+      operationId: switchFollowUser
+      parameters:
+        - name: followingId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: followedId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: integer
+                format: int32
+  /comments/unlike:
+    patch:
+      tags:
+        - comment-controller
+      operationId: unlike
+      parameters:
+        - name: comment
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/Comment"
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Not found
+  /posts/visible:
+    patch:
+      tags:
+        - post-controller
+      operationId: turnPostVisibleTo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: boolean
+        "404":
+          description: Not found
+        "422":
+          description: Unprocessable Entity
+  /posts/unlike:
+    patch:
+      tags:
+        - post-controller
+      operationId: unlike_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Post"
+        required: true
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Not found
+  /posts/like:
+    patch:
+      tags:
+        - post-controller
+      operationId: like
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Post"
+        required: true
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Not found
+  /posts/invisible:
+    patch:
+      tags:
+        - post-controller
+      operationId: turnPostInvisibleTo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: boolean
+        "404":
+          description: Not found
+        "422":
+          description: Unprocessable Entity
+  /posts/edit:
+    patch:
+      tags:
+        - post-controller
+      operationId: edit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Post"
+        required: true
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Not found
+        "422":
+          description: Unprocessable Entity
+  /comments/like:
+    patch:
+      tags:
+        - comment-controller
+      operationId: like_1
+      parameters:
+        - name: comment
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/Comment"
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Not found
+  /comments/edit:
+    patch:
+      tags:
+        - comment-controller
+      operationId: edit_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Comment"
+        required: true
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Not found
+        "422":
+          description: Unprocessable Entity
+  /auth:
+    patch:
+      tags:
+        - auth-controller
+      operationId: updateAuth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Auth"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Profile"
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+        "409":
+          description: Conflict
+        "422":
+          description: Unprocessable Entity
+  /comments/load:
+    get:
+      tags:
+        - comment-controller
+      operationId: loadComments
+      parameters:
+        - name: postasble
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/Postable"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+        "404":
+          description: Not found
+  /score/profile:
+    get:
+      tags:
+        - score-controller
+      operationId: load_1
+      parameters:
+        - name: profile
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: author
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Score"
+        "404":
+          description: Not found
+  /profiles/search:
+    get:
+      tags:
+        - profile-controller
+      operationId: search
+      parameters:
+        - name: text
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Profile"
+        "404":
+          description: Not found
+  /posts/followed:
+    get:
+      tags:
+        - post-controller
+      operationId: followingPosts
+      parameters:
+        - name: user
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+        "404":
+          description: Not found
+components:
+  schemas:
+    Auth:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        password:
+          type: string
+          writeOnly: true
+        enabled:
+          type: boolean
+        authorities:
+          type: array
+          items:
+            $ref: "#/components/schemas/GrantedAuthority"
+        accountNonExpired:
+          type: boolean
+        accountNonLocked:
+          type: boolean
+        credentialsNonExpired:
+          type: boolean
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        author:
+          $ref: "#/components/schemas/User"
+        text:
+          type: string
+        creationDate:
+          type: string
+          format: date-time
+        likes:
+          type: integer
+          format: int32
+        unlikes:
+          type: integer
+          format: int32
+        edited:
+          type: boolean
+        postable:
+          $ref: "#/components/schemas/Postable"
+    GrantedAuthority:
+      type: object
+      properties:
+        authority:
+          type: string
+    Postable:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        author:
+          $ref: "#/components/schemas/User"
+        text:
+          type: string
+        creationDate:
+          type: string
+          format: date-time
+        likes:
+          type: integer
+          format: int32
+        unlikes:
+          type: integer
+          format: int32
+        edited:
+          type: boolean
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        following:
+          type: array
+          writeOnly: true
+          items:
+            $ref: "#/components/schemas/User"
+        followers:
+          type: integer
+          format: int32
+        joinDate:
+          type: string
+          format: date-time
+        auth:
+          $ref: "#/components/schemas/Auth"
+    Profile:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        user:
+          $ref: "#/components/schemas/User"
+        name:
+          type: string
+        image:
+          type: string
+        description:
+          type: string
+        appearanceScore:
+          type: number
+          format: double
+        intelligenceScore:
+          type: number
+          format: double
+        characterScore:
+          type: number
+          format: double
+        humorScore:
+          type: number
+          format: double
+        responsibilityScore:
+          type: number
+          format: double
+    Score:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        score:
+          type: integer
+          format: int32
+        author:
+          $ref: "#/components/schemas/User"
+        category:
+          type: string
+        page:
+          $ref: "#/components/schemas/Profile"
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        author:
+          $ref: "#/components/schemas/User"
+        text:
+          type: string
+        creationDate:
+          type: string
+          format: date-time
+        likes:
+          type: integer
+          format: int32
+        unlikes:
+          type: integer
+          format: int32
+        edited:
+          type: boolean
+        profile:
+          $ref: "#/components/schemas/Profile"
+        image:
+          type: string
+        visibility:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+        title:
+          type: string
